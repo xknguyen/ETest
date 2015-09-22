@@ -13,6 +13,7 @@ namespace ETest.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class Account : IdentityUser
     {
+        
         [StringLength(10), Display(Name = "MSSV")]
         public string Identity { get; set; }
 
@@ -30,7 +31,7 @@ namespace ETest.Models
         public string Notes { get; set; }       // Ghi chú
 
         [DisplayName("Lớp")]
-        public int ClassId { get; set; }
+        public long ClassId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayName("Ngày sinh")]
@@ -43,6 +44,11 @@ namespace ETest.Models
             // ReSharper disable once ConvertPropertyToExpressionBody
             get { return string.Format("{0} {1}", FirstName, LastName); }
         }
+
+        public virtual Class Class { get; set; }
+        public virtual List<Group> Groups { get; set; }
+        public virtual List<AnswerSheet> AnswerSheets { get; set; }
+        public virtual List<Course> Courses { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Account> manager)
         {

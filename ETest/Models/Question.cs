@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -18,7 +19,7 @@ namespace ETest.Models
 
     public class Question
     {
-        public int QuestionId { get; set; }
+        public long QuestionId { get; set; }
 
         public string QusetionTitle { get; set; }
 
@@ -26,8 +27,13 @@ namespace ETest.Models
 
         public string Answer { get; set; }
 
-        public int GroupId { get; set; }
+        public long GroupId { get; set; }
 
-        public QuestionType Type { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
+        public virtual List<Test> Tests { get; set; }
+        public virtual Group Group { get; set; }
+        public virtual QuestionType QuestionType { get; set; }
     }
 }
