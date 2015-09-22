@@ -1,5 +1,4 @@
-﻿using ETest.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ETest.DAL
 {
