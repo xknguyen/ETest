@@ -4,21 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ETest.Models
 {
-    public class Answer
+    public class TestDetail
     {
         [Key]
         [Column(Order = 0)]
-        public long AnswerSheetId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public long TestId { get; set; }
 
         [Key]
         [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long QuestionId { get; set; }
 
-        [Required]
-        [Column(TypeName = "ntext")]
-        public string AnswerString { get; set; }
+        public float Score { set; get; }
 
-        public virtual AnswerSheet AnswerSheet { get; set; }
+        public virtual Test Test { get; set; }
         public virtual Question Question { get; set; }
     }
 }

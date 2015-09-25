@@ -1,31 +1,19 @@
+﻿using ETest.DAL;
+using System.Data.Entity.Migrations;
 namespace ETest.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<ETest.DAL.ETestDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ETestDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            ContextKey = "ETest.DAL.ETestDbContext";
         }
 
-        protected override void Seed(ETest.DAL.ETestDbContext context)
+        protected override void Seed(ETestDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            AccountSeeder.Seed(context);
+            ClassSeeder.Seed(context);
         }
     }
 }
