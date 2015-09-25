@@ -34,9 +34,9 @@ namespace ETest.DAL
                 UserName = "khoanv",
                 Email = "nguyenxuankhoa2309@gmail.com",
                 PhoneNumber = "01687568353",
-                LastName = "Nguyễn Xuân",
-                FirstName = "Khoa",
-                BirthDate = new DateTime(1993, 10, 30)
+                //LastName = "Nguyễn Xuân",
+               // FirstName = "Khoa",
+               // BirthDate = new DateTime(1993, 10, 30)
 
             };
             var result = userManager.Create(adminUser, password);
@@ -53,9 +53,9 @@ namespace ETest.DAL
                 UserName = "thuongnv",
                 Email = "thuongnc@gmail.com",
                 PhoneNumber = "01687568353",
-                LastName = "Nguyễn Văn",
-                FirstName = "Thương",
-                BirthDate = new DateTime(1993, 8, 2)
+               // LastName = "Nguyễn Văn",
+              //  FirstName = "Thương",
+//BirthDate = new DateTime(1993, 8, 2)
 
             };
 
@@ -72,9 +72,9 @@ namespace ETest.DAL
                 UserName = "huytc",
                 Email = "huytc@gmail.com",
                 PhoneNumber = "01687568353",
-                LastName = "Trần Công",
-                FirstName = "Huy",
-                BirthDate = new DateTime(1994, 8, 2)
+               // LastName = "Trần Công",
+              //  FirstName = "Huy",
+              //  BirthDate = new DateTime(1994, 8, 2)
             };
 
             result = userManager.Create(student, password);
@@ -90,9 +90,9 @@ namespace ETest.DAL
                 UserName = "tuannm",
                 Email = "tuannm@gmail.com",
                 PhoneNumber = "01684751874",
-                LastName = "Nguyễn Minh",
-                FirstName = "Tuấn",
-                BirthDate = new DateTime(1994, 8, 12)
+               // LastName = "Nguyễn Minh",
+               // FirstName = "Tuấn",
+              //  BirthDate = new DateTime(1994, 8, 12)
             };
 
             result = userManager.Create(student, password);

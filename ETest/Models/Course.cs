@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ETest.Models
 {
@@ -16,15 +17,15 @@ namespace ETest.Models
         [Display(Name = "Mô tả")]
         public string Description { get; set; }
 
-        // public string TeacherId { get; set; }
+        public string TeacherId { get; set; }
 
         [Display(Name = "Trạng thái")]
         public bool Active { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
-
-        // public virtual Account Teacher { get; set; }
+        
+        public virtual Account Teacher { get; set; }
         public virtual IList<Account> Students { get; set; }
         public virtual IList<Test> Tests { get; set; }
     }

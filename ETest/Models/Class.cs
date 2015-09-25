@@ -25,6 +25,7 @@ namespace ETest.Models
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-        public virtual IList<Account> Students { get; set; }
+        public virtual IList<UserProfile> Students { get; set; }
+        
     }
 }

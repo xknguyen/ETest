@@ -20,7 +20,8 @@ namespace ETest.DAL
         {
             // Thiết lập tên cho các bảng lưu trữ thông tin người dùng và quyền
             base.OnModelCreating(modelBuilder);
-             modelBuilder.Entity<IdentityUser>().ToTable("Accounts");
+            
+            modelBuilder.Entity<IdentityUser>().ToTable("Accounts");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole>().ToTable("UserInRoles");
             modelBuilder.Entity<IdentityUserLogin>().ToTable("UserLogins");
@@ -30,21 +31,22 @@ namespace ETest.DAL
             modelBuilder.Entity<Group>()
                 .HasMany(o => o.Questions)
                 .WithRequired(d => d.Group)
-                .HasForeignKey(d => d.GroupId);
+                .HasForeignKey(d => d.GroupId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa tài khoản học sinh và lớp
             modelBuilder.Entity<Class>()
                 .HasMany(o => o.Students)
                 .WithOptional(d => d.Class)
-                .HasForeignKey(d => d.ClassId);
+                .HasForeignKey(d => d.ClassId)
+                .WillCascadeOnDelete(false);
 
             // Thiết lập quan hệ giữa tài khoản học sinh và phiếu trả lời
             modelBuilder.Entity<Account>()
                 .HasMany(o => o.AnswerSheets)
                 .WithRequired(d => d.TestTaker)
-                .HasForeignKey(d => d.TestTakerId);
-
-
+                .HasForeignKey(d => d.TestTakerId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa khóa học và Sinh viên
             modelBuilder.Entity<Course>()
@@ -53,7 +55,7 @@ namespace ETest.DAL
                 .Map(m => m.MapLeftKey("CourseId").MapRightKey("AccountId").ToTable("CourseStudent"));
 
             // Thiết lập quan hệ giữa tài khoản giáo viên và khóa học
-            //modelBuilder.Entity<Course>().HasRequired(s => s.Teacher);
+            modelBuilder.Entity<Course>().HasRequired(s => s.Teacher).WithMany().WillCascadeOnDelete(false);
             //modelBuilder.Entity<Account>()
             //    .HasMany(o => o.Courses)
             //    .WithRequired(d => d.Teacher)
@@ -61,35 +63,61 @@ namespace ETest.DAL
             //    .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa tài khoản giáo viên với nhóm câu hỏi
-            // modelBuilder.Entity<Group>().HasRequired(s => s.Teacher).WithMany(s=>s.Groups).WillCascadeOnDelete(true);
-            //modelBuilder.Entity<Account>()
-            //    .HasMany(o => o.Groups)
-            //    .WithRequired(d => d.Teacher)
-            //    .HasForeignKey(d => d.TeacherId);
+            modelBuilder.Entity<Account>()
+                .HasMany(o => o.Groups)
+                .WithRequired(d => d.Teacher)
+                .HasForeignKey(d => d.TeacherId)
+                .WillCascadeOnDelete(false);
 
             // Thiết lập mối quan hệ giữa nhóm con và nhóm cha
-            
-
+            modelBuilder.Entity<Group>()
+                .HasMany(c => c.ChildGroups)
+                .WithOptional(c => c.ParentGroup)
+                .HasForeignKey(c => c.ParentGroupId)
+                .WillCascadeOnDelete(false);
 
             // Thiết lập quan hệ giữa câu hỏi với câu trả lời
-            
+            modelBuilder.Entity<Question>()
+                .HasMany(o => o.Answers)
+                .WithRequired(d => d.Question)
+                .HasForeignKey(d => d.QuestionId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa câu hỏi với chi tiết bài kiểm tra
-            
+            modelBuilder.Entity<Question>()
+                .HasMany(o => o.TestDetails)
+                .WithRequired(d => d.Question)
+                .HasForeignKey(d => d.QuestionId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa bài kiểm tra với chi tiết bài kiểm tra
-           
+            modelBuilder.Entity<Test>()
+                .HasMany(o => o.TestDetails)
+                .WithRequired(d => d.Test)
+                .HasForeignKey(d => d.TestId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa bài kiểm tra với khóa học
-            
+            modelBuilder.Entity<Course>()
+                .HasMany(o => o.Tests)
+                .WithRequired(d => d.Course)
+                .HasForeignKey(d => d.CourseId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa bài kiểm tra với phiếu trả lời
-            
+            modelBuilder.Entity<Test>()
+                .HasMany(o => o.AnswerSheets)
+                .WithRequired(d => d.Test)
+                .HasForeignKey(d => d.TestId)
+                .WillCascadeOnDelete(true);
 
             // Thiết lập quan hê giữa câu trả lời với phiếu trả lời
-            
+            modelBuilder.Entity<AnswerSheet>()
+                .HasMany(o => o.Answers)
+                .WithRequired(d => d.AnswerSheet)
+                .HasForeignKey(d => d.AnswerSheetId)
+                .WillCascadeOnDelete(true);
         }
-
 
         public ETestDbContext()
             : base("DefaultConnection")
