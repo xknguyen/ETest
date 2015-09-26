@@ -203,6 +203,14 @@
     <Compile Include="Migrations\201509250217156_Intial.Designer.cs">
       <DependentUpon>201509250217156_Intial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509260353129_Update_QuestionDetails.cs" />
+    <Compile Include="Migrations\201509260353129_Update_QuestionDetails.Designer.cs">
+      <DependentUpon>201509260353129_Update_QuestionDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509260403002_Account.cs" />
+    <Compile Include="Migrations\201509260403002_Account.Designer.cs">
+      <DependentUpon>201509260403002_Account.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -213,6 +221,7 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\QuestionDetail.cs" />
     <Compile Include="Models\TestDetail.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\UserProfile.cs" />
@@ -474,6 +483,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201509250217156_Intial.resx">
       <DependentUpon>201509250217156_Intial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509260353129_Update_QuestionDetails.resx">
+      <DependentUpon>201509260353129_Update_QuestionDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509260403002_Account.resx">
+      <DependentUpon>201509260403002_Account.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -117,6 +117,13 @@ namespace ETest.DAL
                 .WithRequired(d => d.AnswerSheet)
                 .HasForeignKey(d => d.AnswerSheetId)
                 .WillCascadeOnDelete(true);
+
+            // Thiết lập quan hệ giữa câu hỏi với chi tiết câu hỏi
+            modelBuilder.Entity<Question>()
+                .HasMany(q=>q.QuestionDetails)
+                .WithRequired(q=>q.Question)
+                .HasForeignKey(d=>d.QuestionId)
+                .WillCascadeOnDelete(true);
         }
 
         public ETestDbContext()

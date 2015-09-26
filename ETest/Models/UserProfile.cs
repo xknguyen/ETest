@@ -16,7 +16,6 @@ namespace ETest.Models
         [DisplayName("Mã tài khoản")]
         public string AccountId { get; set; }       // Mã tài khoản
 
-        [Required(ErrorMessage = "{0} không được để trống")]
         [StringLength(10, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
         [Display(Name = "MSSV")]
         public string Identity { get; set; }

@@ -29,8 +29,6 @@ namespace ETest.Models
         public byte[] RowVersion { get; set; }
 
         public virtual Group ParentGroup { get; set; }
-
-        
         public virtual Account Teacher { get; set; }
         public virtual IList<Group> ChildGroups { get; set; }
         public virtual IList<Question> Questions { get; set; }

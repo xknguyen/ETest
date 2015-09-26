@@ -24,16 +24,8 @@ namespace ETest.Models
         public string QusetionTitle { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [Display(Name = "Lựa chọn")]
-        public string Choice { get; set; }
-
-        [Display(Name = "Đáp án")]
-        public string Answer { get; set; }
-
-        [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Nhóm câu hỏi")]
         public long GroupId { get; set; }
-
 
         [Display(Name = "Trạng thái")]
         public bool Active { get; set; }
@@ -46,5 +38,6 @@ namespace ETest.Models
         public virtual Group Group { get; set; }
         public virtual QuestionType QuestionType { get; set; }
         public virtual IList<Answer> Answers { get; set; }
+        public virtual IList<QuestionDetail> QuestionDetails { get; set; }
     }
 }

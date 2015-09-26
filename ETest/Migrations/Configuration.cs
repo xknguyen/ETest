@@ -12,8 +12,8 @@ namespace ETest.Migrations
 
         protected override void Seed(ETestDbContext context)
         {
-            //AccountSeeder.Seed(context);
-            //ClassSeeder.Seed(context);
+            AccountSeeder.Seed(context);
+            ClassSeeder.Seed(context);
         }
     }
 }
