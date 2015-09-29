@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using System.Web;
+using System.Web.Mvc;
+using HtmlAgilityPack;
 namespace ETest.Models
 {
     public class Group
@@ -14,8 +16,15 @@ namespace ETest.Models
         public string GroupName { get; set; }
 
         [StringLength(1000, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
         [Display(Name = "Mô tả")]
         public string Description { get; set; }
+
+        public string GetDescription
+        {
+            get { return HttpUtility.HtmlDecode(Description); }
+        }
 
         [Display(Name = "Nhóm cha")]
         public long? ParentGroupId { get; set; }
@@ -23,7 +32,10 @@ namespace ETest.Models
         public string TeacherId { get; set; }
 
         [Display(Name = "Trạng thái")]
-        public bool Active { get; set; }
+        public bool Actived { get; set; }
+
+        [Display(Name = "Thứ tự")]
+        public int OrderNo { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
@@ -32,6 +44,5 @@ namespace ETest.Models
         public virtual Account Teacher { get; set; }
         public virtual IList<Group> ChildGroups { get; set; }
         public virtual IList<Question> Questions { get; set; }
-        
     }
 }

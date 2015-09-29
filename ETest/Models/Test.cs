@@ -33,7 +33,7 @@ namespace ETest.Models
         public string TeacherId { get; set; }
 
         [Display(Name = "Trạng thái")]
-        public bool Active { get; set; }
+        public bool Actived { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }

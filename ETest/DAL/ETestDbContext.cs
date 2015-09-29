@@ -7,7 +7,6 @@ namespace ETest.DAL
     public class ETestDbContext : IdentityDbContext
     {
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Class> Classes { get; set; }
         public DbSet<AnswerSheet> AnswerSheets { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Course> Courses { get; set; }
@@ -33,13 +32,6 @@ namespace ETest.DAL
                 .WithRequired(d => d.Group)
                 .HasForeignKey(d => d.GroupId)
                 .WillCascadeOnDelete(true);
-
-            // Thiết lập quan hệ giữa tài khoản học sinh và lớp
-            modelBuilder.Entity<Class>()
-                .HasMany(o => o.Students)
-                .WithOptional(d => d.Class)
-                .HasForeignKey(d => d.ClassId)
-                .WillCascadeOnDelete(false);
 
             // Thiết lập quan hệ giữa tài khoản học sinh và phiếu trả lời
             modelBuilder.Entity<Account>()

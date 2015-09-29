@@ -31,7 +31,7 @@ namespace ETest.DAL
             // Tạo tài khoản Admin
             var adminUser = new Account()
             {
-                UserName = "khoanv",
+                UserName = "khoanx",
                 Email = "nguyenxuankhoa2309@gmail.com",
                 PhoneNumber = "01687568353",
                 Profile = new UserProfile()

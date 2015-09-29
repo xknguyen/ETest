@@ -13,11 +13,10 @@ namespace ETest.Models
         [Key]
         [ForeignKey("Account")]
         [StringLength(128)]
-        [DisplayName("Mã tài khoản")]
         public string AccountId { get; set; }       // Mã tài khoản
 
         [StringLength(10, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
-        [Display(Name = "MSSV")]
+        [Display(Name = "Mã tài khoản")]
         public string Identity { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
@@ -35,9 +34,6 @@ namespace ETest.Models
         [DisplayName("Ghi chú")]
         public string Notes { get; set; }       // Ghi chú
 
-        [DisplayName("Lớp")]
-        public long? ClassId { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayName("Ngày sinh")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -50,7 +46,9 @@ namespace ETest.Models
             get { return string.Format("{1} {0}", FirstName, LastName); }
         }
 
+        [Display(Name = "Trạng thái")]
+        public bool Actived { get; set; }
+
         public virtual Account Account { get; set; }
-        public virtual Class Class { get; set; }
     }
 }

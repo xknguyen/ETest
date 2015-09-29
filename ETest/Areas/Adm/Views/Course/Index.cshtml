@@ -1,0 +1,171 @@
+﻿@model PagedList.IPagedList<Course>
+
+@{
+    ViewBag.Title = "Quản lý khóa học";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <style>
+        .dropdown-width {
+            max-width: 150px;
+            float: right;
+        }
+
+        .button-color {
+            background: #1AB394;
+        }
+
+        .iSup {
+            vertical-align: sub;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Danh sách khóa học</h5>
+                <div class="ibox-tools">
+                    @(Html.Bootstrap()
+                          .ActionLink("Thêm khóa học", "Create")
+                          .Class("btn btn-primary btn-xs")
+                          .PrependIcon("fa fa-plus"))
+                </div>
+            </div>
+
+            <div class="ibox-content p-sm">
+                <!-- Phần hiển thị Form tìm kiếm -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm">
+
+                        @using (Html.BeginForm("Index", "Course", FormMethod.Get,
+new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
+                        {
+                            <div class="input-group">
+                                @(Html.TextBox("Keyword", null, new
+                            {
+                                placeholder = "Nhập tên khóa học hoặc mô tả",
+                                @class = "input-sm form-control"
+                            }))
+
+                                @Html.Hidden("PageSize", null, new { id = "pageSize" })
+                                @Html.Hidden("Status", null, new { id = "supStatus" })
+
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                    @(Html.ActionLink("Bỏ lọc", "Index", null,
+                                          new { @class = "btn btn-sm btn-warning" }))
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-md-6 m-b-sm">
+                        @(Html.DropDownList("supStatus", null,
+                          new { @class = "input-sm dropdown-width", id = "statusSelect" }))
+                    </div>
+                </div>
+                <!-- Phần hiển thị danh sách nhà phát hành -->
+                <table id="tblCourses" class="table table-responsive table-bordered table-hover tbldata">
+                    <tr>
+                        <th style="width: 200px" class="hidden-sm hidden-xs">Tên khóa học</th>
+                        <th class="hidden-sm hidden-xs">Mô tả khóa học</th>
+                        <th width="90px">Trạng thái</th>
+                        <th width="40px"></th>
+                    </tr>
+                    @if (Model.Count != 0)
+                    {
+                        foreach (var item in Model)
+                         {
+                             <tr>
+                                 <td>
+                                     @Html.DisplayFor(modelItem => item.CourseName)
+                                 </td>
+
+                                 <td class="hidden-sm hidden-xs">
+                                     Thời gian: @item.StartTime.ToString("dd/MM/yyyy") - @if (item.EndTime != null)
+                                     {
+                                         @item.EndTime.Value.ToString("dd/MM/yyyy")
+                                     }
+                                     else
+                                     {
+                                         <span>?</span>
+                                     }
+                                     <br/>
+                                     @Html.Raw(item.Description)
+                                 </td>
+
+                                 <td class="td_toggle">
+                                     <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"
+                                             data-toggle-state="true"
+                                             data-url="@Url.Action("UpdateToggle")"
+                                             data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"></button>
+                                 </td>
+
+                                 <td>
+                                     @(Html.Bootstrap()
+                                           .ActionLink("", "Edit")
+                                           .RouteValues(new {id = item.CourseId})
+                                           .Title("Cập nhật khóa học")
+                                           .AppendIcon("fa fa-pencil fa-2x"))
+                                     @(Html.Bootstrap()
+                                           .ActionLink("", "Delete")
+                                           .RouteValues(new { id = item.CourseId })
+                                           .Title("Xóa khóa học")
+                                           .AppendIcon("fa fa-trash-o fa-2x"))
+                                     @(Html.Bootstrap()
+                                           .ActionLink("", "Member")
+                                           .Class("ajax-link")
+                                           .RouteValues(new {id = item.CourseId})
+                                           .AppendIcon("fa fa-users fa-2x")
+                                           .Title("Xem danh sách thành viên"))
+                                 </td>
+                             </tr>
+                         }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4">Không có khóa học nào</td></tr>
+                    }
+                </table>
+
+                <!-- Phần hiển thị thanh phân trang -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm text-center">
+                        Hiển thị
+                        @(Html.DropDownList("PageSize", null,
+                          new { @class = "input-sm", id = "pageSelect" }))
+                        mẫu tin
+                    </div>
+                    <div class="col-md-6 text-center">
+                        @Html.PagedListPager(
+                        Model,
+                        page => Url.Action(
+                            "Index",
+                            new
+                            {
+                                page,
+                                pageSize = ViewBag.CurrentPageSize,
+                                keyword = ViewBag.Keyword,
+                                status = ViewBag.CurrentStatus
+                            }),
+                        PagedListRenderOptions.ClassicPlusFirstAndLast)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
+    <script type="text/javascript" src="~/Scripts/custom/course.js"></script>
+}
+

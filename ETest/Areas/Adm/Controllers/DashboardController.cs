@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ETest.Areas.Adm.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController : AdminController
     {
         // GET: Adm/Dashboard
         public ActionResult Index()

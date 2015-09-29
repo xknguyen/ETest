@@ -28,7 +28,7 @@ namespace ETest.Models
         public long GroupId { get; set; }
 
         [Display(Name = "Trạng thái")]
-        public bool Active { get; set; }
+        public bool Actived { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
