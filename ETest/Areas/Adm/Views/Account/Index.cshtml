@@ -1,7 +1,7 @@
-﻿@model PagedList.IPagedList<Course>
+﻿@model PagedList.IPagedList<Account>
 
 @{
-    ViewBag.Title = "Quản lý khóa học";
+    ViewBag.Title = "Quản lý tài khoản";
 }
 
 @section pluginStyles
@@ -20,27 +20,26 @@
     <div class="col-md-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Danh sách khóa học</h5>
+                <h5>Danh sách tài khoản</h5>
                 <div class="ibox-tools">
                     @(Html.Bootstrap()
-                          .ActionLink("Thêm khóa học", "Create")
+                          .ActionLink("Thêm tài khoản", "Create")
                           .Class("btn btn-primary btn-xs")
                           .PrependIcon("fa fa-plus"))
                 </div>
             </div>
-
             <div class="ibox-content p-sm">
                 <!-- Phần hiển thị Form tìm kiếm -->
                 <div class="row">
                     <div class="col-md-6 m-b-sm">
 
-                        @using (Html.BeginForm("Index", "Course", FormMethod.Get,
-new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
+                        @using (Html.BeginForm("Index", "Account", FormMethod.Get,
+new { @class = "form-horizontal", role = "search", id = "searchAccount" }))
                         {
                             <div class="input-group">
                                 @(Html.TextBox("Keyword", null, new
                             {
-                                placeholder = "Nhập tên khóa học hoặc mô tả",
+                                placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
                                 @class = "input-sm form-control"
                             }))
 
@@ -62,14 +61,15 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                     </div>
                 </div>
                 <!-- Phần hiển thị danh sách nhà phát hành -->
-                <table id="tblCourses" class="table table-responsive table-bordered table-hover tbldata">
+                <table id="tblAccounts" class="table table-responsive table-bordered table-hover tbldata">
                     <thead>
-                        <tr>
-                            <th style="width: 200px" class="hidden-sm hidden-xs">Tên khóa học</th>
-                            <th class="hidden-sm hidden-xs">Mô tả khóa học</th>
-                            <th width="90px">Trạng thái</th>
-                            <th width="40px"></th>
-                        </tr>
+                    <tr>
+                        <th width="100px">Tên tài khoản</th>
+                        <th width="150px">Họ và tên</th>
+                        <th class="hidden-sm hidden-xs">Thông tin tài khoản</th>
+                        <th width="90px">Trạng thái</th>
+                        <th width="100px"></th>
+                    </tr>
                     </thead>
                     @if (Model.Count != 0)
                     {
@@ -77,46 +77,51 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.CourseName)
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Profile.FullName)
                                 </td>
 
                                 <td class="hidden-sm hidden-xs">
-                                    Thời gian: @item.StartTime.ToString("dd/MM/yyyy") - @if (item.EndTime != null)
-                                                                                        {
-                                                                                            @item.EndTime.Value.ToString("dd/MM/yyyy")
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <span>?</span>
-                                                                                        }
-                                    <br/>
-                                    @Html.Raw(item.Description)
+                                    Mã: @Html.DisplayFor(modelItem => item.Profile.Identity)<br/>
+                                    Email: @Html.DisplayFor(modelItem => item.Email)<br />
+                                    SĐT: @Html.DisplayFor(modelItem => item.PhoneNumber)<br />
+                                    Ngày sinh: @if (item.Profile.BirthDate.HasValue)
+                                    {
+                                        @item.Profile.BirthDate.Value.ToString("dd/MM/yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span>?</span>
+                                    }
                                 </td>
 
                                 <td class="td_toggle">
-                                    <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"
+                                    <button type="button" class="toggle @(item.Profile.Actived.ToString().ToLower())" id="Actived_@(item.Profile.Actived.ToString().ToLower())_@(item.Id)"
                                             data-toggle-state="true"
                                             data-url="@Url.Action("UpdateToggle")"
-                                            data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"></button>
+                                            data-args="Actived_@(item.Profile.Actived.ToString().ToLower())_@(item.Id)"></button>
                                 </td>
 
                                 <td>
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Edit")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.Id })
                                           .Title("Cập nhật khóa học")
                                           .AppendIcon("fa fa-pencil fa-2x"))
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Delete")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.Id })
                                           .Title("Xóa khóa học")
                                           .AppendIcon("fa fa-trash-o fa-2x"))
                                     @(Html.Bootstrap()
-                                          .ActionLink("", "Member")
+                                          .ActionLink("", "Index", "Cousre")
                                           .Class("ajax-link")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.Id })
                                           .AppendIcon("fa fa-users fa-2x")
-                                          .Title("Xem danh sách thành viên"))
+                                          .Title("Xem các khóa học đã đăng ký"))
                                 </td>
                             </tr>
                         }
@@ -152,14 +157,12 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
 
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
-    <script type="text/javascript" src="~/Scripts/custom/course.js"></script>
+    <script type="text/javascript" src="~/Scripts/custom/Account.js"></script>
 }
 
