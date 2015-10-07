@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ETest.Models
 {
@@ -15,22 +16,23 @@ namespace ETest.Models
         [StringLength(128)]
         public string AccountId { get; set; }       // Mã tài khoản
 
-        [StringLength(10, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(10, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Mã tài khoản")]
         public string Identity { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
         [DisplayName("Họ và tên lót")]
-        [StringLength(100, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(100, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         public string LastName { get; set; }       // Họ và tên lót
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(100, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(100, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [DisplayName("Tên")]
         public string FirstName { get; set; }        // Tên
 
-        [StringLength(1000, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(1000, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         [DisplayName("Ghi chú")]
         public string Notes { get; set; }       // Ghi chú
 

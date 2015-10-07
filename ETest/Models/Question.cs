@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
+using Core.Utilities;
+using Newtonsoft.Json.Linq;
 
 namespace ETest.Models
 {
@@ -19,9 +23,10 @@ namespace ETest.Models
         public long QuestionId { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
         [Display(Name = "Tiêu đề")]
-        public string QusetionTitle { get; set; }
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
+        public string QuestionTitle { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Nhóm câu hỏi")]
@@ -36,8 +41,35 @@ namespace ETest.Models
         public virtual IList<Test> Tests { get; set; }
         public virtual IList<TestDetail> TestDetails { get; set; }
         public virtual Group Group { get; set; }
-        public virtual QuestionType QuestionType { get; set; }
+        
         public virtual IList<Answer> Answers { get; set; }
         public virtual IList<QuestionDetail> QuestionDetails { get; set; }
+
+        
+
+        public Question()
+        {
+                
+        }
+
+        public Question(string data)
+        {
+            var questionDetails = new List<QuestionDetail>();
+            JObject jObject = JObject.Parse(data);
+            JToken jUser = jObject["question"];
+            QuestionId = DataUtil.ToLong(jUser["QuestionId"]);
+            QuestionTitle = (string)jUser["QuestionTitle"];
+            GroupId = DataUtil.ToLong(jUser["GroupId"]);
+            Actived = DataUtil.ToBool(jUser["Actived"]);
+            var questions = jUser["Questions"].ToArray();
+
+            foreach (var question in questions)
+            {
+                questionDetails.Add(new QuestionDetail(question));
+            }
+
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            QuestionDetails = questionDetails;
+        }
     }
 }

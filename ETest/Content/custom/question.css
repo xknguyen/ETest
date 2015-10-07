@@ -1,0 +1,56 @@
+﻿.question-type {
+    height: 37px;
+    min-height: 37px;
+    font-weight: bold;
+    border-radius: 6px 6px 0 0;
+    margin-bottom: 0px;
+}
+.question-border {
+    border-style: solid;
+    border-color: #ddd;
+    border-width: 1px;
+    border-radius: 0 0 6px 6px;
+    padding: 5px;
+    margin-bottom: 5px;
+    min-height: 50px;
+}
+
+.quetion-control {
+    margin-right: -5px !important;
+    margin-left: -5px !important;
+    margin-bottom: 5px !important;
+}
+
+.question-form {
+    padding: 0;
+}
+
+.question-form >input[type=checkbox] {
+    margin: 0px;
+}
+.question-close {
+    padding-top: 7px;
+    padding-left: 5px;
+}
+
+.question-answer {
+    margin: 4px 0px;
+}
+.question-check {
+    width: 30px;
+}
+
+.question-title {
+    width: 50%;
+}
+.new-question {
+    
+}
+/* ReSharper disable once Html.TagNotResolved */
+.answer-order .col-md-1 {
+    width: 2%;
+}
+
+.answer-order .col-md-9 {
+    width: 90%;
+}

@@ -1,6 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace ETest.Models
 {
@@ -15,6 +16,7 @@ namespace ETest.Models
         public long QuestionId { get; set; }
 
         [Required]
+        [AllowHtml]
         [Column(TypeName = "ntext")]
         public string AnswerString { get; set; }
 

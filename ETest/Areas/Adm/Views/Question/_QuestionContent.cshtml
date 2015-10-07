@@ -1,0 +1,96 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Question
+
+<div class="form-group">
+    <div class="col-md-2 " style="background: white">
+        <div class="col-md-3"></div>
+        <div id="typeQuestion" class="dd col-md-9 questions">
+            <ol class="dd-list">
+                <li class="dd-item new-question" data-type="Choice">
+                    <div class="dd-handle">
+                        choice
+                    </div>
+                </li>
+                <li class="dd-item  new-question">
+                    <div class="dd-handle">
+                        Order
+                    </div>
+                </li>
+                <li class="dd-item  new-question">
+                    <div class="dd-handle">
+                        Associate
+                    </div>
+                </li>
+                <li class="dd-item new-question">
+                    <div class="dd-handle">
+                        Map
+                    </div>
+                </li>
+                <li class="dd-item new-question">
+                    <div class="dd-handle">
+                        Gap
+                    </div>
+                </li>
+                <li class="dd-item   new-question">
+                    <div class="dd-handle">
+                        Inline
+                    </div>
+                </li>
+                <li class="dd-item  new-question">
+                    <div class="dd-handle">
+                        Upload
+                    </div>
+                </li>
+                <li class="dd-item   new-question">
+                    <div class="dd-handle">
+                        Slider
+                    </div>
+                </li>
+                <li class="dd-item  new-question">
+                    <div class="dd-handle">
+                        Media
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-md-10" style="background: white">
+        <div id="contentQuestion" class="dd questions">
+
+            @if (Model.QuestionDetails == null || Model.QuestionDetails.Count == 0)
+            {
+                @Html.Partial("_OrderTemplate",new QuestionDetail())
+
+                @*<div class="dd-empty"></div>*@
+            }
+            else
+            {
+                foreach (var detail in Model.QuestionDetails)
+                {
+                    switch (detail.QuestionType)
+                    {
+                        case QuestionType.Choice:
+                             @Html.Partial("_ChoiceTemplate", detail)
+                            break;
+                        case QuestionType.Order:
+                            break;
+                        case QuestionType.Associate:
+                            break;
+                        case QuestionType.Gap:
+                            break;
+                        case QuestionType.Inline:
+                            break;
+                        case QuestionType.Upload:
+                            break;
+                        case QuestionType.Slider:
+                            break;
+
+                    }
+                }
+            }
+
+
+        </div>
+    </div>
+</div>

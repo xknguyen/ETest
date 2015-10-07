@@ -12,8 +12,10 @@ namespace ETest.DAL
         public DbSet<Course> Courses { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionDetail> QuestionDetails { get; set; }
         public DbSet<TestDetail> QuestionTests { get; set; }
         public DbSet<Test> Tests { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

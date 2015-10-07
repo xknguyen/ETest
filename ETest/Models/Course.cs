@@ -12,11 +12,11 @@ namespace ETest.Models
         public long CourseId { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(200, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Tên khóa học")]
         public string CourseName { get; set; }
 
-        [StringLength(1000, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(1000, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Mô tả")]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using ETest.Areas.Adm.Models;
 using ETest.Models;
 using Microsoft.AspNet.Identity;
@@ -66,95 +67,12 @@ namespace ETest.Areas.Adm.Controllers
             return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
         }
 
-        public ActionResult Edit(string username)
-        {
-            if (String.IsNullOrEmpty(username))
-            {
-                return RedirectErrorPage(Url.Action("Index"));
-            }
-            var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
-            Account account = userManager.FindByName(username);
 
-            if (account == null)
-            {
-                return RedirectErrorPage(Url.Action("Index"));
-            }
-            EditAccountModel accountModel = new EditAccountModel()
-            {
-                UserName = account.UserName,
-                PhoneNumber = account.PhoneNumber,
-                Email = account.UserName,
-                Identity = account.Profile.Identity,
-                LastName = account.Profile.LastName,
-                FirstName = account.Profile.FirstName,
-                Notes = account.Profile.Notes,
-                BirthDate = account.Profile.BirthDate,
-                Actived = account.Profile.Actived
-            };
-            InitFormData(accountModel);
-            return View(accountModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditAccountModel editModel)
-        {
-            var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
-            Account editAccount = userManager.FindByName(editModel.UserName);
-
-            if (editAccount == null)
-            {
-                return RedirectErrorPage(Url.Action("Index"));
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var acc = userManager.FindById(editModel.Id);
-                    acc.Email = editModel.Email;
-                    acc.PhoneNumber = editModel.PhoneNumber;
-                    acc.Profile.BirthDate = editModel.BirthDate;
-                    acc.Profile.FirstName = editModel.FirstName;
-                    acc.Profile.LastName = editModel.LastName;
-                    var result = userManager.Update(acc);
-                    if (result.Succeeded)
-                    {
-                        if (!string.IsNullOrEmpty(editModel.Password))
-                        {
-                            userManager.RemovePassword(editModel.Id);
-                            userManager.AddPassword(editModel.Id, editModel.Password);
-                        }
-                        if (editModel.Role == "Admin")
-                        {
-                            userManager.AddToRole(acc.Id, "Admin");
-                            userManager.AddToRole(acc.Id, "Teacher");
-                        }
-                        else if (editModel.Role == "Teacher")
-                        {
-                            userManager.AddToRole(editModel.Id, "Teacher");
-                        }
-                        else
-                        {
-                            userManager.AddToRole(editModel.Id, "Student");
-                        }
-
-                        return Redirect(null);
-                    }
-                    ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
-                }
-            }
-            InitFormData(editModel);
-            return View(editModel);
-        }
         public ActionResult Create()
         {
             var account = new CreateAccountModel() { Actived = true };
             InitFormData(account);
+            ViewBag.IsEdit = false;
             return View(account);
         }
 
@@ -163,6 +81,26 @@ namespace ETest.Areas.Adm.Controllers
         {
             try
             {
+                var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
+                var accountDb = userManager.FindByName(account.UserName);
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("UserName", "Tên tài khoản đã được sử dụng.");
+                }
+
+                accountDb = userManager.FindByEmail(account.Email);
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                }
+
+                accountDb = DbContext.Accounts.FirstOrDefault(s => s.Profile.Identity == account.Identity);
+
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("Identity", "Mã số này đã được sử dụng.");
+                }
+
                 if (ModelState.IsValid)
                 {
                     Account newAccount = new Account()
@@ -180,7 +118,6 @@ namespace ETest.Areas.Adm.Controllers
                             Actived = account.Actived
                         }
                     };
-                    var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
                     var result = userManager.Create(newAccount, account.Password);
                     if (result.Succeeded)
                     {
@@ -207,7 +144,139 @@ namespace ETest.Areas.Adm.Controllers
                 ModelState.AddModelError("", ex.Message);
             }
             InitFormData(account);
+            ViewBag.IsEdit = false;
             return View(account);
+        }
+
+        public ActionResult Edit(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectErrorPage(Url.Action("Index"));
+            }
+            var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
+            Account account = userManager.FindByName(username);
+
+            if (account == null)
+            {
+                return RedirectErrorPage(Url.Action("Index"));
+            }
+            EditAccountModel accountModel = new EditAccountModel()
+            {
+                UserName = account.UserName,
+                PhoneNumber = account.PhoneNumber,
+                Email = account.UserName,
+                Identity = account.Profile.Identity,
+                LastName = account.Profile.LastName,
+                FirstName = account.Profile.FirstName,
+                Notes = account.Profile.Notes,
+                BirthDate = account.Profile.BirthDate,
+                Actived = account.Profile.Actived
+            };
+            var roles = Roles.GetRolesForUser(account.UserName);
+            if (roles.Contains("Admin"))
+            {
+                accountModel.Role = "Admin";
+            }
+            else if (roles.Contains("Teacher"))
+            {
+                accountModel.Role = "Teacher";
+            }
+            else
+            {
+                accountModel.Role = "Student";
+            }
+            InitFormData(accountModel);
+            ViewBag.IsEdit = true;
+            return View(accountModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditAccountModel editModel)
+        {
+            var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
+            Account editAccount = userManager.FindByName(editModel.UserName);
+
+            if (editAccount == null)
+            {
+                return RedirectErrorPage(Url.Action("Index"));
+            }
+
+            // Kiểm tra tên tài khoản đã tồn tại hay chưa
+            Account accountDb;
+            if (editAccount.UserName != editModel.UserName)
+            {
+                accountDb = userManager.FindByName(editModel.UserName);
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("UserName", "Tên tài khoản đã được sử dụng.");
+                }
+            }
+
+            if (editAccount.Email != editModel.Email)
+            {
+                accountDb = userManager.FindByEmail(editModel.Email);
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                }
+            }
+            if (editAccount.Email != editModel.Email)
+            {
+                accountDb = DbContext.Accounts.FirstOrDefault(s => s.Profile.Identity == editModel.Identity);
+                if (accountDb != null)
+                {
+                    ModelState.AddModelError("Identity", "Mã số này đã được sử dụng.");
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var acc = userManager.FindByName(editModel.UserName);
+                    acc.Email = editModel.Email;
+                    acc.PhoneNumber = editModel.PhoneNumber;
+                    acc.Profile.BirthDate = editModel.BirthDate;
+                    acc.Profile.FirstName = editModel.FirstName;
+                    acc.Profile.LastName = editModel.LastName;
+                    acc.Profile.Notes = editModel.Notes;
+                    acc.Profile.Actived = editModel.Actived;
+                    acc.Profile.Identity = editModel.Identity;
+                    var result = userManager.Update(acc);
+                    if (result.Succeeded)
+                    {
+                        if (!string.IsNullOrEmpty(editModel.Password))
+                        {
+                            userManager.RemovePassword(acc.Id);
+                            userManager.AddPassword(acc.Id, editModel.Password);
+                        }
+                        if (editModel.Role == "Admin")
+                        {
+                            userManager.AddToRole(acc.Id, "Admin");
+                            userManager.AddToRole(acc.Id, "Teacher");
+                        }
+                        else if (editModel.Role == "Teacher")
+                        {
+                            userManager.AddToRole(acc.Id, "Teacher");
+                        }
+                        else
+                        {
+                            userManager.AddToRole(acc.Id, "Student");
+                        }
+
+                        return Redirect(null);
+                    }
+                    ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+                }
+            }
+            ViewBag.IsEdit = true;
+            InitFormData(editModel);
+            return View(editModel);
         }
 
         private void InitFormData(AccountViewModel account)
@@ -220,5 +289,6 @@ namespace ETest.Areas.Adm.Controllers
             };
             account.AccountRoles = new SelectList(role,"Id","Name",account.Role);
         }
+
     }
 }

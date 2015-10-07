@@ -2,29 +2,43 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ETest.Areas.Adm.Models
 {
-    public class AccountViewModel: IdentityUser
+    public class AccountViewModel
     {
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(10, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(100, ErrorMessage = "{0} từ {1} đến {2} kí tự.", MinimumLength = 6)]
+        [Display(Name = "Tên tài khoản")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "{0} không được để trống")]
+        [EmailAddress(ErrorMessage = "{0} không đúng định dạng. Vd: example@gmail.com")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "{0} không được để trống")]
+        [StringLength(10, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Mã tài khoản")]
         public string Identity { get; set; }
 
+        [Phone(ErrorMessage = "{0} không đúng định dạng.")]
+        [Display(Name = "Số điện thoại")]
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "{0} không được để trống")]
         [DisplayName("Họ và tên lót")]
-        [StringLength(100, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(100, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         public string LastName { get; set; }       // Họ và tên lót
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(100, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(100, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [DisplayName("Tên")]
         public string FirstName { get; set; }        // Tên
 
-        [StringLength(1000, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(1000, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         [DisplayName("Ghi chú")]
         public string Notes { get; set; }       // Ghi chú
 
@@ -47,7 +61,7 @@ namespace ETest.Areas.Adm.Models
     {
         [Required(ErrorMessage = "{0} không được để trống")]
         [DataType(DataType.Password)]
-        [StringLength(100, ErrorMessage = "{0} từ {1} đến {2} kí tự.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} từ {2} đến {1} kí tự.", MinimumLength = 6)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
     }
@@ -55,7 +69,7 @@ namespace ETest.Areas.Adm.Models
     public class EditAccountModel : AccountViewModel
     {
         [DataType(DataType.Password)]
-        [StringLength(100, ErrorMessage = "{0} từ {1} đến {2} kí tự.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} từ {2} đến {1} kí tự.", MinimumLength = 6)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
     }

@@ -1,0 +1,10 @@
+﻿@model Question
+@using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @(Html.ValidationSummary(true, "", new { @class = "text-danger", id = "Validation" }))
+        @Html.Partial("_CreateOrEdit", Model)
+        @Html.Partial("_Toolbar")
+    </div>
+}

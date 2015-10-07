@@ -1,4 +1,4 @@
-﻿@model CreateAccountModel
+﻿@model EditAccountModel
 
 @{
     ViewBag.Title = "Quản lí tài khoản";
@@ -19,10 +19,10 @@
                 @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.UserName)
                     <div class="form-horizontal">
                         @(Html.ValidationSummary(true, "", new { @class = "text-danger", id = "Validation" }))
-                        @Html.Partial("_CreateOrEdit", Model)
+                        @Html.Partial("_Edit", Model)
                         @Html.Partial("_Toolbar")
                     </div>
                 }

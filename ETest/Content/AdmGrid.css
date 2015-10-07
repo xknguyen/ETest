@@ -26,16 +26,5 @@
 .pagination {
     margin: 0;
 }
-#categories .dd-item >button {
-    font-family: FontAwesome;
-    height: 34px;
-    width: 33px;
-    color: #1ab394;
-}
-#categories .dd-item >button:before {
-    content: "\f054";
-}
 
-#categories .dd-item >button[data-action="collapse"]:before {
-    content: "\f078";
-}
+

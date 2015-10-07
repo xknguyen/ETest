@@ -19,7 +19,7 @@ namespace ETest.Models
             // Add custom user claims here
             return userIdentity;
         }
-
+        
         
         public virtual IList<Group> Groups { get; set; }
         public virtual IList<AnswerSheet> AnswerSheets { get; set; }

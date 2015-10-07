@@ -16,12 +16,12 @@
                 <h5>Tạo khóa học mới</h5>
             </div>
             <div class="ibox-content p-sm">
-                @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { enctype = "multipart/form-data", autocomplete = "off" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
                         @(Html.ValidationSummary(true, "", new { @class = "text-danger", id = "Validation" }))
-                        @Html.Partial("_CreateOrEdit", Model)
+                        @Html.Partial("_Create", Model)
                         @Html.Partial("_Toolbar")
                     </div>
                 }

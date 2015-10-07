@@ -9,12 +9,12 @@ namespace ETest.Models
         public long TestId { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(200, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Tiêu đề")]
         public string TestTitle { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {2} kí tự.")]
+        [StringLength(200, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Tiêu đề")]
         public string TestDescription { get; set; }
 

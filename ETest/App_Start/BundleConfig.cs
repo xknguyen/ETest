@@ -37,7 +37,7 @@ namespace ETest
                         "~/Scripts/plugins/pace/pace.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/admbootstrap").Include(
-                      "~/Content/bootstrap-3.3.0.min.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/fonts/font-awesome/css/font-awesome.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/admstyle").Include(

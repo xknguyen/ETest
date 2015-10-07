@@ -23,7 +23,6 @@
         },
         dragFinished: function (currentNode, parentNode) {
             var pid = 0;
-            ///alert(olcategories);
             // Xác định phần tử cha
             if (parentNode) {
                 parentNode = $(parentNode);
