@@ -8,6 +8,23 @@ namespace ETest
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // sữ dụng để tạo câu hỏi
+            bundles.Add(new ScriptBundle("~/bundles/questionjs").Include(
+                "~/Scripts/model/Order.js",
+                "~/Scripts/jquery.nestable.js",
+                "~/Scripts/plugins/iCheck/icheck.min.js",
+                "~/Scripts/tinymce/tinymce.min.js",
+                "~/Scripts/plugins/chosen/chosen.jquery.js",
+                "~/Scripts/custom/Utilities.js",
+                "~/Scripts/custom/createQuestion.js",
+                "~/Scripts/custom/choiceTemplate.js",
+                "~/Scripts/custom/question.js"
+                ));
+
+            bundles.Add(new StyleBundle("~/bundles/questionstyle").Include(
+                "~/Content/AdmGrid.css",
+                "~/Content/plugins/iCheck/custom.css",
+                "~/Content/custom/question.css"));
             bundles.Add(new StyleBundle("~/bundles/shopstyle").Include(
                "~/Content/css/style.css",
                "~/Content/fonts/font-awesome/css/font-awesome.min.css",

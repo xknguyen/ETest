@@ -26,15 +26,16 @@
                                     <div class="col-md-1 question-form question-check">
                                         <div class="checkbox i-checks">
                                             <input type="hidden" name="choiceId" value="@choice.ChoiceId">
+                                            @Html.Hidden("choiceId", choice.ChoiceId)
                                             @Html.CheckBox("isCorrect", choice.IsCorrect, new {@class = "form-control"})
                                         </div>
                                     </div>
                                     <div class="col-md-9 question-form">
-                                        <input type="text" class="form-control answer" placeholder="Nhập nội dung đáp án" name="answer" value="@choice.Content">
+                                        @Html.TextBox("answer", choice.Content, new { placeholder = "Nhập nội dung đáp án", @class = "form-control answer" })
                                     </div>
                                     <div class="col-md-2 question-form">
                                         <div class="col-md-11 question-form">
-                                            <input type="number" class="form-control score" placeholder="Điểm" name="score" value="@choice.Scrore">
+                                            @Html.TextBox("score", choice.Scrore, new { placeholder = "Điểm", @class = "form-control score", type="number" })
                                         </div>
                                         <div class="col-md-1 question-form question-close">
                                             <a href="#" class="remove-answer-choice">

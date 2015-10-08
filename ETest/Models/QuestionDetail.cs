@@ -52,6 +52,41 @@ namespace ETest.Models
             set { _choices = value; }
         }
 
+        [NotMapped]
+        private List<ItemOrder> _itemOrders { get; set; }
+
+        [NotMapped]
+        public List<ItemOrder> ItemOrders
+        {
+            get
+            {
+                if (_itemOrders == null)
+                {
+                    JavaScriptSerializer jss = new JavaScriptSerializer();
+                    _itemOrders = jss.Deserialize<List<ItemOrder>>(Choice);
+                }
+                return _itemOrders;
+            }
+            set { _itemOrders = value; }
+        }
+
+        [NotMapped]
+        private Slider _slider { get; set; }
+
+        public Slider Slider
+        {
+            get
+            {
+                if (_slider == null)
+                {
+                    JavaScriptSerializer jss = new JavaScriptSerializer();
+                    _slider = jss.Deserialize<Slider>(Choice);
+                }
+                return _slider;
+            }
+            set { _slider = value; }
+        }
+
         public QuestionDetail()
         {
                 
@@ -59,7 +94,26 @@ namespace ETest.Models
 
         public string ConvertChoiceToString()
         {
-           return new JavaScriptSerializer().Serialize(Choices);
+            switch (QuestionType)
+            {
+                case QuestionType.Choice:
+                    return new JavaScriptSerializer().Serialize(Choices);
+                case QuestionType.Order:
+                    return new JavaScriptSerializer().Serialize(ItemOrders);
+                case QuestionType.Associate:
+                    break;
+                case QuestionType.Gap:
+                    break;
+                case QuestionType.Inline:
+                    break;
+                case QuestionType.Upload:
+                    break;
+                case QuestionType.Slider:
+                    break;
+                default:
+                    return "";
+            }
+            return "";
         }
 
 
@@ -83,6 +137,14 @@ namespace ETest.Models
                     Choice = ConvertChoiceToString();
                     break;
                 case QuestionType.Order:
+                    ItemOrders = new List<ItemOrder>();
+                    foreach (var choice in detail["Items"].ToArray())
+                    {
+                        ItemOrders.Add(new ItemOrder(choice));
+                    }
+                    Choice = ConvertChoiceToString();
+
+
                     break;
                 case QuestionType.Associate:
                     break;

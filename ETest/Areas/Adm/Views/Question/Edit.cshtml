@@ -4,9 +4,7 @@
 }
 @section pluginStyles
 {
-    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
-    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="~/Content/custom/question.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/questionstyle")
 }
 
 <div class="row">
@@ -35,15 +33,12 @@
     </div>
 </div>
 
+@Html.Partial("_Popup")
+
+
+
 @section scripts
 {
     @Scripts.Render("~/bundles/admjqueryval")
-    <script src="~/Scripts/jquery.nestable.js"></script>
-    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
-    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
-    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
-<script src="~/Scripts/custom/Utilities.js"></script>
-    <script src="~/Scripts/custom/createQuestion.js"></script>
-    <script src="~/Scripts/custom/choiceTemplate.js"></script>
-    <script src="~/Scripts/custom/question.js"></script>
+    @Scripts.Render("~/bundles/questionjs")
 }

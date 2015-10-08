@@ -1,5 +1,6 @@
 ﻿@model QuestionDetail
 @{
+    Model.ItemOrders = Model.ItemOrders == null ? new List<ItemOrder>() : Model.ItemOrders.OrderBy(s => s.OrderNo).ToList();
 }
 <li class="dd-item dd3-item questions" data-type="Order">
     <div class="pull-right m-r-md m-t-sm">
@@ -20,24 +21,32 @@
                     <div class="form-group  quetion-control">
                         <div class="answers">
                             <span class="field-validation-valid text-danger question-answers-error"></span>
-                            <div class="col-md-12 question-answer answer-order">
-                                <input type="hidden" name="choiceId" value="">
-                                <label class="control-label col-md-1">1</label>
-                                <div class="col-md-9 question-form">
-                                    <input type="text" class="form-control answer" placeholder="Nhập nội dung đáp án" name="answer" value="">
-                                </div>
-                                <div class="col-md-1 question-form">
-                                    <div class="col-md-1 question-form question-close">
-                                        <a href="#" class="remove-answer-choice">
-                                            <i class="fa fa-close"></i>
-                                        </a>
+                            @foreach (var item in Model.ItemOrders)
+                            {
+                                <div class="col-md-12 question-answer answer-order">
+                                    @Html.Hidden("choiceId", item.ChoiceId)
+                                    @Html.Hidden("orderNo", item.OrderNo)
+                                    <label class="control-label col-md-1 result">@item.Result</label>
+                                    <div class="col-md-9 question-form">
+                                        @Html.TextBox("answer", item.Content, new { placeholder = "Nhập nội dung đáp án", @class = "form-control answer" })
+                                    </div>
+                                    <div class="col-md-1 question-form">
+                                        <div class="col-md-1 question-form question-close">
+                                            <a href="#" class="remove-answer-choice">
+                                                <i class="fa fa-close"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                         <div class="col-md-12 question-answer">
-                            <a class="button btn btn-primary add-order-answer" data-id="1">
+                            <a class="button btn btn-primary add-order-answer" data-id="@Model.ItemOrders.Count">
                                 <i class="fa fa-plus-circle"></i> Thêm đáp án
+                            </a>
+
+                            <a class="button btn btn-warning order-answer-model hidden" data-toggle="modal" data-target="#orderForm">
+                                
                             </a>
 
                             <a class="button btn btn-warning order-answer">

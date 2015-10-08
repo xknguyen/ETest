@@ -68,7 +68,7 @@ namespace ETest.Areas.Adm.Controllers
                     });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //
             }
@@ -108,8 +108,18 @@ namespace ETest.Areas.Adm.Controllers
                 var questiontemp = new Question(data);
                 var questionDb = DbContext.Questions.FirstOrDefault(s => s.QuestionId == questiontemp.QuestionId);
 
+
+
                 if (questionDb != null)
                 {
+                    if (questionDb.Group.TeacherId != User.Identity.GetUserId())
+                    {
+                        return Json(new
+                        {
+                            Message = "Bạn không có quyền sử dụng nhóm này. Vui lòng chọn nhóm khác!",
+                            Success = false
+                        });
+                    }
                     questionDb.Actived = questiontemp.Actived;
                     questionDb.GroupId = questiontemp.GroupId;
                     questionDb.QuestionTitle = questiontemp.QuestionTitle;
@@ -122,7 +132,7 @@ namespace ETest.Areas.Adm.Controllers
                 {
                     return Json(new
                     {
-                        Message = "Thêm thành công.",
+                        Message = "Cập nhật thành công.",
                         Success = true
                     });
                 }
@@ -131,8 +141,6 @@ namespace ETest.Areas.Adm.Controllers
             {
                 //
             }
-
-
 
             return Json(new
             {

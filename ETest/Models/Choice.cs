@@ -20,13 +20,13 @@ namespace ETest.Models
             ChoiceId = DataUtil.ToLong(choice["ChoiceId"]);
             Content = (string)choice["Content"];
             OrderNo = orderNo;
-            Scrore = DataUtil.ToFloat(choice["Scrore"]);
+            Score = DataUtil.ToFloat(choice["Score"]);
             IsCorrect = DataUtil.ToBool(choice["IsCorrect"]);
         }
 
         public long ChoiceId { get; set; }
         public string Content { get; set; }
-        public float Scrore { get; set; }
+        public float Score { get; set; }
         public bool IsCorrect { get; set; }
         public int OrderNo { get; set; }
     }
