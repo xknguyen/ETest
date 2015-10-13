@@ -7,7 +7,7 @@
     @Styles.Render("~/bundles/questionstyle")
 }
 
-<div class="row">
+<div class="row" id="eventQuestion">
 
     <div class="col-md-12">
         <div class="ibox float-e-margins">
@@ -15,11 +15,12 @@
                 <h5>Tạo câu hỏi mới</h5>
             </div>
             <div class="ibox-content p-sm">
-                @using (Html.BeginForm("Create", "Question", FormMethod.Post, new { enctype = "multipart/form-data", id = "questionForm" }))
+                @using (Html.BeginForm("Create", "Question", FormMethod.Post, new {enctype = "multipart/form-data", id = "questionForm"}))
                 {
+
                     @Html.AntiForgeryToken()
                     <div class="form-horizontal">
-                        @(Html.ValidationSummary(true, "", new { @class = "text-danger", id = "Validation" }))
+                        @(Html.ValidationSummary(true, "", new {@class = "text-danger", id = "Validation"}))
                         @Html.Partial("_CreateOrEdit", Model)
                         @Html.Partial("_QuestionContent", Model)
                         <div class="hr-line-dashed"></div>
@@ -29,12 +30,9 @@
             </div>
         </div>
     </div>
-    
 </div>
 
-@Html.Partial("_Popup")
-
-
+@Html.Partial("_Hidden")
 
 @section scripts
 {

@@ -1,6 +1,5 @@
-﻿function OrderQuestion(id, orderNo, content, result) {
+﻿function OrderQuestion(id, content, result) {
     this.id = id;
-    this.orderNo = orderNo;
     this.content = content;
     this.result = result;
 }

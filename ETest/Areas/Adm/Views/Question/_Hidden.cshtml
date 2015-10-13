@@ -1,0 +1,33 @@
+﻿
+<div>
+    @Html.Hidden("tinyCount", 0);
+</div>
+<div class="questionTemplate" id="choiceTemplate">
+    @Html.Partial("_ChoiceTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() { ChoiceId = 1 } } })
+</div>
+
+<div class="questionTemplate" id="orderTemplate">
+    @Html.Partial("_OrderTemplate", new QuestionDetail() { ItemOrders = new List<ItemOrder>() { new ItemOrder() { ChoiceId = 1 }, new ItemOrder() { ChoiceId = 2 } } })
+</div>
+<div class="questionTemplate" id="associateTemplate">
+    @Html.Partial("_AssociateTemplate", new QuestionDetail() { AssociateItems = new List<AssociateItem>() { new AssociateItem() { Associate = new AssociateItem() } } })
+</div>
+<div class="questionTemplate" id="sliderTemplate">
+    @Html.Partial("_SliderTemplate", new QuestionDetail())
+</div>
+<div class="questionTemplate" id="gapTemplate">
+    @Html.Partial("_GapTemplate", new QuestionDetail()
+    {
+        GapItems = new List<GapItem>()
+        {
+            new GapItem()
+            {
+                ItemId = 1,
+                ItemContent = "Lựa chọn 1"
+            }
+        }
+    })
+</div>
+<div>
+    @Html.Partial("_Popup")
+</div>

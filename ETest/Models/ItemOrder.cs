@@ -14,7 +14,6 @@ namespace ETest.Models
         public long ChoiceId { get; set; }
         public string Content { get; set; }
         public int Result { get; set; }
-        public int OrderNo { get; set; }
 
         public ItemOrder()
         {
@@ -24,7 +23,6 @@ namespace ETest.Models
         {
             ChoiceId = DataUtil.ToLong(choice["ChoiceId"]);
             Content = (string)choice["Content"];
-            OrderNo = DataUtil.ToInt(choice["OrderNo"]);
             Result = DataUtil.ToInt(choice["Result"]);
         }
     }

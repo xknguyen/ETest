@@ -17,17 +17,13 @@ namespace ETest.Models
 
         public Choice(JToken choice, int orderNo)
         {
-            ChoiceId = DataUtil.ToLong(choice["ChoiceId"]);
+            ChoiceId = orderNo;
             Content = (string)choice["Content"];
-            OrderNo = orderNo;
-            Score = DataUtil.ToFloat(choice["Score"]);
             IsCorrect = DataUtil.ToBool(choice["IsCorrect"]);
         }
 
-        public long ChoiceId { get; set; }
+        public int ChoiceId { get; set; }
         public string Content { get; set; }
-        public float Score { get; set; }
         public bool IsCorrect { get; set; }
-        public int OrderNo { get; set; }
     }
 }

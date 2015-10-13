@@ -234,14 +234,16 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\AnswerSheet.cs" />
+    <Compile Include="Models\AssociateItem.cs" />
     <Compile Include="Models\Choice.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\GapItem.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\ItemOrder.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\QuestionDetail.cs" />
-    <Compile Include="Models\Slider.cs" />
+    <Compile Include="Models\SliderLimit.cs" />
     <Compile Include="Models\TestDetail.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\UserProfile.cs" />
@@ -365,6 +367,7 @@
     <Content Include="Content\plugins\switchery\switchery.css" />
     <Content Include="Content\plugins\toastr\toastr.min.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\bootstrap-slider.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -412,6 +415,7 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-slider.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Adm\Views\web.config">
@@ -440,9 +444,11 @@
     <Content Include="Scripts\custom\createOrEdit.js" />
     <Content Include="Scripts\custom\createQuestion.js" />
     <Content Include="Scripts\custom\datetime.js" />
+    <Content Include="Scripts\custom\event.js" />
     <Content Include="Scripts\custom\question.js" />
     <Content Include="Scripts\custom\choiceTemplate.js" />
     <Content Include="Scripts\custom\utilities.js" />
+    <Content Include="Scripts\custom\validate.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-touch.min.js.map" />
@@ -470,7 +476,6 @@
     <Content Include="Areas\Adm\Views\Account\_Create.cshtml" />
     <Content Include="Areas\Adm\Views\Account\_Edit.cshtml" />
     <Content Include="Areas\Adm\Views\Question\Create.cshtml" />
-    <Content Include="Areas\Adm\Views\Question\_ChoiceTemplate.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_QuestionInfo.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_QuestionContent.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_CreateOrEdit.cshtml" />
@@ -527,7 +532,11 @@
     <Content Include="Content\less\_bootstrap-datetimepicker.less" />
     <Content Include="Areas\Adm\Views\Question\_OrderTemplate.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_Popup.cshtml" />
-    <Content Include="Areas\Adm\Views\Question\_UploadTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_SliderTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_ChoiceTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_AssociateTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_GapTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_Hidden.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\group.js" />

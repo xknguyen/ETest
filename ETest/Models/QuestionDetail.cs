@@ -35,25 +35,31 @@ namespace ETest.Models
 
         public virtual Question Question { get; set; }
 
-        [NotMapped]
-        private List<Choice> _choices { get; set; }
+        [NotMapped] private List<Choice> _choices;
 
         [NotMapped]
-        public List<Choice> Choices {
+        public List<Choice> Choices
+        {
             get
             {
                 if (_choices == null)
                 {
-                    JavaScriptSerializer jss = new JavaScriptSerializer();
-                    _choices = jss.Deserialize<List<Choice>>(Choice);
+                    if (string.IsNullOrEmpty(Choice))
+                    {
+                        _choices = new List<Choice>();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _choices = jss.Deserialize<List<Choice>>(Choice);
+                    }
                 }
                 return _choices;
             }
             set { _choices = value; }
         }
 
-        [NotMapped]
-        private List<ItemOrder> _itemOrders { get; set; }
+        [NotMapped] private List<ItemOrder> _itemOrders;
 
         [NotMapped]
         public List<ItemOrder> ItemOrders
@@ -62,34 +68,97 @@ namespace ETest.Models
             {
                 if (_itemOrders == null)
                 {
-                    JavaScriptSerializer jss = new JavaScriptSerializer();
-                    _itemOrders = jss.Deserialize<List<ItemOrder>>(Choice);
+                    if (string.IsNullOrEmpty(Choice))
+                    {
+                        _itemOrders = new List<ItemOrder>();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _itemOrders = jss.Deserialize<List<ItemOrder>>(Choice);
+                    }
+
                 }
                 return _itemOrders;
             }
             set { _itemOrders = value; }
         }
 
-        [NotMapped]
-        private Slider _slider { get; set; }
+        [NotMapped] private SliderLimit _sliderLimit;
 
-        public Slider Slider
+        [NotMapped]
+        public SliderLimit SliderLimit
         {
             get
             {
-                if (_slider == null)
+                if (_sliderLimit == null)
                 {
-                    JavaScriptSerializer jss = new JavaScriptSerializer();
-                    _slider = jss.Deserialize<Slider>(Choice);
+                    if (string.IsNullOrEmpty(Choice))
+                    {
+                        _sliderLimit = new SliderLimit();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _sliderLimit = jss.Deserialize<SliderLimit>(Choice);
+                    }
                 }
-                return _slider;
+                return _sliderLimit;
             }
-            set { _slider = value; }
+            set { _sliderLimit = value; }
+        }
+
+        [NotMapped] private List<AssociateItem> _associateItems;
+
+        [NotMapped]
+        public List<AssociateItem> AssociateItems
+        {
+            get
+            {
+                if (_associateItems == null)
+                {
+                    if (string.IsNullOrEmpty(Choice))
+                    {
+                        _associateItems = new List<AssociateItem>();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _associateItems = jss.Deserialize<List<AssociateItem>>(Choice);
+                    }
+                }
+                return _associateItems;
+            }
+            set { _associateItems = value; }
+        }
+
+        [NotMapped] private List<GapItem> _gapItems;
+
+        [NotMapped]
+        public List<GapItem> GapItems
+        {
+            get
+            {
+                if (_gapItems == null)
+                {
+                    if (string.IsNullOrEmpty(Choice))
+                    {
+                        _gapItems = new List<GapItem>();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _gapItems = jss.Deserialize<List<GapItem>>(Choice);
+                    }
+                }
+                return _gapItems;
+            }
+            set { _gapItems = value; }
         }
 
         public QuestionDetail()
         {
-                
+
         }
 
         public string ConvertChoiceToString()
@@ -109,21 +178,19 @@ namespace ETest.Models
                 case QuestionType.Upload:
                     break;
                 case QuestionType.Slider:
-                    break;
+                    return new JavaScriptSerializer().Serialize(SliderLimit);
                 default:
                     return "";
             }
             return "";
         }
 
-
         public QuestionDetail(JToken detail)
         {
             QuestionType = (QuestionType) DataUtil.ToInt(detail["QuestionType"]);
             QuestionDetailId = DataUtil.ToLong(detail["QuestionDetailId"]);
-            QuestionTitle = (string)detail["QuestionTitle"];
+            QuestionTitle = (string) detail["QuestionTitle"];
             OrderNo = DataUtil.ToInt(detail["OrderNo"]);
-            
 
             switch (QuestionType)
             {
@@ -143,8 +210,6 @@ namespace ETest.Models
                         ItemOrders.Add(new ItemOrder(choice));
                     }
                     Choice = ConvertChoiceToString();
-
-
                     break;
                 case QuestionType.Associate:
                     break;
@@ -152,14 +217,12 @@ namespace ETest.Models
                     break;
                 case QuestionType.Inline:
                     break;
-                case QuestionType.Upload:
-                    break;
+                //case QuestionType.Upload:
+                //    break;
                 case QuestionType.Slider:
+                    SliderLimit = new SliderLimit(detail["Limit"]);
                     break;
-                    
             }
-            //
-
         }
 
         public void Update(QuestionDetail detai)

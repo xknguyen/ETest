@@ -1,59 +1,57 @@
 ﻿@model QuestionDetail
 @{
-    Model.Choices = Model.Choices==null?new List<Choice>() : Model.Choices.OrderBy(s => s.OrderNo).ToList();
+        Model.Choices = Model.Choices == null ? new List<Choice>() : Model.Choices.OrderBy(s => s.ChoiceId).ToList();
 }
 <li class="dd-item dd3-item questions" data-type="Choice">
-    <div class="pull-right m-r-md m-t-sm"><a href="#" class="question-remove"><i class="fa fa-close"></i></a>
-    </div>
-    <div class="dd-handle dd3-handle question-type">Choice</div>
-    <div class="dd3-content question-border">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-horizontal">
-                    <div class="form-group quetion-control">
-                        <div class="col-md-12">
-                            @Html.HiddenFor(s => s.QuestionDetailId, new {@class = "questionId"})
-                            @Html.TextAreaFor(s => s.QuestionTitle, new {@class = "form-control description", placeholder = "Nhập nội dung câu hỏi"})
-                            <span class="field-validation-valid text-danger question-title-error"></span>
-                        </div>
-                    </div>
-                    <div class="form-group  quetion-control">
-                        <div class="answers">
-                            <span class="field-validation-valid text-danger question-answers-error"></span>
-                            @foreach (var choice in Model.Choices)
-                            {
-                                <div class="col-md-12 question-answer">
-                                    <div class="col-md-1 question-form question-check">
-                                        <div class="checkbox i-checks">
-                                            <input type="hidden" name="choiceId" value="@choice.ChoiceId">
-                                            @Html.Hidden("choiceId", choice.ChoiceId)
-                                            @Html.CheckBox("isCorrect", choice.IsCorrect, new {@class = "form-control"})
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9 question-form">
-                                        @Html.TextBox("answer", choice.Content, new { placeholder = "Nhập nội dung đáp án", @class = "form-control answer" })
-                                    </div>
-                                    <div class="col-md-2 question-form">
-                                        <div class="col-md-11 question-form">
-                                            @Html.TextBox("score", choice.Scrore, new { placeholder = "Điểm", @class = "form-control score", type="number" })
-                                        </div>
-                                        <div class="col-md-1 question-form question-close">
-                                            <a href="#" class="remove-answer-choice">
-                                                <i class="fa fa-close"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+        <div class="pull-right m-r-md m-t-sm">
+            <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dd-handle dd3-handle question-type">Choice</div>
+        <div class="dd3-content question-border">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal">
+                        <div class="form-group quetion-control">
+                            <div class="col-md-12">
+                                <div class="description-content">
+                                    @Html.TextAreaFor(s => s.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
                                 </div>
-                            }
+                                <span class="field-validation-valid text-danger question-title-error"></span>
+                            </div>
                         </div>
-                        <div class="col-md-12 question-answer">
-                            <a class="button btn btn-primary add-choice-answer" data-id="@Model.Choices.Count">
-                                <i class="fa fa-plus-circle"></i> Thêm đáp án
-                            </a>
+                        <div class="form-group  quetion-control">
+                            <div class="answers">
+                                <span class="field-validation-valid text-danger question-answers-error"></span>
+                                @foreach (var choice in Model.Choices)
+                                {
+                                    <div class="col-md-12 question-answer">
+                                        @Html.Hidden("choiceId", choice.ChoiceId)
+                                        <div class="col-md-1 question-form question-check">
+                                            <div class="checkbox i-checks">
+                                                @Html.CheckBox("isCorrect", choice.IsCorrect, new {@class = "form-control"})
+                                            </div>
+                                        </div>
+                                        <div class="col-md-11 question-form">
+                                            @Html.TextBox("answer", choice.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
+                                        </div>
+                                        <div class="col-md-1 question-form answer-remove">
+                                            <div class="col-md-6 question-form question-close">
+                                                <a href="#" class="remove-answer-choice">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-12 question-answer">
+                                <a class="button btn btn-primary add-choice-answer" data-id="@Model.Choices.Count">
+                                    <i class="fa fa-plus-circle"></i> Thêm đáp án
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </li>

@@ -1,19 +1,18 @@
 ﻿@model QuestionDetail
 @{
-    Model.ItemOrders = Model.ItemOrders == null ? new List<ItemOrder>() : Model.ItemOrders.OrderBy(s => s.ChoiceId).ToList();
+    Model.AssociateItems = Model.AssociateItems == null ? new List<AssociateItem>() : Model.AssociateItems.OrderBy(s => s.OrderNo).ToList();
 }
-<li class="dd-item dd3-item questions" data-type="Order">
+<li class="dd-item dd3-item questions" data-type="Associate">
     <div class="pull-right m-r-md m-t-sm">
         <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
     </div>
-    <div class="dd-handle dd3-handle question-type">Order</div>
+    <div class="dd-handle dd3-handle question-type">Associate</div>
     <div class="dd3-content question-border">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-horizontal">
                     <div class="form-group quetion-control">
                         <div class="col-md-12">
-                            @Html.HiddenFor(s => s.QuestionDetailId, new {@class = "questionId"})
                             <div class="description-content">
                                 @Html.TextAreaFor(s => s.QuestionTitle, new {@class = "form-control description", placeholder = "Nhập nội dung câu hỏi"})
                             </div>
@@ -23,15 +22,21 @@
                     <div class="form-group  quetion-control">
                         <div class="answers">
                             <span class="field-validation-valid text-danger question-answers-error"></span>
-                            @foreach (var item in Model.ItemOrders)
+                            @foreach (var associate in Model.AssociateItems)
                             {
-                                <div class="col-md-12 question-answer answer-order">
-                                    <label class="control-label col-md-1 result">@item.Result</label>
-                                    <div class="col-md-9 question-form">
-                                        @Html.TextBox("answer", item.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
+                                <div class="col-md-12 question-answer">
+                                    <div class="col-md-11 question-associate">
+                                        <div class="col-md-6">
+                                            @Html.Hidden("choiceRightId", associate.AssociateId)
+                                            @Html.TextBox("answerRight", associate.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.Hidden("choiceLeftId", associate.Associate.AssociateId)
+                                            @Html.TextBox("answerLeft", associate.Associate.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
+                                        </div>
                                     </div>
-                                    <div class="col-md-1 question-form">
-                                        <div class="col-md-1 question-form question-close">
+                                    <div class="col-md-1 question-form answer-remove">
+                                        <div class="col-md-6 question-form question-close">
                                             <a href="#" class="remove-answer-choice">
                                                 <i class="fa fa-close"></i>
                                             </a>
@@ -41,13 +46,8 @@
                             }
                         </div>
                         <div class="col-md-12 question-answer">
-                            <a class="button btn btn-primary add-order-answer" data-id="@Model.ItemOrders.Count">
+                            <a class="button btn btn-primary add-associate-answer" data-id="@Model.Choices.Count">
                                 <i class="fa fa-plus-circle"></i> Thêm đáp án
-                            </a>
-                            <a class="button btn btn-warning order-answer-model hidden" data-toggle="modal" data-target="#orderForm">
-                            </a>
-                            <a class="button btn btn-warning order-answer">
-                                <i class="fa fa-sort"></i> Sắp xếp đáp án
                             </a>
                         </div>
                     </div>
@@ -56,3 +56,5 @@
         </div>
     </div>
 </li>
+ 
+
