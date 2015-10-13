@@ -1,0 +1,54 @@
+﻿@using System.Web.UI.HtmlControls
+@model QuestionDetail
+@{
+    Model.GapItems = Model.GapItems.OrderBy(s => s.OrderId).ToList();
+    var maxId = Model.GapItems.Count >= 1 ? Model.GapItems.OrderByDescending(s => s.ItemId).ToList()[0].ItemId : 0;
+}
+<li class="dd-item dd3-item questions" data-type="Gap">
+        <div class="pull-right m-r-md m-t-sm">
+            <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dd-handle dd3-handle question-type">Gap</div>
+        <div class="dd3-content question-border">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal">
+                        <div class="form-group quetion-control">
+                            <div class="col-md-12">
+                                <div class="description-content">
+                                    @Html.TextArea("QuestionTitle-" + Model.OrderNo, Model.QuestionTitle, new { @class = "form-control gap-content", placeholder = "Nhập nội dung câu hỏi" })
+                                    
+                                </div>
+                                <span class="field-validation-valid text-danger question-title-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group  quetion-control">
+                            <div class="answers">
+                                @foreach (var gap in Model.GapItems)
+                                {
+                                    <div class="gap-answer" data-id="@gap.ItemId">
+                                        <div class="gap-answer-left">
+                                            <p><b>@gap.ItemId</b>. <span>@gap.ItemContent</span></p>
+                                        </div>
+                                        <div class="gap-answer-right">
+                                            <a href="#" class="edit-gap-answer"><i class="fa fa-edit"></i></a>
+                                            <a href="#" class="remove-gap-answer"><i class="fa fa-remove"></i></a>
+                                        </div>
+                                        <div style="float: none"></div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-12 question-answer">
+                                <a class="button btn btn-primary add-gap-answer" data-id="@maxId">
+                                    <i class="fa fa-plus-circle"></i> Thêm đáp án
+                                </a>
+                                <a class="gap-answer-model hidden" data-toggle="modal" data-target="#gapAnsweForm">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</li>
+
