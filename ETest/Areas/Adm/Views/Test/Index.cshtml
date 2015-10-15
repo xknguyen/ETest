@@ -1,0 +1,149 @@
+﻿@model PagedList.IPagedList<Test>
+@{
+    ViewBag.Title = "Quản lý bài kiểm tra";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <style>
+        .dropdown-width {
+            max-width: 150px;
+            float: right;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Danh sách bài kiểm tra</h5>
+                <div class="ibox-tools">
+                    @(Html.Bootstrap()
+                          .ActionLink("Thêm bài kiểm tra", "Create")
+                          .Class("btn btn-primary btn-xs")
+                          .PrependIcon("fa fa-plus"))
+                </div>
+            </div>
+            <div class="ibox-content p-sm">
+                <!-- Phần hiển thị Form tìm kiếm -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm">
+                        @using (Html.BeginForm("Index", "Test", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchTest" }))
+                        {
+                            <div class="input-group">
+                                @(Html.TextBox("Keyword", null, new
+                            {
+                                placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
+                                @class = "input-sm form-control"
+                            }))
+
+                                @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
+                                @Html.Hidden("Status", null, new { id = "supStatus" })
+
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                    @(Html.ActionLink("Bỏ lọc", "Index", null,
+                                          new { @class = "btn btn-sm btn-warning" }))
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-md-6 m-b-sm">
+                        @(Html.DropDownList("supStatus", null,
+                          new { @class = "input-sm dropdown-width", id = "statusSelect" }))
+                    </div>
+                </div>
+                <!-- Phần hiển thị danh sách -->
+                <table id="tblTests" class="table table-responsive table-bordered table-hover tbldata">
+                    <thead>
+                        <tr>
+                            <th>Tiêu đề </th>
+                            <th width="" class="hidden-sm hidden-xs">Thông tin</th>
+                            <th width="90px">Trạng thái</th>
+                            <th width="110px"></th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count != 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Raw(item.TestTitle)
+                                </td>
+
+                                <td class="hidden-sm hidden-xs">
+                                    Bắt đầu: @item.TestStart.ToString("dd/MM/yyyy")
+                                    Thời gian: @item.TestTime phút
+                                    Loại bài: @item.TestType
+                                    Khóa học: 
+                                </td>
+
+                                <td class="td_toggle">
+                                    <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.TestId)"
+                                            data-toggle-state="true"
+                                            data-url="@Url.Action("UpdateToggle")"
+                                            data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.TestId)"></button>
+                                </td>
+
+                                <td>
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Edit")
+                                          .RouteValues(new { id = item.TestId })
+                                          .Title("Cập nhật khóa học")
+                                          .AppendIcon("fa fa-pencil fa-2x"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Preview", "Test")
+                                          .RouteValues(new { id = item.TestId })
+                                          .AppendIcon("fa fa-eye fa-2x")
+                                          .Title("Xem trước bài kiểm tra"))
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4">Không có bài kiểm tra nào</td></tr>
+                    }
+                </table>
+
+                <!-- Phần hiển thị thanh phân trang -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm text-center">
+                        Hiển thị
+                        @(Html.DropDownList("PageSize", null,
+                          new { @class = "input-sm", id = "pageSelect" }))
+                        mẫu tin
+                    </div>
+                    <div class="col-md-6 text-center">
+                        @Html.PagedListPager(
+                        Model,
+                        page => Url.Action(
+                            "Index",
+                            new
+                            {
+                                page,
+                                pageSize = ViewBag.CurrentPageSize,
+                                keyword = ViewBag.Keyword,
+                                status = ViewBag.CurrentStatus
+                            }),
+                        PagedListRenderOptions.ClassicPlusFirstAndLast)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
+    <script src="~/Scripts/custom/test.js"></script>
+}
+
+
+

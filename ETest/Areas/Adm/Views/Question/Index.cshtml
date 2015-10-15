@@ -1,0 +1,154 @@
+﻿@model PagedList.IPagedList<Question>
+@{
+    ViewBag.Title = "Quản lý câu hỏi";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <style>
+        .dropdown-width {
+            max-width: 150px;
+            float: right;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Danh sách câu hỏi</h5>
+                <div class="ibox-tools">
+                    @(Html.Bootstrap()
+                          .ActionLink("Thêm câu hỏi", "Create")
+                          .Class("btn btn-primary btn-xs")
+                          .PrependIcon("fa fa-plus"))
+                    @(Html.Bootstrap()
+                          .ActionLink("Nhập câu hỏi", "Import")
+                          .Class("btn btn-primary btn-xs")
+                          .PrependIcon("fa fa-cloud-upload"))
+                </div>
+            </div>
+            <div class="ibox-content p-sm">
+                <!-- Phần hiển thị Form tìm kiếm -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm">
+                        @using (Html.BeginForm("Index", "Question", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchQuestion" }))
+                        {
+                            <div class="input-group">
+                                @(Html.TextBox("Keyword", null, new
+                            {
+                                placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
+                                @class = "input-sm form-control"
+                            }))
+
+                                @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
+                                @Html.Hidden("Status", null, new { id = "supStatus" })
+
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                    @(Html.ActionLink("Bỏ lọc", "Index", null,
+                                          new { @class = "btn btn-sm btn-warning" }))
+                                </span>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-md-6 m-b-sm">
+                        @(Html.DropDownList("supStatus", null,
+                          new { @class = "input-sm dropdown-width", id = "statusSelect" }))
+                    </div>
+                </div>
+                <!-- Phần hiển thị danh sách -->
+                <table id="tblQuestions" class="table table-responsive table-bordered table-hover tbldata">
+                    <thead>
+                        <tr>
+                            <th >Tiêu đề câu hỏi</th>
+                            <th width="150px" class="hidden-sm hidden-xs">Nhóm câu hỏi</th>
+                            <th width="90px">Trạng thái</th>
+                            <th width="110px"></th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count != 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.Raw(item.QuestionTitle)
+                                </td>
+
+                                <td class="hidden-sm hidden-xs">
+                                    @item.Group.GroupName
+                                </td>
+
+                                <td class="td_toggle">
+                                    <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"
+                                            data-toggle-state="true"
+                                            data-url="@Url.Action("UpdateToggle")"
+                                            data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"></button>
+                                </td>
+
+                                <td>
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Edit")
+                                          .RouteValues(new { id=item.QuestionId })
+                                          .Title("Cập nhật khóa học")
+                                          .AppendIcon("fa fa-pencil fa-2x"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Export", "Question")
+                                          .Class("ajax-link")
+                                          .RouteValues(new { id = item.QuestionId })
+                                          .AppendIcon("fa fa-cloud-download fa-2x")
+                                          .Title("Xuất câu hỏi thành file"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Preview", "Question")
+                                          .RouteValues(new { id = item.QuestionId })
+                                          .AppendIcon("fa fa-eye fa-2x")
+                                          .Title("Xem trước câu hỏi"))
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4">Không có câu hỏi nào</td></tr>
+                    }
+                </table>
+
+                <!-- Phần hiển thị thanh phân trang -->
+                <div class="row">
+                    <div class="col-md-6 m-b-sm text-center">
+                        Hiển thị
+                        @(Html.DropDownList("PageSize", null,
+                          new { @class = "input-sm", id = "pageSelect" }))
+                        mẫu tin
+                    </div>
+                    <div class="col-md-6 text-center">
+                        @Html.PagedListPager(
+                        Model,
+                        page => Url.Action(
+                            "Index",
+                            new
+                            {
+                                page,
+                                pageSize = ViewBag.CurrentPageSize,
+                                keyword = ViewBag.Keyword,
+                                status = ViewBag.CurrentStatus
+                            }),
+                        PagedListRenderOptions.ClassicPlusFirstAndLast)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
+    <script src="~/Scripts/custom/questionIndex.js"></script>
+}
+
