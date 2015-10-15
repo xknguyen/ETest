@@ -5,4 +5,8 @@
             return true;
         return false;
     }
+
+    $.fn.replaceNull = function(focus, entity) {
+        return focus == null ? entity : this;
+    }
 });

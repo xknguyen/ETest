@@ -13,8 +13,6 @@ namespace ETest.Models
         Order,
         Associate,
         Gap,
-        Inline,
-        Upload,
         Slider
     }
 

@@ -80,7 +80,6 @@ namespace Core.Utilities
             }
             catch
             {
-
                 return DateTime.MinValue;
             }
         }

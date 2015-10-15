@@ -1,6 +1,6 @@
-﻿
+﻿@model Question
 <div>
-    @Html.Hidden("tinyCount", 0);
+    @Html.Hidden("tinyCount", Model.QuestionDetails.Count);
 </div>
 <div class="questionTemplate" id="choiceTemplate">
     @Html.Partial("_ChoiceTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() { ChoiceId = 1 } } })

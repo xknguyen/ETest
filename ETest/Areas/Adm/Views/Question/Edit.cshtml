@@ -7,12 +7,11 @@
     @Styles.Render("~/bundles/questionstyle")
 }
 
-<div class="row">
-
+<div class="row" id="eventQuestion">
     <div class="col-md-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Tạo câu hỏi mới</h5>
+                <h5>Cập nhật câu hỏi</h5>
             </div>
             <div class="ibox-content p-sm">
                 @using (Html.BeginForm("Edit", "Question", FormMethod.Post, new {enctype = "multipart/form-data", id = "questionForm"}))
@@ -21,7 +20,7 @@
                     @Html.HiddenFor(s => s.QuestionId)
                     @Html.HiddenFor(s => s.RowVersion)
                     <div class="form-horizontal">
-                        @(Html.ValidationSummary(true, "", new {@class = "text-danger", id = "Validation"}))
+                        <span class="field-validation-valid text-danger" id="Validation"></span>
                         @Html.Partial("_CreateOrEdit", Model)
                         @Html.Partial("_QuestionContent", Model)
                         <div class="hr-line-dashed"></div>
@@ -33,16 +32,7 @@
     </div>
 </div>
 
-<div class="questionTemplate" id="choiceTemplate">
-    @Html.Partial("_ChoiceTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() { ChoiceId = 1 } } })
-</div>
-<div class="questionTemplate" id="orderTemplate">
-    @Html.Partial("_OrderTemplate", new QuestionDetail() { ItemOrders = new List<ItemOrder>() { new ItemOrder() { ChoiceId = 1 }, new ItemOrder() { ChoiceId = 2 } } })
-</div>
-<div>
-    @Html.Partial("_Popup")
-</div>
-
+@Html.Partial("_Hidden",Model)
 
 @section scripts
 {

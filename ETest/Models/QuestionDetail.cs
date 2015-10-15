@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Core.Utilities;
@@ -21,7 +19,7 @@ namespace ETest.Models
         [DataType(DataType.MultilineText)]
         public string QuestionTitle { get; set; }
 
-        [Display(Name = "Lựa chọn")]
+        [Display(Name = "Đáp án")]
         public string Choice { get; set; }
 
         [Display(Name = "Đáp án")]
@@ -170,19 +168,14 @@ namespace ETest.Models
                 case QuestionType.Order:
                     return new JavaScriptSerializer().Serialize(ItemOrders);
                 case QuestionType.Associate:
-                    break;
+                    return new JavaScriptSerializer().Serialize(AssociateItems);
                 case QuestionType.Gap:
-                    break;
-                case QuestionType.Inline:
-                    break;
-                case QuestionType.Upload:
-                    break;
+                    return new JavaScriptSerializer().Serialize(GapItems);
                 case QuestionType.Slider:
                     return new JavaScriptSerializer().Serialize(SliderLimit);
                 default:
                     return "";
             }
-            return "";
         }
 
         public QuestionDetail(JToken detail)
@@ -191,38 +184,45 @@ namespace ETest.Models
             QuestionDetailId = DataUtil.ToLong(detail["QuestionDetailId"]);
             QuestionTitle = (string) detail["QuestionTitle"];
             OrderNo = DataUtil.ToInt(detail["OrderNo"]);
-
+            int i;
             switch (QuestionType)
             {
                 case QuestionType.Choice:
                     Choices = new List<Choice>();
-                    int i = 0;
-                    foreach (var choice in detail["Choice"].ToArray())
+                    i = 0;
+                    foreach (var choice in detail["Choices"].ToArray())
                     {
                         Choices.Add(new Choice(choice, i++));
                     }
-                    Choice = ConvertChoiceToString();
                     break;
                 case QuestionType.Order:
                     ItemOrders = new List<ItemOrder>();
-                    foreach (var choice in detail["Items"].ToArray())
+                    foreach (var choice in detail["Choices"].ToArray())
                     {
                         ItemOrders.Add(new ItemOrder(choice));
                     }
-                    Choice = ConvertChoiceToString();
                     break;
                 case QuestionType.Associate:
+                    i = 0;
+                    AssociateItems = new List<AssociateItem>();
+                    foreach (var choice in detail["Choices"].ToArray())
+                    {
+                        AssociateItems.Add(new AssociateItem(choice, i++, AssociateItems));
+                    }
                     break;
                 case QuestionType.Gap:
+                    i = 0;
+                    GapItems = new List<GapItem>();
+                    foreach (var choice in detail["Choices"].ToArray())
+                    {
+                        GapItems.Add(new GapItem(choice, i++));
+                    }
                     break;
-                case QuestionType.Inline:
-                    break;
-                //case QuestionType.Upload:
-                //    break;
                 case QuestionType.Slider:
-                    SliderLimit = new SliderLimit(detail["Limit"]);
+                    SliderLimit = new SliderLimit(detail["Choices"]);
                     break;
             }
+            Choice = ConvertChoiceToString();
         }
 
         public void Update(QuestionDetail detai)

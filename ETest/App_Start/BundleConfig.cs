@@ -10,9 +10,8 @@ namespace ETest
         {
             // sữ dụng để tạo câu hỏi
             bundles.Add(new ScriptBundle("~/bundles/questionjs").Include(
-                "~/Scripts/model/Order.js",
+                "~/Scripts/model/model.js",
                 "~/Scripts/bootstrap-slider.min.js",
-                "~/Scripts/jquery.nestable.js",
                 "~/Scripts/plugins/iCheck/icheck.min.js",
                 "~/Scripts/tinymce/tinymce.min.js",
                 "~/Scripts/plugins/chosen/chosen.jquery.js",
@@ -20,9 +19,12 @@ namespace ETest
                 "~/Scripts/custom/event.js",
                 "~/Scripts/custom/createQuestion.js",
                 "~/Scripts/custom/choiceTemplate.js",
+                "~/Scripts/custom/validate.js",
+                "~/Scripts/plugins/nestable/jquery.nestable.js",
+                
                 "~/Scripts/custom/question.js"
                 ));
-
+            //"~/Scripts/jquery.nestable.js",
             bundles.Add(new StyleBundle("~/bundles/questionstyle").Include(
                 "~/Content/AdmGrid.css",
                 "~/Content/plugins/iCheck/custom.css",

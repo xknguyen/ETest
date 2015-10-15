@@ -200,6 +200,7 @@
     <Compile Include="Areas\Adm\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Adm\Controllers\GroupController.cs" />
     <Compile Include="Areas\Adm\Controllers\QuestionController.cs" />
+    <Compile Include="Areas\Adm\Controllers\TestController.cs" />
     <Compile Include="Areas\Adm\Models\AccountViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -228,6 +229,10 @@
     <Compile Include="Migrations\201510061301189_UpdateQuestionTitleLength.cs" />
     <Compile Include="Migrations\201510061301189_UpdateQuestionTitleLength.Designer.cs">
       <DependentUpon>201510061301189_UpdateQuestionTitleLength.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510150328021_UpdateTest.cs" />
+    <Compile Include="Migrations\201510150328021_UpdateTest.Designer.cs">
+      <DependentUpon>201510150328021_UpdateTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -447,6 +452,7 @@
     <Content Include="Scripts\custom\event.js" />
     <Content Include="Scripts\custom\question.js" />
     <Content Include="Scripts\custom\choiceTemplate.js" />
+    <Content Include="Scripts\custom\questionIndex.js" />
     <Content Include="Scripts\custom\utilities.js" />
     <Content Include="Scripts\custom\validate.js" />
     <Content Include="Scripts\errors.json" />
@@ -537,7 +543,6 @@
     <Content Include="Areas\Adm\Views\Question\_AssociateTemplate.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_GapTemplate.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_Hidden.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\group.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
@@ -1292,10 +1297,9 @@
     <Content Include="Scripts\inspinia\jquery-2.1.1.js" />
     <Content Include="Scripts\inspinia\pace.min.js" />
     <Content Include="Scripts\inspinia\wow.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
+    <Content Include="Areas\Adm\Views\Question\Index.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
@@ -1313,7 +1317,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\less-1.4.1.min.js" />
-    <Content Include="Scripts\model\Order.js" />
+    <Content Include="Scripts\model\model.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
@@ -1584,6 +1588,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Adm\Views\Text\" />
+    <Folder Include="Content\fonts\font-awesome\tao\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1610,6 +1616,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510061301189_UpdateQuestionTitleLength.resx">
       <DependentUpon>201510061301189_UpdateQuestionTitleLength.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510150328021_UpdateTest.resx">
+      <DependentUpon>201510150328021_UpdateTest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

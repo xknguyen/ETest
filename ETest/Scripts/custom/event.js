@@ -36,8 +36,17 @@
         });
     }
     // Tạo tinyGap
-    function showGapInfo() {
-        $(this).val("");
+    $.fn.selectToGap = function (editor) {
+        var current = $("#" + editor.id).closest('div.form-horizontal').first().find("div.gap-answer-selected").first();
+        if (current.length != 0) {
+            current.removeClass("gap-answer-selected");
+            $(editor.getBody()).find("input[name='gapField']").each(function() {
+                if ($(this).val() == current.attr("data-id")) {
+                    $(this).attr("value", "");
+                }
+            });
+            $(this).attr("value", current.attr("data-id"));
+        }
     }
     $.fn.createGapTiny = function(name, height) {
         tinymce.init({
@@ -66,23 +75,26 @@
                     text: 'Thêm chỗ trống',
                     icon: false,
                     tooltip: 'Thêm chỗ trống',
-                    onclick: function() {
-                        editor.insertContent("<input type='text' name='asd' id='asd'  style='width:50px'/>");
-                        ////tinyMCE.activeEditor.dom.select("input[type='text']").on(showGapInfo);
+                    onclick: function () {
+                        var value = "";
+                        if (editor.selection.getContent().trim() != "") {
+                            var current = $("#" + editor.id).closest('div.form-horizontal').first().find("div.answers").first();
+                            value = $(current).createGapAnswer(editor.selection.getContent());
+                        }
+                        editor.selection.setContent("<input name='gapField' type='text' value='"+value+"'/>");
+
                         $(editor.getBody()).off("click", "input");
-                        $(editor.getBody()).on("click", "input", showGapInfo);
-
-                        //Lấy thằng cha
-                        //var s = $("#" + editor.id).closest('div.form-horizontal').first();
-                        //alert(s.html());
-
-                        editor.selection.setContent('');
+                        $(editor.getBody()).on("click", "input", function() {
+                            $(this).selectToGap(editor);
+                        });
                     }
                 });
             },
             init_instance_callback: function(editor) {
                 $(editor.getBody()).off("click", "input");
-                $(editor.getBody()).on("click", "input", showGapInfo);
+                $(editor.getBody()).on("click", "input", function () {
+                    $(this).selectToGap(editor);
+                });
             }
         });
     }
@@ -124,10 +136,10 @@
             $(this).createAnswerOrder();
         });
     }
-
     // Sự kiện nút hiển thị popup chọn thứ tự đúng cho dạng câu hỏi sắp xếp
     $.fn.showOrderForm = function() {
         $(this).on("click", function(e) {
+            e.preventDefault();
             $("#orderList").html("");
             var parent = $(this).closest("div.form-group").first();
             currentOrder = parent;
@@ -136,22 +148,25 @@
             $(parent).find("span.question-answers-error").first().html("");
             var isValid = true;
 
-            anwers.each(function() {
-                if ($(this).isNullOrEmpty()) {
-                    isValid = false;
-                }
-            });
-            if (isValid) {
-                $(this).closest("div.question-answer").first().find("a.order-answer-model").first().click();
-                $(this).createFormOrder();
-            } else {
-                $(parent).find("span.question-answers-error").first().html("Bạn chưa nhập đủ nội dung các mục");
+            if (anwers.length == 0) {
+                $(parent).find("span.question-answers-error").first().html("Bạn chưa có đáp án nào.");
                 $("html, body").animate({ scrollTop: parseInt($($(this).closest("div.form-horizontal").first()).offset().top - 50) }, "fast");
-                e.preventDefault();
+            } else {
+                anwers.each(function() {
+                    if ($(this).isNullOrEmpty()) {
+                        isValid = false;
+                    }
+                });
+                if (isValid) {
+                    $(this).closest("div.question-answer").first().find("a.order-answer-model").first().click();
+                    $(this).createFormOrder();
+                } else {
+                    $(parent).find("span.question-answers-error").first().html("Bạn chưa nhập đủ nội dung các mục");
+                    $("html, body").animate({ scrollTop: parseInt($($(this).closest("div.form-horizontal").first()).offset().top - 50) }, "fast");
+                }
             }
         });
     }
-
     // Sự kiện luu popup order
     $.fn.saveOrderForm = function() {
         $(this).on("click", function(e) {
@@ -177,7 +192,6 @@
             $("#closeButton").click();
         });
     }
-
     $.fn.closeOrderPopup = function() {
         $(this).on("click", function(e) {
             e.preventDefault();
@@ -229,7 +243,7 @@
                 min: min,
                 step: step,
                 value: min
-            }).on('slide', function(ui) {
+            }).on("slide", function(ui) {
                 var parent = $(this).closest("div.form-group").first();
                 var currentvalue = $(parent).find("label.currentValue").first();
                 $(currentvalue).html(ui.value);
@@ -286,41 +300,17 @@
                 var type = $("#gapAnswerPopUp").attr("data-type");
                 if (type == "new") {
                     if (currentGapQuestion != null) {
-                        // Lấy id hiện tại của câu trả lời
-                        var idButton = $(currentGapQuestion).closest("div.quetion-control").first().find(".add-gap-answer").first();
-                        //alert($(idButton).attr("data-id"));
-                        var id = parseInt($(idButton).attr("data-id")) + 1;
-
-                        // Gán lại id mới
-                        $(idButton).attr("data-id", id);
-
-                        // Lấy mẫu câu hỏi
-                        var newItem = creatGapAnswer();
-
-                        // Thêm câu hỏi vào
-                        $(currentGapQuestion).append(newItem);
-                        var item = $(currentGapQuestion).find("div.gap-answer").last();
                         var value = $("#gapAnswerPopUp").val();
-                        // Gán giá trị
-                        $(item).attr("data-id", id);
-                        $(item).find("p").first().find("span").first().text(value);
-                        $(item).find("p").first().find("b").first().text(id);
-                        // Gán sự kiện
-                        $(item).find(".edit-gap-answer").showEditGapAnswer();
-                        $(item).find(".remove-gap-answer").removeGapAnswer();
-                        $(item).selectGapAnswer();
-
-                        // đóng form
-                        $("#closeGapButton").click();
+                        $(currentGapQuestion).createGapAnswer(value);
                     }
                 } else {
                     // nếu là cập nhật thì
                     if (currentGapAnswer != null) {
                         $(currentGapAnswer).find("p").first().find("span").first().text($("#gapAnswerPopUp").val());
-                        // đóng form
-                        $("#closeGapButton").click();
                     }
                 }
+                // đóng form
+                $("#closeGapButton").click();
             }
         });
     }

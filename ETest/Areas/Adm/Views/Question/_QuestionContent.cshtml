@@ -1,5 +1,7 @@
 ﻿@model Question
-
+@{
+    Model.QuestionDetails = Model.QuestionDetails.OrderBy(s => s.OrderNo).ToList();
+}
 <div class="form-group">
     <div class="col-md-2 " style="background: white">
         <div class="col-md-3"></div>
@@ -25,11 +27,6 @@
                         Gap
                     </div>
                 </li>
-                <li class="dd-item new-question" data-type="Inline">
-                    <div class="dd-handle">
-                        Inline
-                    </div>
-                </li>
                 <li class="dd-item new-question" data-type="Slider">
                     <div class="dd-handle">
                         Slider
@@ -44,20 +41,7 @@
 
             @if (Model.QuestionDetails == null || Model.QuestionDetails.Count == 0)
             {
-                @Html.Partial("_GapTemplate", new QuestionDetail()
-           {
-               QuestionTitle = "Hứ, vậy cũng phải coi <input type='text' /> có cái gì đáng để cho tôi phải nhìn chằm chằm, tự cao vừa vừa thôi, tôi đây không có hứng với cậu. Vân thấy cậu ta vẫn cái miệng mồm đáng ghét đó mà thấy bực, phải biết rằng giây phút này cô rất muốn đánh người,"
-                                    + "tên đầu heo này lại tới chọc, chán sống rồi.",
-               GapItems = new List<GapItem>()
-               {
-                   new GapItem()
-                   {
-                       ItemId = 1,
-                       ItemContent = "Hứ, vậy cũng phải coi lại cậu có cái gì đáng"
-                   }
-               }
-           })
-                @*<div class="dd-empty"></div>*@
+                <div class="dd-empty"></div>
             }
             else
             {
@@ -73,14 +57,13 @@
                                 @Html.Partial("_OrderTemplate", detail)
                                 break;
                             case QuestionType.Associate:
+                                @Html.Partial("_AssociateTemplate", detail)
                                 break;
                             case QuestionType.Gap:
-                                break;
-                            case QuestionType.Inline:
-                                break;
-                            case QuestionType.Upload:
+                                @Html.Partial("_GapTemplate", detail)
                                 break;
                             case QuestionType.Slider:
+                                @Html.Partial("_SliderTemplate", detail)
                                 break;
 
                         }

@@ -2,7 +2,7 @@
 @{
     Model.SliderLimit = Model.SliderLimit ?? new SliderLimit();
 }
-<li class="dd-item dd3-item questions" data-type="Slider">
+<li class="dd-item dd3-item questions" data-type="Slider" data-id="0">
         <div class="pull-right m-r-md m-t-sm">
             <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
         </div>
@@ -15,7 +15,7 @@
                             <div class="col-md-12">
                                 @Html.HiddenFor(s => s.QuestionDetailId, new { @class = "questionId" })
                                 <div class="description-content">
-                                    @Html.TextAreaFor(s => s.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
+                                    @Html.TextArea("QuestionTitle-" + Model.OrderNo, Model.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
                                 </div>
                                 <span class="field-validation-valid text-danger question-title-error"></span>
                             </div>

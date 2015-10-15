@@ -1,8 +1,8 @@
 ﻿@model QuestionDetail
 @{
-        Model.Choices = Model.Choices == null ? new List<Choice>() : Model.Choices.OrderBy(s => s.ChoiceId).ToList();
+    Model.Choices = Model.Choices.OrderBy(s => s.ChoiceId).ToList();
 }
-<li class="dd-item dd3-item questions" data-type="Choice">
+<li class="dd-item dd3-item questions" data-type="Choice" data-id="0">
         <div class="pull-right m-r-md m-t-sm">
             <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
         </div>
@@ -14,7 +14,7 @@
                         <div class="form-group quetion-control">
                             <div class="col-md-12">
                                 <div class="description-content">
-                                    @Html.TextAreaFor(s => s.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
+                                    @Html.TextArea("QuestionTitle-" + Model.OrderNo, Model.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
                                 </div>
                                 <span class="field-validation-valid text-danger question-title-error"></span>
                             </div>

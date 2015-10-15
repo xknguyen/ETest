@@ -1,14 +1,5 @@
 ﻿$(function () {
-    // Tạo json
-    function createJsonChoice(id, title, choice, orderNo) {
-        var result = "{ \"QuestionType\":\"0\",\"QuestionDetailId\":\"" + id + "\",\"QuestionTitle\":" + JSON.stringify(title) + ",\"Choice\":" + choice + ",\"OrderNo\":\"" + orderNo + "\"}";
-        return result;
-    }
-    function createJsonOrder(id, title, items, orderNo) {
-        var result = "{ \"QuestionType\":\"1\",\"QuestionDetailId\":\"" + id + "\",\"QuestionTitle\":" + JSON.stringify(title) + ",\"Items\":" + items + ",\"OrderNo\":\"" + orderNo + "\"}";
-        return result;
-    }
-
+    
     // Câu hỏi
     // Xóa câu hỏi
     $.fn.removeQuestion = function () {
@@ -25,46 +16,7 @@
         return this;
     }
     // Tạo Json
-    $.fn.createJsonQuestion = function (orderNo) {
-        var type = $(this).attr("data-type");
-        var id, title, choice = "";
-        switch (type) {
-            case 'Choice':
-                id = $(this).find('input.questionId').first().val();
-                title = $(this).find('textarea.description').first().val();
-                var div = $(this).find('div.answers').find('div.question-answer');
-
-                div.each(function (index) {
-                    choice += $(this).createChoiceAnswerJson() + ",";
-                });
-
-                if (choice.substr(choice.length - 1) == ",") {
-                    choice = choice.substr(0, choice.length - 1);
-                }
-
-                choice = "[" + choice + "]";
-                return createJsonChoice(id, title, choice, orderNo);
-            case "Order":
-                id = $(this).find('input.questionId').first().val();
-                title = $(this).find('textarea.description').first().val();
-                var divOrder = $(this).find('div.answers').find('div.question-answer');
-
-                divOrder.each(function (index) {
-                    choice += $(this).createOrderAnswerJson() + ",";
-                });
-
-                if (choice.substr(choice.length - 1) == ",") {
-                    choice = choice.substr(0, choice.length - 1);
-                }
-
-                choice = "[" + choice + "]";
-                return createJsonOrder(id, title, choice, orderNo);
-            default:
-                return "";
-        }
-    }
-
-
+    
     // Tạo câu hỏi lựa chọn
     $.fn.createChoice = function () {
         var choice = questionChoiceTemplate();
@@ -108,13 +60,7 @@
         // tìm danh sách đáp án
         return this;
     }
-    $.fn.createChoiceAnswerJson = function () {
-        var correct = $(this).find("input[name='isCorrect']").first().prop('checked');
-        var choiceId = $(this).find("input[name='choiceId']").first().val();
-        var content = $(this).find("input[name='answer']").val();
-        return "{\"ChoiceId\":\"" + choiceId + "\",\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\"}";
-    }
-
+    
 
     // Tạo câu hỏi sắp xếp
     $.fn.createAnswerOrder = function () {
@@ -153,13 +99,7 @@
             $("#orderList").addItemPopup(this);
         });
     }
-    $.fn.createOrderAnswerJson = function () {
-        var choiceId = parseInt($(this).find("input[name='choiceId']").first().val());
-        var orderNo = parseInt($(this).find("input[name='orderNo']").first().val());
-        var content = $(this).find("input[name='answer']").first().val();
-        var result = parseInt($(this).find("label.result").first().text());
-        return "{\"ChoiceId\":\"" + choiceId + "\",\"Content\":" + JSON.stringify(content) + ",\"OrderNo\":\"" + orderNo + "\",\"Result\":\"" + result + "\"}";
-    }
+    
     $.fn.createOrder = function () {
         var choice = questionOrderTemplate();
         $(this).html(choice);
@@ -241,8 +181,34 @@
         $(this).createGapTiny("textarea#QuestionTitle-" + parseInt($('#tinyCount').val()), 100);
         $(this).find(".gap-answer").selectGapAnswer();
         $(this).find(".add-gap-answer").showAddGapAnswer();
-        $(this).find(".edit-gap-answer").editGapAnswer();
+        $(this).find(".edit-gap-answer").showEditGapAnswer();
         $(this).find(".remove-gap-answer").removeGapAnswer();
         return this;
+    }
+    $.fn.createGapAnswer = function(value) {
+        // Lấy id hiện tại của câu trả lời
+        var idButton = $(this).closest("div.quetion-control").first().find(".add-gap-answer").first();
+        //alert($(idButton).attr("data-id"));
+        var id = parseInt($(idButton).attr("data-id")) + 1;
+
+        // Gán lại id mới
+        $(idButton).attr("data-id", id);
+
+        // Lấy mẫu câu hỏi
+        var newItem = creatGapAnswer();
+
+        // Thêm câu hỏi vào
+        $(this).append(newItem);
+        var item = $(this).find("div.gap-answer").last();
+        
+        // Gán giá trị
+        $(item).attr("data-id", id);
+        $(item).find("p").first().find("span").first().text(value);
+        $(item).find("p").first().find("b").first().text(id);
+        // Gán sự kiện
+        $(item).find(".edit-gap-answer").showEditGapAnswer();
+        $(item).find(".remove-gap-answer").removeGapAnswer();
+        $(item).selectGapAnswer();
+        return id;
     }
 });
