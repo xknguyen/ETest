@@ -23,6 +23,7 @@
                 $(row).addClass('selected');
             }
         }
+
         });
     }
     $.fn.createReorderDatable = function () {
