@@ -1,0 +1,54 @@
+﻿@model Test
+@{
+   
+}
+
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Danh sách câu hỏi</h5>
+        <div class="ibox-tools">
+            @(Html.Bootstrap().Link("Thêm câu hỏi", "")
+                  .Class("btn btn-primary btn-xs")
+                  .Id("addQuestion")
+                  .PrependIcon("fa fa-plus"))
+            @(Html.Bootstrap().Link("", "")
+                  .Class("hidden")
+                  .Id("showChoiceQuestionForm")
+                  .HtmlAttributes(new {data_toggle = "modal", data_target = "#choiceQuestionForm"}))
+        </div>
+    </div>
+    <div class="ibox-content p-sm">
+        <table id="tbQuestions" class="table table-responsive table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Câu</th>
+                <th>Tiêu đề</th>
+                <th class="hidden-sm hidden-xs groupColumn">Nhóm</th>
+                <th class="hidden questionId">Mã</th>
+                <th class="hidden questionDetail">Câu hỏi con</th>
+                <th></th>
+            </tr>
+            </thead>
+                @for (var i = 1; i <= Model.TestDetails.Count; i++)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@Html.Raw(Model.TestDetails[i - 1].Question.QuestionTitle)</td>
+                        <td class="hidden-sm hidden-xs groupColumn">@Model.TestDetails[i - 1].Question.Group.GroupName</td>
+                        <td class="hidden questionId">
+                            @Model.TestDetails[i - 1].Question.QuestionId
+                        </td>
+                        <td class="hidden questionDetail">
+                            @Model.TestDetails[i - 1].QuestionDetails
+                        </td>
+                        <td>
+                            <a href="#" class="question-view"><i class="fa fa-2x fa-cog"></i></a>
+                            <a href="#" class="question-edit"><i class="fa fa-2x fa-edit"></i></a>
+                            <a href="#" class="question-remove"><i class="fa fa-2x fa-close"></i></a>
+                        </td>
+                    </tr>
+                }
+        </table>
+    </div>
+</div>

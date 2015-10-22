@@ -9,7 +9,7 @@ namespace ETest.Areas.Adm.Models
     {
         [Required(ErrorMessage = "{0} không được để trống")]
         [StringLength(100, ErrorMessage = "{0} từ {1} đến {2} kí tự.", MinimumLength = 6)]
-        [Display(Name = "Tên tài khoản")]
+        [Display(Name = "Tên người dùng")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
@@ -72,5 +72,6 @@ namespace ETest.Areas.Adm.Models
         [StringLength(100, ErrorMessage = "{0} từ {2} đến {1} kí tự.", MinimumLength = 6)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
+
     }
 }

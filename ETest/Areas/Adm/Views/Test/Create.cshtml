@@ -1,0 +1,67 @@
+﻿@model Test
+
+@{
+    ViewBag.Title = "Quản lí bài kiểm tra";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet"/>
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="~/Content/rowReorder.dataTables.min.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap-treeview.css" rel="stylesheet"/>
+    <link href="~/Content/custom/test.css" rel="stylesheet"/>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Tạo bài kiểm tra mới</h5>
+            </div>
+            <div class="ibox-content p-sm">
+                @using (Html.BeginForm("Create", "Test", FormMethod.Post, new {enctype = "multipart/form-data", id = "testForm"}))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal tabs-container">
+                        @(Html.ValidationSummary(true, "", new {@class = "text-danger", id = "Validation"}))
+
+                        <ul class="nav nav-tabs">
+                            <li class="tab-li"><a data-toggle="tab" href="#testInfo" aria-expanded="true">Thông tin bài kiểm tra</a></li>
+                            <li class="active tab-li"><a data-toggle="pill" href="#testContent" aria-expanded="false">Câu hỏi</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="testInfo" class="tab-pane fade">
+                                @Html.Partial("_CreateOrEdit", Model)
+                            </div>
+                            <div id="testContent" class="tab-pane fade in active">
+                                @Html.Partial("_TestContent", Model)
+                            </div>
+                        </div>
+                        @Html.Partial("_Toolbar")
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_PopUp")
+
+@section pluginScripts
+{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.rowReorder.min.js"></script>
+    <script src="~/Scripts/bootstrap-treeview.js"></script>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/admjqueryval")
+    <script src="~/Scripts/custom/testEvent.js"></script>
+    <script src="~/Scripts/custom/test.js"></script>
+}
+
+

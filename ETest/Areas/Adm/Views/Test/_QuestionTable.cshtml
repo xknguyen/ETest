@@ -1,0 +1,28 @@
+﻿@model List<DataQuestionModel>
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>@ViewBag.GroupName</h5>
+    </div>
+    <div class="ibox-content p-sm">
+        <table id="questionTable" class="table table-responsive table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th class="hidden"></th>
+                <th class="hidden">Nhóm</th>
+                <th class="hidden"></th>
+            </tr>
+            </thead>
+            @foreach (var q in Model)
+            {
+                <tr>
+                    <td>@Html.Raw(q.QuestionTitle)</td>
+                    <td class="hidden id">@q.QuestionId</td>
+                    <td class="hidden group">@ViewBag.GroupName</td>
+                    <td class="hidden details">@q.QuestionDetails</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+   

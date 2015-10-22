@@ -1,0 +1,18 @@
+﻿@{
+    var groups = new List<Group>();
+}
+
+
+<div class="modal inmodal" id="choiceQuestionForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeInUp">
+            <div class="modal-body" style="min-height: 450px;">
+                @Html.Partial("_QuestionChoiceForm",groups)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="saveButton" style="margin:5px">Lưu</button>
+                <button type="button" class="btn btn-danger" id="closeButton" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

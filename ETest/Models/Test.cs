@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace ETest.Models
 {
@@ -17,14 +18,16 @@ namespace ETest.Models
     {
         public long TestId { get; set; }
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [Display(Name = "Tiêu đề")]
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
         public string TestTitle { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(200, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
-        [Display(Name = "Tiêu đề")]
-        public string TestDescription { get; set; }
+        [Display(Name = "Mô tả")]
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Tiêu đề")]

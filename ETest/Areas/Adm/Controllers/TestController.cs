@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Core.Utilities;
+using ETest.Areas.Adm.Models;
+using ETest.Models;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PagedList;
 
 namespace ETest.Areas.Adm.Controllers
@@ -20,7 +25,7 @@ namespace ETest.Areas.Adm.Controllers
             if (!string.IsNullOrEmpty(keyword))
             {
                 tests = tests.Where(x => x.TestTitle.Contains(keyword)
-                                         || x.TestDescription.Contains(keyword));
+                                         || x.Description.Contains(keyword));
                 var date = DataUtil.ToDateTime(keyword);
                 if (date != DateTime.MinValue)
                 {
@@ -62,6 +67,75 @@ namespace ETest.Areas.Adm.Controllers
             var data = tests.OrderByDescending(x => x.TestId).Where(x => x.Actived == isActived)
                                 .ToPagedList(page.Value, pageSize.Value);
             return View(data);
+        }
+        protected override bool OnUpdateToggle(string propName, bool value, object[] keys)
+        {
+            var query = string.Format("UPDATE dbo.Tests SET {0} = @p0 WHERE TestId = @p1", propName);
+            return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
+        }
+
+        public ActionResult Create()
+        {
+            var question = DbContext.Questions.ToList();
+            var emptytest = new Test()
+            {
+                Actived = true,
+                TestDetails = new List<TestDetail>()
+                {
+                    new TestDetail()
+                    {
+                        Question = question[0]
+                    },
+                    new TestDetail()
+                    {
+                        Question = question[2]
+                    }
+                }
+            };
+            InitFormData(emptytest);
+            return View(emptytest);
+        }
+
+        [HttpPost]
+        public ActionResult GetGroupForUser()
+        {
+            var userId = User.Identity.GetUserId();
+            var groups = DbContext.Groups.Where(s => s.TeacherId == userId && !s.ParentGroupId.HasValue).ToList();
+            var data = new List<DataGroupModel>();
+            foreach (var g in groups)
+            {
+                data.Add(new DataGroupModel(g));
+            }
+            return Json(JsonConvert.SerializeObject(data,
+                Formatting.Indented,
+                new JsonSerializerSettings {DefaultValueHandling = DefaultValueHandling.Ignore}));
+
+        }
+
+        public ActionResult GetQuestion(int? id)
+        {
+            var userId = User.Identity.GetUserId();
+            var questions = DbContext.Questions.Where(s =>s.GroupId == id && s.Group.TeacherId == userId ).ToList();
+
+            var data = new List<DataQuestionModel>();
+            foreach (var question in questions)
+            {
+                data.Add(new DataQuestionModel(question));
+            }
+            var group = DbContext.Groups.FirstOrDefault(s => s.GroupId == id);
+            ViewBag.GroupName = group != null ? group.GroupName : "";
+
+            return PartialView("_QuestionTable",data);
+        }
+
+
+        private void InitFormData(Test test)
+        {
+            var id = User.Identity.GetUserId();
+            var courses = DbContext.Courses.Where(s => s.TeacherId == id).ToList();
+            ViewBag.CourseId = test.CourseId > 0
+                ? new SelectList(courses, "CourseId", "CourseName", test.CourseId)
+                : new SelectList(courses, "CourseId", "CourseName", (object) null);
         }
 
     }
