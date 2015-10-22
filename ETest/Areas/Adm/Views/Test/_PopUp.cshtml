@@ -10,7 +10,15 @@
                 @Html.Partial("_QuestionChoiceForm",groups)
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="saveButton" style="margin:5px">Lưu</button>
+                <div class="col-md-3" style="text-align: left">
+                    <div class="col-md-6"><input type="number" class="form-control" min="0" id="randomNo" /></div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary" id="randomButton">Chọn ngẫu nhiên</button>
+                    </div>
+                </div>
+                
+                
+                <button type="button" class="btn btn-success" id="saveButton" style="margin: 5px">Lưu</button>
                 <button type="button" class="btn btn-danger" id="closeButton" data-dismiss="modal">Đóng</button>
             </div>
         </div>

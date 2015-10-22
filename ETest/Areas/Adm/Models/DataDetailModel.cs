@@ -12,6 +12,7 @@ namespace ETest.Areas.Adm.Models
         public string Title { get; set; }
         public string Choices { get; set; }
         public string QuestionType { get; set; }
+        public string Score { get; set; }
 
         public DataDetailModel(QuestionDetail detail)
         {
@@ -19,6 +20,7 @@ namespace ETest.Areas.Adm.Models
             Title = detail.QuestionTitle;
             Choices = detail.Choice;
             QuestionType = detail.QuestionType.ToString();
+            Score = "";
         }
     }
 }

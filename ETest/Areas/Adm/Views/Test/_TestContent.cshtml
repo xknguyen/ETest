@@ -27,6 +27,7 @@
                 <th class="hidden-sm hidden-xs groupColumn">Nhóm</th>
                 <th class="hidden questionId">Mã</th>
                 <th class="hidden questionDetail">Câu hỏi con</th>
+                <th class="hidden score"></th>
                 <th></th>
             </tr>
             </thead>
@@ -41,6 +42,9 @@
                         </td>
                         <td class="hidden questionDetail">
                             @Model.TestDetails[i - 1].QuestionDetails
+                        </td>
+                        <td class="hidden score">
+                            @Model.TestDetails[i - 1].Score
                         </td>
                         <td>
                             <a href="#" class="question-view"><i class="fa fa-2x fa-cog"></i></a>

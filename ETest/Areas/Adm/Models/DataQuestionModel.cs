@@ -12,6 +12,7 @@ namespace ETest.Areas.Adm.Models
         public long QuestionId { get; set; }
         public string QuestionTitle { get; set; }
         public string QuestionDetails { get; set; }
+        public string Score { get; set; }
 
         public DataQuestionModel(Question question)
         {
@@ -22,7 +23,7 @@ namespace ETest.Areas.Adm.Models
             {
                 questionDetails.Add(new DataDetailModel(detail));
             }
-
+            Score = "";
             QuestionDetails = JsonConvert.SerializeObject(questionDetails,
                 Formatting.Indented,
                 new JsonSerializerSettings {DefaultValueHandling = DefaultValueHandling.Ignore});
