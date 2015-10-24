@@ -1,5 +1,5 @@
 ﻿$(function() {
-    $.fn.createDatable = function (selected) {
+    $.fn.createDatable = function(selected) {
         return $(this).DataTable(
         {
             "lengthMenu": [10],
@@ -18,15 +18,15 @@
                     "last": "Cuối"
                 }
             },
-        "rowCallback": function( row, data ) {
-            if ( $.inArray(data[1], selected) != -1 ) {
-                $(row).addClass('selected');
+            "rowCallback": function(row, data) {
+                if ($.inArray(data[1], selected) != -1) {
+                    $(row).addClass('selected');
+                }
             }
-        }
 
         });
     }
-    $.fn.createReorderDatable = function () {
+    $.fn.createReorderDatable = function() {
         return $(this).DataTable(
         {
             rowReorder: true,
@@ -54,27 +54,27 @@
     }
     $.fn.createTiny = function() {
         tinymce.init({
-        selector: "textarea",
-        entity_encoding: "raw",
-        theme: "modern",
-        height: 100,
-        menubar: false,
-        plugins: [
-            "link image lists charmap print preview hr anchor pagebreak spellchecker",
-            "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-            "save table contextmenu directionality emoticons template paste textcolor"
-        ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image | forecolor backcolor",
-        style_formats: [
-            { title: "Bold text", inline: "b" },
-            { title: "Red text", inline: "span", styles: { color: "#ff0000" } },
-            { title: "Red header", block: "h1", styles: { color: "#ff0000" } },
-            { title: "Example 1", inline: "span", classes: "example1" },
-            { title: "Example 2", inline: "span", classes: "example2" },
-            { title: "Table styles" },
-            { title: "Table row 1", selector: "tr", classes: "tablerow1" }
-        ]
-    });
+            selector: "textarea",
+            entity_encoding: "raw",
+            theme: "modern",
+            height: 100,
+            menubar: false,
+            plugins: [
+                "link image lists charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image | forecolor backcolor",
+            style_formats: [
+                { title: "Bold text", inline: "b" },
+                { title: "Red text", inline: "span", styles: { color: "#ff0000" } },
+                { title: "Red header", block: "h1", styles: { color: "#ff0000" } },
+                { title: "Example 1", inline: "span", classes: "example1" },
+                { title: "Example 2", inline: "span", classes: "example2" },
+                { title: "Table styles" },
+                { title: "Table row 1", selector: "tr", classes: "tablerow1" }
+            ]
+        });
 
     }
 
@@ -85,6 +85,29 @@
             enableLinks: true,
             showBorder: false,
             data: data
+        });
+    }
+
+    // Xóa một dòng trong bản danh sách câu hỏi đã chọn
+    $.fn.removeQuestion = function (table) {
+        $(this).on("click", "a.question-remove", function (e) {
+            e.preventDefault();
+            var order = parseInt($($(this).parents("tr").find("td")[0]).html().trim()) - 1;
+            table.row($(this).parents("tr")).remove().draw();
+            table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                if (rowIdx >= order) {
+                    var td = $(this.node()).find("td")[0];
+                    $(td).html(rowIdx + 1);
+                }
+            });
+            table.draw();
+        });
+    }
+
+    $.fn.showSetScoreForm = function (table) {
+        $(this).on("click", "a.question-view", function(e) {
+            e.preventDefault();
+            $("#showScoreForm").click();
         });
     }
 });

@@ -58,3 +58,10 @@
 .selected {
     background-color:#CBDDFF
 }
+
+#scoreQuestionForm .modal-body {
+    background: white;
+}
+#questionDetailList .control-label {
+    text-align: left;
+}

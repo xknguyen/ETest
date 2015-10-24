@@ -13,7 +13,6 @@ namespace ETest.Models
     {
         public long QuestionDetailId { get; set; }
 
-        [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Tiêu đề")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]

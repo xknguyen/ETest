@@ -13,7 +13,6 @@ namespace ETest.Models
         [Display(Name = "Tên nhóm")]
         public string GroupName { get; set; }
 
-        [StringLength(1000, ErrorMessage = "{0} không vượt quá {1} kí tự.")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Mô tả")]

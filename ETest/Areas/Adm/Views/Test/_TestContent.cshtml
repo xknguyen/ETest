@@ -48,7 +48,7 @@
                         </td>
                         <td>
                             <a href="#" class="question-view"><i class="fa fa-2x fa-cog"></i></a>
-                            <a href="#" class="question-edit"><i class="fa fa-2x fa-edit"></i></a>
+                            <a href="@Url.Action("Edit","Question",new { id = Model.TestDetails[i - 1].Question.QuestionId})" class="question-edit"><i class="fa fa-2x fa-edit"></i></a>
                             <a href="#" class="question-remove"><i class="fa fa-2x fa-close"></i></a>
                         </td>
                     </tr>

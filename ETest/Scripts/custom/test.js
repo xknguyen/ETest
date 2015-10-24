@@ -19,6 +19,8 @@
             table.rows().remove().draw();
 
         }
+        selected = [];
+        selectedId = [];
         $("#groupName").text("Vui lòng chọn nhóm!");
         $("#randomNo").val(0);
         $("#randomNo").attr("max", 0);
@@ -106,7 +108,8 @@
         $(tds[3]).addClass("hidden questionId");
         $(tds[4]).addClass("hidden questionDetail");
         $(tds[5]).addClass("hidden score");
-
+        //$(node).find(".question-remove").removeQuestion(questiontable);
+        //$(node).find(".question-view").setScore(questiontable);
         // Set sự kiện cho nút xóa câu hỏi
     }
     // Sự kiện lưu các câu hỏi đã chọn
@@ -161,4 +164,10 @@
             alert("Bạn chưa chọn nhóm câu hỏi!!!");
         }
     });
+
+
+
+    // Sự kiện xóa câu hỏi
+    $("#tbQuestions").removeQuestion(questiontable);
+    $("#tbQuestions").showSetScoreForm(questiontable);
 });

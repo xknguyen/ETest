@@ -2,13 +2,13 @@
     $.fn.checkValidateQuestion = function () {
         var result = new ValidatedResult(true,null);
         // Kiểm tra title
-        if ($(this).find("textarea").first().isNullOrEmpty()) {
-            result.isValid = false;
-            result.focus = result.focus == null ? $(this) : result.focus;
-            $(this).find("span.question-title-error").first().text("Tiêu đề không được để trống");
-        } else {
-            $(this).find("span.question-title-error").first().text("");
-        }
+        //if ($(this).find("textarea").first().isNullOrEmpty()) {
+        //    result.isValid = false;
+        //    result.focus = result.focus == null ? $(this) : result.focus;
+        //    $(this).find("span.question-title-error").first().text("Tiêu đề không được để trống");
+        //} else {
+        //    $(this).find("span.question-title-error").first().text("");
+        //}
 
 
         // Kiểm tra đáp án
