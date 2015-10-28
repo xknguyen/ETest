@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace ETest.Areas.Adm.Models
 {
@@ -10,10 +7,17 @@ namespace ETest.Areas.Adm.Models
         public string href { get; set; }
         public string text { get; set; }
 
-        public FolderModel(string href, string text)
+        public List<FolderModel> nodes { get; set; }
+
+        public FolderModel(string text, string href)
         {
             this.href = href;
             this.text = text;
+        }
+
+        public FolderModel()
+        {
+            
         }
     }
 }
