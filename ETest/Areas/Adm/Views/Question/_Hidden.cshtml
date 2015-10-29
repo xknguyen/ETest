@@ -28,6 +28,31 @@
         }
     })
 </div>
+
+<div class="questionTemplate" id="choiceMediaTemplate">
+    @Html.Partial("_ChoiceMediaTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() { ChoiceId = 1 } } })
+</div>
+
+<div class="questionTemplate" id="fillTemplate">
+    @Html.Partial("_FillTemplate", new QuestionDetail()
+    {
+        GapItems = new List<GapItem>()
+        {
+            new GapItem()
+            {
+                ItemId = 1,
+                ItemContent = "Lựa chọn 1"
+            }
+        }
+    })
+</div>
+
 <div>
     @Html.Partial("_Popup")
 </div>
+
+<div>
+    @Html.Partial("_MediaForm")
+</div>
+
+

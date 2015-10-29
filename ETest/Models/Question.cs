@@ -13,7 +13,9 @@ namespace ETest.Models
         Order,
         Associate,
         Gap,
-        Slider
+        Slider,
+        ChoiceMedia,
+        Fill
     }
 
     public class Question

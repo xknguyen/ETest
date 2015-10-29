@@ -586,7 +586,7 @@
     <Content Include="Content\img\Thumbs.db" />
     <Content Include="Content\less\bootstrap-datetimepicker-build.less" />
     <Content Include="Content\less\_bootstrap-datetimepicker.less" />
-    <Content Include="Areas\Adm\Views\File\_MediaForm.cshtml" />
+    <Content Include="Areas\Adm\Views\Shared\_MediaForm.cshtml" />
     <Content Include="Areas\Adm\Views\File\Index.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_ErrorPage.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_Footer.cshtml" />
@@ -597,6 +597,8 @@
     <Content Include="Areas\Adm\Views\Shared\_ProfilePartial.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_Toolbar.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_FileBox.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_ChoiceMediaTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_FillTemplate.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />

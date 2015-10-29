@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CheapDeal.Core.Extensions;
 using ETest.Areas.Adm.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
@@ -257,6 +259,58 @@ namespace ETest.Areas.Adm.Controllers
                     Message = "Lỗi không xác định, vui lòng thử lại sau"
                 });
             }
+        }
+
+
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            var mess = "";
+            var result = true;
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    var path = Request.Form["pictureFolder"];
+
+                    var userId = User.Identity.GetUserId();
+                    var paths = path.Split('\\');
+                    if (paths[0] == userId)
+                    {
+                        var file = Request.Files[0];
+                        if (file != null)
+                        {
+                            var pathtemp = Server.MapPath("~\\Upload\\" + path);
+                            var uniqueFileName = DateTime.Now.Ticks + "_" + file.FileName;
+                            file.SaveAs(pathtemp + "\\" + uniqueFileName);
+                        }
+                        else
+                        {
+                            result = false;
+                            mess = "Bạn chưa chọn file nào!";
+                        }
+
+                    }
+                    else
+                    {
+                        result = false;
+                        mess = "Bạn không có quyền thêm vào thư mục này!!!";
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    mess = ex.Message;
+                    result = false;
+                }
+
+            }
+            else
+            {
+                result = false;
+                mess = "Bạn chưa chọn file nào!";
+            }
+            return Json(new { Success = result, Message = mess });
         }
 
     }

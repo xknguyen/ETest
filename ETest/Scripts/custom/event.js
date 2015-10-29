@@ -3,6 +3,7 @@
     var currentGapAnswer = null;
     var currentGapQuestion = null;
     var currentOrder = null;
+    var currentEditor = null;
     // Tạo checkbox
     $.fn.createCheckBox = function() {
         $(this).iCheck({
@@ -23,7 +24,7 @@
                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                 "save table contextmenu directionality emoticons template paste textcolor"
             ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image | forecolor backcolor",
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link addPicture | forecolor backcolor",
             style_formats: [
                 { title: "Bold text", inline: "b" },
                 { title: "Red text", inline: "span", styles: { color: "#ff0000" } },
@@ -32,7 +33,17 @@
                 { title: "Example 2", inline: "span", classes: "example2" },
                 { title: "Table styles" },
                 { title: "Table row 1", selector: "tr", classes: "tablerow1" }
-            ]
+            ],
+            setup: function (editor) {
+                editor.addButton('addPicture', {
+                    icon: "image",
+                    tooltip: "Thêm hình ảnh",
+                    onclick: function () {
+                        $(this).showPictureForm();
+                        currentEditor = editor;
+                    }
+                });
+            },
         });
     }
     // Tạo tinyGap
@@ -60,7 +71,7 @@
                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
                 "save table contextmenu directionality emoticons template paste textcolor"
             ],
-            toolbar: "addGap |insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image | forecolor backcolor",
+            toolbar: "addGap |insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link addPicture | forecolor backcolor",
             style_formats: [
                 { title: "Bold text", inline: "b" },
                 { title: "Red text", inline: "span", styles: { color: "#ff0000" } },
@@ -71,10 +82,9 @@
                 { title: "Table row 1", selector: "tr", classes: "tablerow1" }
             ],
             setup: function(editor) {
-                editor.addButton('addGap', {
-                    text: 'Thêm chỗ trống',
-                    icon: false,
-                    tooltip: 'Thêm chỗ trống',
+                editor.addButton("addGap", {
+                    icon: "template",
+                    tooltip: "Thêm chỗ trống",
                     onclick: function () {
                         var value = "";
                         if (editor.selection.getContent().trim() != "") {
@@ -89,6 +99,14 @@
                         });
                     }
                 });
+                editor.addButton("addPicture", {
+                    icon: "image",
+                    tooltip: "Thêm hình ảnh",
+                    onclick: function () {
+                        $(this).showPictureForm();
+                        currentEditor = editor;
+                    }
+                });
             },
             init_instance_callback: function(editor) {
                 $(editor.getBody()).off("click", "input");
@@ -98,6 +116,20 @@
             }
         });
     }
+    $("#selectMediaButton").on("click", function(e) {
+        e.preventDefault();
+        if (currentEditor != null) {
+            // get img
+            var img = $("#fileContent").find("img.selected").first();
+            if (img.length !=0 ) {
+                var im = "<img src='" + $(img).attr("src") + "' data-mce-selected='1' width='100' height='100'>";
+                currentEditor.insertContent(im);
+                $("#closeMediaButton").click();
+            } else {
+                alert("Bạn chưa chọn hình ảnh nào");
+            }
+        }
+    });
 
     // removeTiny
     $.fn.removeTinyInTemplate = function() {

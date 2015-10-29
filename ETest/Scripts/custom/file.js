@@ -48,19 +48,19 @@
     }
 
     $.fn.showMediaForm = function(type) {
-        $(this).on("click", function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "/Adm/File/GetDirectory"
-            }).done(function (response) {
-                $("#treeviewFolder").createTreeViewFolder(response, type);
-                var li = $("#treeviewFolder").find("li").first();
-                if (li != null)
-                    $(li).click();
-                $("#showMediaForm").click();
-            });
+        //$(this).on("click", function(e) {
+        //    e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/Adm/File/GetDirectory"
+        }).done(function(response) {
+            $("#treeviewFolder").createTreeViewFolder(response, type);
+            var li = $("#treeviewFolder").find("li").first();
+            if (li != null)
+                $(li).click();
+            $("#showMediaForm").click();
         });
+        //});
     }
 
     $.fn.appendPicture = function (data) {
@@ -111,7 +111,8 @@
         $(this).addClass("row");
         $(this).addClass("animated");
         $(this).addClass(isHidden ? "fadeOutUp" : "fadeInUp");
-        $(this).val("");
+        $("#newFolderName").val("");
+        $('#frmCreatePic')[0].reset();
         if (isHidden) {
             $(this).addClass("hidden");
         }
@@ -120,7 +121,11 @@
     // Tạo thư mục
     $("#createFolder").on("click", function(e) {
         e.preventDefault();
+        if ($("#uploadBox").attr("class").indexOf("hidden") == -1) {
+            $("#uploadBox").hidenBox(true);
+        }
         $("#newFolderBox").hidenBox(false);
+
     });
 
     $("#cancelNewFolder").on("click", function(e) {
@@ -206,6 +211,10 @@
     // UploadFile
     $("#showUploadFile").on("click", function(e) {
         e.preventDefault();
+        var cla = $("#newFolderBox").attr("class");
+        if (cla.indexOf("hidden") == -1) {
+            $("#newFolderBox").hidenBox(true);
+        }
         $("#uploadBox").hidenBox(false);
     });
     $("#cancelUpload").on("click", function (e) {
@@ -213,5 +222,49 @@
         $("#uploadBox").hidenBox(true);
     });
 
+    $("#uploadButton").on("click", function (e) {
+        e.preventDefault();
+        if ($('#uploadFile').get(0).files.length === 0) {
+            alert("Bạn chưa chọn file nào!");
+        } else {
+            var curLi = $("#treeviewFolder").find("li.node-selected").first();
+            var path = $(curLi).find("a").first().attr("href");
 
+            if (path != null) {
+                $("#pictureFolder").attr("value",path);
+                var form = new FormData($("#frmCreatePic")[0]);
+                $.ajax({
+                    url: "/Adm/File/Upload",
+                    type: "POST",
+                    data: form,
+                    // this is the important stuff you need to override the usual post behavior
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        if (data.Success) {
+                            $("#fileContent").html("");
+                            var url = "/Adm/File/GetFile";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: {
+                                    path: path,
+                                    type: "picture"
+                                }
+                            }).done(function (response) {
+                                var list = jQuery.parseJSON(response);
+                                for (var i = 0; i < list.length; i++) {
+                                    $("#fileContent").appendPicture(list[i]);
+                                }
+                            });
+                            $("#cancelUpload").click();
+                        } else {
+                            alert(data.Message);
+                        }
+                    }
+                });
+            }
+        }
+    });
 });
