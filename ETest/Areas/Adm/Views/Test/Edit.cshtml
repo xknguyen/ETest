@@ -1,0 +1,61 @@
+﻿@model Test
+
+@{
+    ViewBag.Title = "Quản lí bài kiểm tra";
+}
+
+@section pluginStyles
+{
+    @Styles.Render("~/bundles/teststyle")
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Tạo bài kiểm tra mới</h5>
+            </div>
+            <div class="ibox-content p-sm">
+                @using (Html.BeginForm("Edit", "Test", FormMethod.Post, new { enctype = "multipart/form-data", id = "testForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-horizontal tabs-container">
+                        @(Html.ValidationSummary(true, "", new { @class = "text-danger", id = "Validation" }))
+
+                        <ul class="nav nav-tabs">
+                            <li class="active tab-li"><a data-toggle="tab" href="#testInfo" aria-expanded="true" id="testInfoA">Thông tin bài kiểm tra</a></li>
+                            <li class="tab-li"><a data-toggle="pill" href="#testContent" aria-expanded="false">Câu hỏi</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="testInfo" class="tab-pane fade in active">
+                                @Html.Partial("_CreateOrEdit", Model)
+                            </div>
+                            <div id="testContent" class="tab-pane fade">
+                                @Html.Partial("_TestContent", Model)
+                            </div>
+                        </div>
+                        @Html.Partial("_Toolbar")
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_Hidden")
+
+@section pluginScripts
+{
+
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/admjqueryval")
+    @Scripts.Render("~/bundles/testjs")
+}
+
+
+
+
