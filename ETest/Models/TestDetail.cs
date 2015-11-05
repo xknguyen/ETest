@@ -1,10 +1,11 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Core.Utilities;
 using ETest.Areas.Adm.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ETest.Models
 {
@@ -24,18 +25,33 @@ namespace ETest.Models
 
         public int OrderNo { get; set; }
 
-        public string QuestionDetails
-        {
-            get
-            {
-                var questionDetails = Question.QuestionDetails.Select(detail => new DataDetailModel(detail)).ToList();
-                return JsonConvert.SerializeObject(questionDetails,
-                    Formatting.Indented,
-                    new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
-            }
-        }
+        [NotMapped]
+        public List<TestDetailData> Details { get; set; }
+
+        public string QuestionDetails { get; set; }
 
         public virtual Test Test { get; set; }
         public virtual Question Question { get; set; }
+
+        public TestDetail(JToken detail)
+        {
+            Details = new List<TestDetailData>();
+            QuestionId = DataUtil.ToLong(detail["id"]);
+            Score = DataUtil.ToFloat(detail["score"]);
+            OrderNo = DataUtil.ToInt(detail["order"]);
+            var details = detail["details"].ToArray();
+            foreach (var de in details)
+            {
+                Details.Add(new TestDetailData(de));
+            }
+            QuestionDetails = JsonConvert.SerializeObject(Details,
+                Formatting.Indented,
+                new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+        }
+
+        public TestDetail()
+        {
+            
+        }
     }
 }

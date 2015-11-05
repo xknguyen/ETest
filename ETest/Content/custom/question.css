@@ -36,6 +36,7 @@
 .question-answer {
     margin: 4px 0px;
 }
+
 .question-check {
     width: 30px;
 }
@@ -158,4 +159,40 @@
 
 .choice-media-img {
     height: 100px;
+}
+
+
+.choice-media-box {
+    width: 150px;
+}
+
+.choice-media-box .image {
+    height: auto;
+}
+    .choice-media-box .remove-answer-choice-media {
+        z-index: 2;
+        position: absolute;
+        color: red;
+    }
+.choice-media-content {
+    padding: 0 15px;
+}
+    .choice-media-content img {
+        cursor: pointer;
+    }
+    .choice-media-content .selected {
+        border-width: 2px;
+        border-style: dashed;
+        border-color: red;
+    }
+
+    .field-validation-valid {
+        display: block;
+    }
+    
+.field-validation-valid {
+    padding: 0 15px;
+}
+.choice-media-content .field-validation-valid {
+    padding: 0px;
 }

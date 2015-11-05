@@ -3,6 +3,7 @@
     var currentGapAnswer = null;
     var currentGapQuestion = null;
     var currentOrder = null;
+    var currentChoiceMedia = null;
     var currentEditor = null;
     // Tạo checkbox
     $.fn.createCheckBox = function() {
@@ -40,10 +41,11 @@
                     tooltip: "Thêm hình ảnh",
                     onclick: function () {
                         $(this).showPictureForm();
+                        $("#selectMediaButton").attr("data-type", "tinymce");
                         currentEditor = editor;
                     }
                 });
-            },
+            }
         });
     }
     // Tạo tinyGap
@@ -104,6 +106,7 @@
                     tooltip: "Thêm hình ảnh",
                     onclick: function () {
                         $(this).showPictureForm();
+                        $("#selectMediaButton").attr("data-type", "tinymce");
                         currentEditor = editor;
                     }
                 });
@@ -118,16 +121,26 @@
     }
     $("#selectMediaButton").on("click", function(e) {
         e.preventDefault();
-        if (currentEditor != null) {
-            // get img
-            var img = $("#fileContent").find("img.selected").first();
-            if (img.length !=0 ) {
-                var im = "<img src='" + $(img).attr("src") + "' data-mce-selected='1' width='100' height='100'>";
-                currentEditor.insertContent(im);
-                $("#closeMediaButton").click();
-            } else {
-                alert("Bạn chưa chọn hình ảnh nào");
+        var img = $("#fileContent").find("img.selected").first();
+        if (img.length != 0) {
+            var type = $("#selectMediaButton").attr("data-type");
+            switch (type) {
+            case "tinymce":
+                if (currentEditor != null) {
+                    // get img
+                    var im = "<img src='" + $(img).attr("src") + "' data-mce-selected='1' height='100'>";
+                    currentEditor.insertContent(im);
+                }
+                break;
+            case "choice-media":
+                if (currentChoiceMedia != null) {
+                    currentChoiceMedia.createAnswerChoiceMedia($(img).attr("src"));
+                }
+                break;
             }
+            $("#closeMediaButton").click();
+        } else {
+            alert("Bạn chưa chọn hình ảnh nào");
         }
     });
 
@@ -374,6 +387,26 @@
         });
     }
 
+    // Sự kiện ChoiceMedia
+    $.fn.showChoiceMediaAnswer = function() {
+        $(this).on("click", function(e) {
+            e.preventDefault();
+            $(this).showPictureForm();
+            $("#selectMediaButton").attr("data-type", "choice-media");
+            currentChoiceMedia = $(this).closest("div.quetion-control").find("div.file-content").first();
+        });
+    }
+    $.fn.selectedChoiceMediaAnswer = function() {
+        $(this).on("click", function(e) {
+            e.preventDefault();
+            var curclass = $(this).attr("class");
+            if (curclass.indexOf("selected") == -1) {
+                $(this).addClass("selected");
+            } else {
+                $(this).removeClass("selected");
+            }
+        });
+    }
 
 
     // Khởi động các sự kiện
@@ -420,7 +453,14 @@
         $("#eventQuestion .remove-gap-answer").removeGapAnswer();
         $("#saveGapButton").saveGapAnswer();
         $("#closeGapButton").closeGapAnswer();
-        
+
+
+
+        // Choice Media
+        $("#eventQuestion .add-choice-media-answer").showChoiceMediaAnswer();
+        $("#eventQuestion .remove-answer-choice-media").removeAnswer();
+        $("#eventQuestion .answer-choice-media-img").selectedChoiceMediaAnswer();
+
     }
     
 

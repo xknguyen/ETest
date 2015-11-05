@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 using Core.Utilities;
 using ETest.Areas.Adm.Models;
 using ETest.Models;
@@ -76,25 +75,157 @@ namespace ETest.Areas.Adm.Controllers
 
         public ActionResult Create()
         {
-            var question = DbContext.Questions.ToList();
             var emptytest = new Test()
             {
                 Actived = true,
-                TestDetails = new List<TestDetail>()
-                {
-                    new TestDetail()
-                    {
-                        Question = question[0]
-                    },
-                    new TestDetail()
-                    {
-                        Question = question[2]
-                    }
-                }
+                TestStart = DateTime.Now,
+                TestEnd = DateTime.Now.AddDays(7),
+                MixedQuestions = true,
+                SubmitNo = 1,
+                GradeType = GradeType.Maximum,
+                TestDetails =  new List<TestDetail>()
             };
             InitFormData(emptytest);
             return View(emptytest);
         }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Create(string data)
+        {
+            try
+            {
+                var test = new Test(data);
+                // kiểm tra hợp lệ dữ liệu
+
+                var course = DbContext.Courses.FirstOrDefault(s => s.CourseId == test.CourseId);
+                if (course == null)
+                {
+                    return Json(new
+                    {
+                        Message = "Khóa học này đã bị xóa!",
+                        Success = false
+                    });
+                }
+
+                if (course.TeacherId != User.Identity.GetUserId())
+                {
+                    return Json(new
+                    {
+                        Message = "Bạn không có quyền tạo bài kiểm tra cho khóa học này!",
+                        Success = false
+                    });
+                }
+                test.TestType = TestType.Test;
+                test.Score = 100;
+                DbContext.Tests.Add(test);
+                var result = DbContext.SaveChanges();
+                if (result > 0)
+                {
+                    return Json(new
+                    {
+                        Message = "Thêm thành công.",
+                        Success = true
+                    });
+                }
+            }
+            catch
+            {
+                //
+            }
+
+
+            return Json(new
+            {
+                Message = "Đã có lỗi xảy ra! Vui lòng thử lại sau.",
+                Success = false
+            });
+        }
+
+        public ActionResult Edit(long? id)
+        {
+            if (id == null)
+            {
+                return RedirectErrorPage(Url.Action("Index"));
+            }
+            var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
+            if (test == null)
+            {
+                return RedirectErrorPage(Url.Action("Index"));
+            }
+            if (test.Course.TeacherId != User.Identity.GetUserId())
+            {
+                return RedirectAccessDeniedPage(Url.Action("Index"));
+            }
+            InitFormData(test);
+            return View(test);
+        }
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(string data)
+        {
+            try
+            {
+                var testTemp = new Test(data);
+                var testDb = DbContext.Tests.FirstOrDefault(s => s.TestId == testTemp.TestId);
+                if (testDb != null)
+                {
+                    if (testDb.Course.TeacherId != User.Identity.GetUserId())
+                    {
+                        return Json(new
+                        {
+                            Message = "Bạn không có quyền sử dụng khóa học này!",
+                            Success = false
+                        });
+                    }
+
+                    UpdateDetail(testDb.TestDetails);
+                    testDb.TestTitle = testTemp.TestTitle;
+                    testDb.Description = testTemp.Description;
+                    testDb.TestStart = testTemp.TestStart;
+                    testDb.TestEnd = testTemp.TestEnd;
+                    testDb.TestTime = testTemp.TestTime;
+                    testDb.SubmitNo = testTemp.SubmitNo;
+                    testDb.Actived = testTemp.Actived;
+                    testDb.MixedQuestions = testTemp.MixedQuestions;
+                    testDb.GradeType = testTemp.GradeType;
+                    testDb.TestDetails = testTemp.TestDetails;
+
+                    DbContext.Entry(testDb).State = EntityState.Modified;
+                    var result = DbContext.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        return Json(new
+                        {
+                            Message = "Cập nhật thành công.",
+                            Success = true
+                        });
+                    }
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        Message = "Bài kiểm tra này đã bị xóa.",
+                        Success = false
+                    });
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                //
+            }
+
+            return Json(new
+            {
+                Message = "Đã có lỗi xảy ra! Vui lòng thử lại sau.",
+                Success = false
+            });
+        }
+
 
         [HttpPost]
         public ActionResult GetGroupForUser()
@@ -136,7 +267,21 @@ namespace ETest.Areas.Adm.Controllers
             ViewBag.CourseId = test.CourseId > 0
                 ? new SelectList(courses, "CourseId", "CourseName", test.CourseId)
                 : new SelectList(courses, "CourseId", "CourseName", (object) null);
-        }
 
+            var types = new List<SelectListItem>
+            {
+                new SelectListItem {Selected = false, Text = "Điểm cao nhất", Value = "0"},
+                new SelectListItem {Selected = false, Text = "Điểm trung bình", Value = "1"},
+                new SelectListItem {Selected = false, Text = "Điểm thấp nhất", Value = "2"},
+            };
+            var type = (int) test.GradeType;
+            ViewBag.GradeType = type >= 0
+                ? new SelectList(types, "Value", "Text", type)
+                : new SelectList(types, "Value", "Text", (object)null);
+        }
+        private void UpdateDetail(IEnumerable<TestDetail> oldList)
+        {
+            DbContext.TestDetails.RemoveRange(oldList.ToList());
+        }
     }
 }

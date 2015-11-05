@@ -62,6 +62,12 @@
                 case "Slider":
                     $currentNode.createSlider();
                     break;
+                    case "ChoiceMedia":
+                    $currentNode.createChoiceMedia();
+                    break;
+                case "Fill":
+                    $currentNode.createFill();
+                    break;
             }
         } 
     });
@@ -118,8 +124,8 @@
         // Kiểm tra hợp lệ cho từng loại câu hỏi
         $("#eventQuestion li.questions").each(function () {
             var result = $(this).checkValidateQuestion();
-            isValid = result.isValid;
             if (!result.isValid) {
+                isValid = result.isValid;
                 focus = focus == null ? $(result.focus) : focus;
             }
         });
@@ -131,12 +137,12 @@
     }
     
     // Sự kiện submit
-    $(".submit-button").on("click", function (e) {
+    $(".submit-button").on("click", function(e) {
         // chặn hành động mặc định của nút submit
         e.preventDefault();
 
         // Không cho bấm submit 2 lần
-        $(".submit-button").each(function () { $(this).attr("disabled", "disabled") });
+        $(".submit-button").each(function() { $(this).attr("disabled", "disabled") });
 
         // Lấy text từ tinymce bỏ vào 
         tinyMCE.triggerSave();
@@ -151,10 +157,10 @@
                 type: "POST",
                 url: url,
                 data: { "data": data },
-                success: function (response) {
+                success: function(response) {
                     if (response.Success) {
                         // Lấy giá trị để chuyển sang trang thêm mới hay đến trang về danh sách
-                        
+
                         if (btnValue == "save-new")
                             window.location = "/Adm/Question/Create";
                         else
@@ -162,16 +168,16 @@
                     } else {
                         $("#Validation").html(response.Message);
                         $("html, body").animate({ scrollTop: 0 }, "slow");
-                        $(".submit-button").each(function () { $(this).removeAttr("disabled") });
+                        $(".submit-button").each(function() { $(this).removeAttr("disabled") });
                     }
 
                 },
-                error: function (xhr, ajaxOptions, thrownError) {
+                error: function(xhr, ajaxOptions, thrownError) {
                     alert(xhr.responseText);
                 }
             });
         } else {
-            $(".submit-button").each(function () { $(this).removeAttr("disabled") });
+            $(".submit-button").each(function() { $(this).removeAttr("disabled") });
         }
     });
 });

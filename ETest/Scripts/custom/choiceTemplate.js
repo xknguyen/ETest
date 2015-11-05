@@ -103,3 +103,39 @@ function creatGapAnswer() {
     //var answer = "<div class='col-md-12 question-answer'>" + choice.html() + "</div>";
     return choice.html();
 }
+
+
+// Choice Media
+
+function questionChoiceMediaTemplate() {
+    var temp = $("#choiceMediaTemplate").find("li.questions").first();
+    var text = $(temp).find("div.description-content").first().find("textarea").first();
+    var tinyCount = parseInt($('#tinyCount').val()) + 1;
+    $('#tinyCount').val(tinyCount);
+    text.attr("id", "QuestionTitle-" + tinyCount);
+    var choice = $(temp).html();
+    text.attr("id", "");
+    return choice;
+}
+
+function answerChoiceMediaTemplate(url) {
+    var choice = $("#choiceMediaTemplate").find("div.question-answer").first();
+    var img = choice.find("img").first();
+    $(img).attr("src", url);
+    //$(choice).find("div.i-checks").first().html("<input type='checkbox' name='isCorrect'/>");
+    var answer = "<div class='file-box question-answer choice-media-box'>" + choice.html() + "</div>";
+    return answer;
+}
+
+
+// Fill
+function questionFillTemplate() {
+    var temp = $("#fillTemplate").find("li.questions").first();
+    var text = $(temp).find("div.description-content").first().find("textarea").first();
+    var tinyCount = parseInt($('#tinyCount').val()) + 1;
+    $('#tinyCount').val(tinyCount);
+    text.attr("id", "QuestionTitle-" + tinyCount);
+    var choice = $(temp).html();
+    text.attr("id", "");
+    return choice;
+}

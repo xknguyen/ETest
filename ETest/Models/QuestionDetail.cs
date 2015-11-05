@@ -162,12 +162,14 @@ namespace ETest.Models
         {
             switch (QuestionType)
             {
+                case QuestionType.ChoiceMedia:
                 case QuestionType.Choice:
                     return new JavaScriptSerializer().Serialize(Choices);
                 case QuestionType.Order:
                     return new JavaScriptSerializer().Serialize(ItemOrders);
                 case QuestionType.Associate:
                     return new JavaScriptSerializer().Serialize(AssociateItems);
+                case QuestionType.Fill:
                 case QuestionType.Gap:
                     return new JavaScriptSerializer().Serialize(GapItems);
                 case QuestionType.Slider:
@@ -186,6 +188,7 @@ namespace ETest.Models
             int i;
             switch (QuestionType)
             {
+                case QuestionType.ChoiceMedia:
                 case QuestionType.Choice:
                     Choices = new List<Choice>();
                     i = 0;
@@ -209,6 +212,7 @@ namespace ETest.Models
                         AssociateItems.Add(new AssociateItem(choice, i++, AssociateItems));
                     }
                     break;
+                case QuestionType.Fill:
                 case QuestionType.Gap:
                     i = 0;
                     GapItems = new List<GapItem>();

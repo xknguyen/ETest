@@ -16,9 +16,9 @@
             @foreach (var q in Model)
             {
                 <tr>
-                    <td>@Html.Raw(q.QuestionTitle)</td>
-                    <td class="hidden id">@q.QuestionId</td>
+                    <td>@Html.Raw(q.QuestionTitle) (<b>@q.ChildNo</b>)</td>
                     <td class="hidden group">@ViewBag.GroupName</td>
+                    <td class="hidden id">@q.QuestionId</td>
                     <td class="hidden details">@q.QuestionDetails</td>
                 </tr>
             }

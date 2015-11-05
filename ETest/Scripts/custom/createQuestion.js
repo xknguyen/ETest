@@ -211,4 +211,58 @@
         $(item).selectGapAnswer();
         return id;
     }
+
+
+
+    // Choice Media
+    $.fn.createChoiceMedia = function () {
+        var choice = questionChoiceMediaTemplate();
+        $(this).html(choice);
+        // Tạo checkbox đẹp
+
+        // tạo tinymce
+        $(this).createTiny("textarea#QuestionTitle-" + parseInt($("#tinyCount").val()), 100);
+        //tinymce.EditorManager.execCommand('mceAddEditor', true, "description");
+        // Sự kiện xóa đáp án
+        $(this).find(".remove-answer-choice-media").removeAnswer();
+
+        // sự kiện cho xóa loại câu hỏi
+        $(this).find(".question-remove").removeQuestionDetail();
+
+        // Sự kiện cho thêm đáp án
+        $(this).find(".add-choice-media-answer").showChoiceMediaAnswer();
+
+        $(this).find(".answer-choice-media-img").selectedChoiceMediaAnswer();
+        return this;
+    }
+    $.fn.createAnswerChoiceMedia = function (url) {
+        $(this).append(answerChoiceMediaTemplate(url));
+        $(this).find(".answer-choice-media-img").last().selectedChoiceMediaAnswer();
+        $(this).find(".question-remove").last().removeQuestionDetail();
+        return this;
+    }
+    $.fn.removeAnswerChoiceMedia = function () {
+        // tìm div.question-answer
+        var parent = $(this).closest("div.question-answer").first();
+        parent.remove();
+        // tìm danh sách đáp án
+        return this;
+    }
+
+    // Fill
+    $.fn.createFill = function () {
+        var choice = questionFillTemplate();
+        $(this).html(choice);
+
+        // sự kiện cho xóa loại câu hỏi
+        $(this).find('.question-remove').removeQuestionDetail();
+        // tạo tinymce
+        $(this).createGapTiny("textarea#QuestionTitle-" + parseInt($("#tinyCount").val()), 100);
+        $(this).find(".gap-answer").selectGapAnswer();
+        $(this).find(".add-gap-answer").showAddGapAnswer();
+        $(this).find(".edit-gap-answer").showEditGapAnswer();
+        $(this).find(".remove-gap-answer").removeGapAnswer();
+        return this;
+    }
+   
 });

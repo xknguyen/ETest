@@ -121,15 +121,22 @@
     // Tạo thư mục
     $("#createFolder").on("click", function(e) {
         e.preventDefault();
+        $("#newFolderBox").hidenBox(false);
         if ($("#uploadBox").attr("class").indexOf("hidden") == -1) {
             $("#uploadBox").hidenBox(true);
+        } else {
+            var height = $("#newFolderBox").height();
+            var panel = $("#fileContent").height();
+            $("#fileContent").height(panel - height);
         }
-        $("#newFolderBox").hidenBox(false);
-
+        
     });
 
     $("#cancelNewFolder").on("click", function(e) {
         e.preventDefault();
+        var height = $("#newFolderBox").height();
+        var panel = $("#fileContent").height();
+        $("#fileContent").height(panel + height);
         $("#newFolderBox").hidenBox(true);
     });
 
@@ -211,14 +218,21 @@
     // UploadFile
     $("#showUploadFile").on("click", function(e) {
         e.preventDefault();
+        $("#uploadBox").hidenBox(false);
         var cla = $("#newFolderBox").attr("class");
         if (cla.indexOf("hidden") == -1) {
             $("#newFolderBox").hidenBox(true);
+        } else {
+            var height = $("#uploadBox").height();
+            var panel = $("#fileContent").height();
+            $("#fileContent").height(panel - height);
         }
-        $("#uploadBox").hidenBox(false);
     });
     $("#cancelUpload").on("click", function (e) {
         e.preventDefault();
+        var height = $("#uploadBox").height();
+        var panel = $("#fileContent").height();
+        $("#fileContent").height(panel + height);
         $("#uploadBox").hidenBox(true);
     });
 

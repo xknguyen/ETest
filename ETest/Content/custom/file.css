@@ -2,7 +2,7 @@
     width: 95%;
 }
 #mediaForm .file-header,.file-body {
-    min-height: 450px;
+    height: 450px;
 }
 #mediaForm .modal-header {
     padding: 15px;
@@ -36,11 +36,12 @@
     border: none;
 }
 #mediaForm .file-content {
-    height: 420px;
+    height: 400px;
 }
 #mediaForm .image-remove {
     z-index: 2;
     position: absolute;
+    color: red;
 }
 #mediaForm .file-box {
     margin-top: 5px;
@@ -67,4 +68,8 @@
 }
 #mediaForm .ibox-tools a {
     color: white;
+}
+
+#uploadBox,#newFolderBox {
+    margin-left: 0px;
 }

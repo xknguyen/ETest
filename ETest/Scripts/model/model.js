@@ -66,6 +66,10 @@ $(function() {
             return $(this).getGap(orderNo);
         case "Slider":
             return $(this).getSlider(orderNo);
+        case "ChoiceMedia":
+            return $(this).getChoiceMedia(orderNo);
+        case "Fill":
+            return $(this).getFill(orderNo);
         }
         return "";
     }
@@ -149,7 +153,24 @@ $(function() {
         return "{\"RightContent\":" + JSON.stringify(rightContent) + ",\"LeftContent\":" + JSON.stringify(leftContent) + ",\"RightId\":\"" + rightId + "\",\"LeftId\":\"" + leftId + "\"}";
     }
 
-    // Gap
+    // Gap && Fill
+    $.fn.getFill = function(orderNo) {
+        var choice = "";
+        var id = $(this).find('input.questionId').first().val();
+        var title = $(this).find('textarea').first().val();
+        var div = $(this).find('div.answers').find('div.gap-answer');
+
+        div.each(function() {
+            choice += $(this).createGapAnswerJson() + ",";
+        });
+
+        if (choice.substr(choice.length - 1) == ",") {
+            choice = choice.substr(0, choice.length - 1);
+        }
+
+        choice = "[" + choice + "]";
+        return createJsonDetail(6, id, title, choice, orderNo);
+    }
     $.fn.getGap = function(orderNo) {
         var choice = "";
         var id = $(this).find('input.questionId').first().val();
@@ -188,4 +209,29 @@ $(function() {
         var value = parseFloat($(this).find("label.currentValue").first().html());
         return "{\"Min\":" + min + ",\"Max\":\"" + max + "\",\"Step\":\"" + step + "\",\"Value\":\"" + value + "\"}";
     }
+
+    // Get Choice Media
+    $.fn.getChoiceMedia = function (orderNo) {
+        var choice = "";
+        var id = $(this).find('input.questionId').first().val();
+        var title = $(this).find('textarea').first().val();
+        var div = $(this).find('div.answers').find('div.question-answer');
+
+        div.each(function () {
+            choice += $(this).createChoiceMediaAnswerJson() + ",";
+        });
+
+        if (choice.substr(choice.length - 1) == ",") {
+            choice = choice.substr(0, choice.length - 1);
+        }
+
+        choice = "[" + choice + "]";
+        return createJsonDetail(5, id, title, choice, orderNo);
+    }
+    $.fn.createChoiceMediaAnswerJson = function () {
+        var correct = $(this).find("img.selected").length == 1;
+        var content = $(this).find("img").first().attr("src");
+        return "{\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\"}";
+    }
+
 });

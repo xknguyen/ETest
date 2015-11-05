@@ -223,5 +223,11 @@ namespace ETest.Areas.Adm.Controllers
             return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
         }
 
+
+        public ActionResult ViewQuestion(long? id)
+        {
+            var question = DbContext.Questions.FirstOrDefault(s => s.QuestionId == id);
+            return question != null ? PartialView("_QuestionView", question) : null;
+        }
     }
 }

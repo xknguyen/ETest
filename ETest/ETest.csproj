@@ -259,6 +259,26 @@
     <Compile Include="Migrations\201510231436552_UpdateDetailTitle.Designer.cs">
       <DependentUpon>201510231436552_UpdateDetailTitle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510310638359_UpdateTestInfo.cs" />
+    <Compile Include="Migrations\201510310638359_UpdateTestInfo.Designer.cs">
+      <DependentUpon>201510310638359_UpdateTestInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510311337143_UpdateTestGradeType.cs" />
+    <Compile Include="Migrations\201510311337143_UpdateTestGradeType.Designer.cs">
+      <DependentUpon>201510311337143_UpdateTestGradeType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511040232093_UpdateTestProperti.cs" />
+    <Compile Include="Migrations\201511040232093_UpdateTestProperti.Designer.cs">
+      <DependentUpon>201511040232093_UpdateTestProperti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511050203181_UpdateTestDetail.cs" />
+    <Compile Include="Migrations\201511050203181_UpdateTestDetail.Designer.cs">
+      <DependentUpon>201511050203181_UpdateTestDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511050351034_QuestionTest.cs" />
+    <Compile Include="Migrations\201511050351034_QuestionTest.Designer.cs">
+      <DependentUpon>201511050351034_QuestionTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -276,6 +296,7 @@
     <Compile Include="Models\SliderLimit.cs" />
     <Compile Include="Models\TestDetail.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestDetailData.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -599,6 +620,9 @@
     <Content Include="Areas\Adm\Views\Shared\_FileBox.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_ChoiceMediaTemplate.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_FillTemplate.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_Hidden.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\Edit.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_QuestionView.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />
@@ -1388,6 +1412,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\less-1.4.1.min.js" />
     <Content Include="Scripts\model\model.js" />
+    <Content Include="Scripts\model\TestModel.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
@@ -1696,6 +1721,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510231436552_UpdateDetailTitle.resx">
       <DependentUpon>201510231436552_UpdateDetailTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510310638359_UpdateTestInfo.resx">
+      <DependentUpon>201510310638359_UpdateTestInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510311337143_UpdateTestGradeType.resx">
+      <DependentUpon>201510311337143_UpdateTestGradeType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511040232093_UpdateTestProperti.resx">
+      <DependentUpon>201511040232093_UpdateTestProperti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511050203181_UpdateTestDetail.resx">
+      <DependentUpon>201511050203181_UpdateTestDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511050351034_QuestionTest.resx">
+      <DependentUpon>201511050351034_QuestionTest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

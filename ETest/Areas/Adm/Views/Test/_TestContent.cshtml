@@ -1,6 +1,6 @@
 ﻿@model Test
 @{
-   
+    Model.TestDetails = Model.TestDetails.OrderBy(s => s.OrderNo).ToList();
 }
 
 
@@ -8,6 +8,10 @@
     <div class="ibox-title">
         <h5>Danh sách câu hỏi</h5>
         <div class="ibox-tools">
+            @(Html.Bootstrap().Link("Chia điểm", "")
+                  .Class("btn btn-success btn-xs")
+                  .Id("divideScore")
+                  .PrependIcon("fa fa-bolt"))
             @(Html.Bootstrap().Link("Thêm câu hỏi", "")
                   .Class("btn btn-primary btn-xs")
                   .Id("addQuestion")
@@ -25,9 +29,9 @@
                 <th>Câu</th>
                 <th>Tiêu đề</th>
                 <th class="hidden-sm hidden-xs groupColumn">Nhóm</th>
+                <th>Điểm</th>
                 <th class="hidden questionId">Mã</th>
                 <th class="hidden questionDetail">Câu hỏi con</th>
-                <th class="hidden score"></th>
                 <th></th>
             </tr>
             </thead>
@@ -35,20 +39,20 @@
                 {
                     <tr>
                         <td>@i</td>
-                        <td>@Html.Raw(Model.TestDetails[i - 1].Question.QuestionTitle)</td>
+                        <td>@Html.Raw(Model.TestDetails[i - 1].Question.QuestionTitle) <b>(@Model.TestDetails[i-1].Question.QuestionDetails.Count)</b></td>
                         <td class="hidden-sm hidden-xs groupColumn">@Model.TestDetails[i - 1].Question.Group.GroupName</td>
+                        <td>
+                            @Html.TextBox("detailScore", @Model.TestDetails[i - 1].Score.ToString().Replace(',','.'),new { @class = "form-control detail-score", type = "number", min = "0", id="" })
+                        </td>
                         <td class="hidden questionId">
                             @Model.TestDetails[i - 1].Question.QuestionId
                         </td>
                         <td class="hidden questionDetail">
                             @Model.TestDetails[i - 1].QuestionDetails
                         </td>
-                        <td class="hidden score">
-                            @Model.TestDetails[i - 1].Score
-                        </td>
                         <td>
                             <a href="#" class="question-view"><i class="fa fa-2x fa-cog"></i></a>
-                            <a href="@Url.Action("Edit","Question",new { id = Model.TestDetails[i - 1].Question.QuestionId})" class="question-edit"><i class="fa fa-2x fa-edit"></i></a>
+                            <a href="@Url.Action("Edit", "Question", new {id = Model.TestDetails[i - 1].Question.QuestionId})" class="question-edit"><i class="fa fa-2x fa-edit"></i></a>
                             <a href="#" class="question-remove"><i class="fa fa-2x fa-close"></i></a>
                         </td>
                     </tr>

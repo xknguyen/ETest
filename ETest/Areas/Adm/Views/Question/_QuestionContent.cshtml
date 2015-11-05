@@ -32,6 +32,16 @@
                         Slider
                     </div>
                 </li>
+                <li class="dd-item new-question" data-type="ChoiceMedia">
+                    <div class="dd-handle">
+                        Choice Media
+                    </div>
+                </li>
+                <li class="dd-item new-question" data-type="Fill">
+                    <div class="dd-handle">
+                        Fill
+                    </div>
+                </li>
             </ol>
         </div>
     </div>
@@ -65,7 +75,12 @@
                             case QuestionType.Slider:
                                 @Html.Partial("_SliderTemplate", detail)
                                 break;
-
+                            case QuestionType.ChoiceMedia:
+                                @Html.Partial("_ChoiceMediaTemplate", detail)
+                                break;
+                            case QuestionType.Fill:
+                                @Html.Partial("_FillTemplate", detail)
+                                break;
                         }
                     }
                 </ol>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Core.Utilities
 {
@@ -16,6 +17,7 @@ namespace Core.Utilities
                 return 0;
             }
         }
+
         public static int ToInt(object value)
         {
             try
@@ -28,6 +30,8 @@ namespace Core.Utilities
                 return 0;
             }
         }
+
+
         public static string ChangeMoneyToString(long money)
         {
             string s = "";
@@ -51,6 +55,7 @@ namespace Core.Utilities
             s += " VNĐ";
             return s;
         }
+
         public static long ChangeStringToMoney(string money)
         {
             try
@@ -72,6 +77,7 @@ namespace Core.Utilities
                 return 0;
             }
         }
+
         public static DateTime ToDateTime(object value)
         {
             try
@@ -83,6 +89,7 @@ namespace Core.Utilities
                 return DateTime.MinValue;
             }
         }
+
         public static short ToShort(object value)
         {
             try
@@ -95,6 +102,7 @@ namespace Core.Utilities
                 return 0;
             }
         }
+
         public static string ToString(object value)
         {
             try
@@ -106,6 +114,7 @@ namespace Core.Utilities
                 return "";
             }
         }
+
         public static bool ToBool(object value)
         {
             try
@@ -117,6 +126,7 @@ namespace Core.Utilities
                 return false;
             }
         }
+
         public static double ToDouble(object value)
         {
             try
@@ -140,6 +150,18 @@ namespace Core.Utilities
             {
 
                 return 0;
+            }
+        }
+
+        public static DateTime ToDateTime(string dateString, string format)
+        {
+            try
+            {
+                return DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return DateTime.MinValue;
             }
         }
     }

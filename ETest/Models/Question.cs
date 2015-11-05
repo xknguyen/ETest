@@ -38,7 +38,6 @@ namespace ETest.Models
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-        public virtual IList<Test> Tests { get; set; }
         public virtual IList<TestDetail> TestDetails { get; set; }
         public virtual Group Group { get; set; }
         

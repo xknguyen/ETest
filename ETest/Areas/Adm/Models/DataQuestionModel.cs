@@ -13,16 +13,14 @@ namespace ETest.Areas.Adm.Models
         public string QuestionTitle { get; set; }
         public string QuestionDetails { get; set; }
         public string Score { get; set; }
+        public int ChildNo { get; set; }
 
         public DataQuestionModel(Question question)
         {
             QuestionId = question.QuestionId;
             QuestionTitle = question.QuestionTitle;
-            var questionDetails = new List<DataDetailModel>();
-            foreach (var detail in question.QuestionDetails)
-            {
-                questionDetails.Add(new DataDetailModel(detail));
-            }
+            ChildNo = question.QuestionDetails.Count;
+            var questionDetails = question.QuestionDetails.Select(detail => new DataDetailModel(detail)).ToList();
             Score = "";
             QuestionDetails = JsonConvert.SerializeObject(questionDetails,
                 Formatting.Indented,

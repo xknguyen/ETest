@@ -6,18 +6,22 @@
 <div class="modal inmodal" id="choiceQuestionForm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated fadeInUp">
+            <div class="modal-header">
+                <h3>Chọn câu hỏi</h3>
+            </div>
             <div class="modal-body" style="min-height: 450px;">
-                @Html.Partial("_QuestionChoiceForm",groups)
+                @Html.Partial("_QuestionChoiceForm", groups)
             </div>
             <div class="modal-footer">
                 <div class="col-md-3" style="text-align: left">
-                    <div class="col-md-6"><input type="number" class="form-control" min="0" id="randomNo" /></div>
+                    <div class="col-md-6"><input type="number" class="form-control" min="0" id="randomNo"/>
+                    </div>
                     <div class="col-md-6">
                         <button type="button" class="btn btn-primary" id="randomButton">Chọn ngẫu nhiên</button>
                     </div>
                 </div>
-                
-                
+
+
                 <button type="button" class="btn btn-success" id="saveButton" style="margin: 5px">Lưu</button>
                 <button type="button" class="btn btn-danger" id="closeButton" data-dismiss="modal">Đóng</button>
             </div>
@@ -30,42 +34,25 @@
     <div class="modal-dialog">
         <div class="modal-content animated fadeInUp">
             <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-md-3" for="scoreInput">Điểm chung</label>
-                        <div class="col-md-9">
-                            <input class="form-control text-box single-line" id="scoreInput" name="scoreInput" type="number" min="0" value="1">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-3" for="isDiv">Chia đều</label>
-                        <div class="col-md-9">
-                            <div class="checkbox i-checks">
-                                @Html.CheckBox("isDiv", false, new {@class = "form-control"})
+                <div id="questionDetailList">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Danh sách bài kiểm tra</h5>
+                            <div class="ibox-tools">
+                                <button class="btn btn-primary btn-xs" id="divideDetailScore">Tổng điểm: <span id="testScorePopup"></span></button>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="scoreInput">Danh sách câu hỏi con</label>
-                    </div>
-                    <div id="questionDetailList">
-                        <div class="form-group">
-                            <label class="control-label col-md-10">Câu 1</label>
-                            <div class="col-md-2">
-                                <input class="form-control text-box single-line score-detail" type="number" min="0" value="0">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-10">Câu 2</label>
-                            <div class="col-md-2">
-                                <input class="form-control text-box single-line score-detail" type="number" min="0" value="0">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-10">Câu 3</label>
-                            <div class="col-md-2">
-                                <input class="form-control text-box single-line score-detail" type="number" min="0" value="0">
-                            </div>
+                        <div class="ibox-content p-sm">
+                            <table id="tblTests" class="table table-responsive table-bordered table-hover tbldata">
+                                <tr>
+                                    <td>
+                                        Câu 1
+                                    </td>
+                                    <td>
+                                        <input class="form-control" name="detailScore" type="number" min="0" value="0">
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

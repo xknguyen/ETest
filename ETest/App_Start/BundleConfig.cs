@@ -8,27 +8,56 @@ namespace ETest
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            // sử dụng để tạo bài kiểm tra
+            bundles.Add(new ScriptBundle("~/bundles/testjs").Include(
+                "~/Scripts/plugins/iCheck/icheck.min.js",
+                "~/Scripts/plugins/chosen/chosen.jquery.js",
+                "~/Scripts/tinymce/tinymce.min.js",
+                "~/Scripts/jquery.dataTables.min.js",
+                "~/Scripts/dataTables.rowReorder.min.js",
+                "~/Scripts/bootstrap-treeview.js",
+                "~/Scripts/custom/file.js",
+                "~/Scripts/model/TestModel.js",
+                "~/Scripts/custom/utilities.js",
+                "~/Scripts/moment.js",
+                "~/Scripts/bootstrap-datetimepicker.min.js",
+                "~/Scripts/custom/testEvent.js",
+                "~/Scripts/custom/test.js"
+                ));
+            bundles.Add(new StyleBundle("~/bundles/teststyle").Include(
+                "~/Content/jquery.dataTables.min.css",
+                "~/Content/plugins/iCheck/custom.css",
+                "~/Content/rowReorder.dataTables.min.css",
+                "~/Content/bootstrap-treeview.css",
+                "~/Content/bootstrap-datetimepicker.min.css",
+                "~/Content/custom/file.css",
+                "~/Content/custom/test.css"
+                ));
+
+
             // sữ dụng để tạo câu hỏi
             bundles.Add(new ScriptBundle("~/bundles/questionjs").Include(
                 "~/Scripts/model/model.js",
                 "~/Scripts/bootstrap-slider.min.js",
+                "~/Scripts/bootstrap-treeview.js",
                 "~/Scripts/plugins/iCheck/icheck.min.js",
                 "~/Scripts/tinymce/tinymce.min.js",
                 "~/Scripts/plugins/chosen/chosen.jquery.js",
+                "~/Scripts/custom/file.js",
                 "~/Scripts/custom/Utilities.js",
                 "~/Scripts/custom/event.js",
                 "~/Scripts/custom/createQuestion.js",
                 "~/Scripts/custom/choiceTemplate.js",
                 "~/Scripts/custom/validate.js",
                 "~/Scripts/plugins/nestable/jquery.nestable.js",
-                
                 "~/Scripts/custom/question.js"
                 ));
-            //"~/Scripts/jquery.nestable.js",
             bundles.Add(new StyleBundle("~/bundles/questionstyle").Include(
                 "~/Content/AdmGrid.css",
                 "~/Content/plugins/iCheck/custom.css",
+                "~/Content/bootstrap-treeview.css",
                 "~/Content/bootstrap-slider.min.css",
+                "~/Content/custom/file.css",
                 "~/Content/custom/question.css"
                 ));
             bundles.Add(new StyleBundle("~/bundles/shopstyle").Include(
@@ -46,11 +75,11 @@ namespace ETest
                "~/Content/js/custom.js"
                 ));
             bundles.Add(new ScriptBundle("~/bundles/admmainjs").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/bootstrap.js",
-                        "~/Scripts/respond.js",
-                        "~/Scripts/plugins/metisMenu/jquery.metisMenu.js",
-                        "~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"));
+                "~/Scripts/jquery-{version}.js",
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js",
+                "~/Scripts/plugins/metisMenu/jquery.metisMenu.js",
+                "~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/admjqueryval").Include(
                         "~/Scripts/jquery.validate.js",

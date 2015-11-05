@@ -14,16 +14,19 @@
         // Kiểm tra đáp án
         var type = $(this).attr("data-type");
         switch (type) {
-            case "Choice":
-                return $(this).checkValidateChoice(result);
-            case "Order":
-                return $(this).checkValidateOrder(result);
-            case "Associate":
-                return $(this).checkValidateAssociate(result);
-            case "Gap":
-                return $(this).checkValidateGap(result);
-            case "Slider":
-                return $(this).checkValidateSlider(result);
+        case "Choice":
+            return $(this).checkValidateChoice(result);
+        case "Order":
+            return $(this).checkValidateOrder(result);
+        case "Associate":
+            return $(this).checkValidateAssociate(result);
+        case "Fill":
+        case "Gap":
+            return $(this).checkValidateGap(result);
+        case "Slider":
+            return $(this).checkValidateSlider(result);
+        case "ChoiceMedia":
+            return $(this).checkValidateChoiceMedia(result);
         }
         return result;
     }
@@ -66,6 +69,29 @@
         }
         return result;
     }
+
+    $.fn.checkValidateChoiceMedia = function (result) {
+        var div = $(this).find("div.answers").find("div.choice-media-box");
+        if (div.length == 0) {
+            result.isValid = false;
+            result.focus = result.focus == null ? $(this) : result.focus;
+            $(this).find("span.question-answers-error").first().text("Bạn chưa có đáp án nào!");
+        } else {
+
+            var correct = $(this).find("img.selected");
+            var mess = "";
+            if (correct.length == 0) {
+                result.isValid = false;
+                mess = "Bạn chưa chọn đáp án đúng. ";
+                $(this).find("span.question-answers-error").first().text(mess);
+                result.focus = result.focus == null ? $(this) : result.focus;
+            } else {
+                $(this).find("span.question-answers-error").first().text("");
+            }
+        }
+        return result;
+    }
+
 
     $.fn.checkValidateOrder = function (result) {
         var isEmpty = false;
