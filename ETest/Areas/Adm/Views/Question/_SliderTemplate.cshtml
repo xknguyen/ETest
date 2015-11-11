@@ -3,54 +3,53 @@
     Model.SliderLimit = Model.SliderLimit ?? new SliderLimit();
 }
 <li class="dd-item dd3-item questions" data-type="Slider" data-id="0">
-        <div class="pull-right m-r-md m-t-sm">
-            <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
-        </div>
-        <div class="dd-handle dd3-handle question-type">Slider</div>
-        <div class="dd3-content question-border">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-horizontal">
-                        <div class="form-group quetion-control">
+    <div class="pull-right m-r-md m-t-sm">
+        <a href="#" class="question-remove"><i class="fa fa-close"></i></a>
+    </div>
+    <div class="dd-handle dd3-handle question-type">Slider</div>
+    <div class="dd3-content question-border">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-horizontal">
+                    <div class="form-group quetion-control">
+                        <div class="col-md-12">
+                            @Html.HiddenFor(s => s.QuestionDetailId, new { @class = "questionId" })
+                            <div class="description-content">
+                                @Html.TextArea("QuestionTitle-" + Model.OrderNo, Model.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
+                            </div>
+                            <span class="field-validation-valid text-danger question-title-error"></span>
+                        </div>
+                    </div>
+                    <div class="form-group  quetion-control">
+                        <div class="answers answer-sliders">
+                            <span class="field-validation-valid text-danger question-answers-error"></span>
+                            <div class="slider-content">
+                                @Html.TextBox("answer", 0, new { @class = "answer-slider", type = "text", data_slider_min = Model.SliderLimit.Min, data_slider_max = Model.SliderLimit.Max, data_slider_step = Model.SliderLimit.Step, data_slider_value = Model.SliderLimit.Value })
+                            </div>
+                        </div>
+                        <div class="answer-sliders slider-limit">
                             <div class="col-md-12">
-                                @Html.HiddenFor(s => s.QuestionDetailId, new { @class = "questionId" })
-                                <div class="description-content">
-                                    @Html.TextArea("QuestionTitle-" + Model.OrderNo, Model.QuestionTitle, new { @class = "form-control description", placeholder = "Nhập nội dung câu hỏi" })
+                                <div class="col-md-4">
+                                    <div class="col-md-4 left">
+                                        @Html.TextBox("Min", Model.SliderLimit.Min, new { @class = "form-control slider-value", type = "number" })
+                                    </div>
                                 </div>
-                                <span class="field-validation-valid text-danger question-title-error"></span>
+                                <div class="col-md-4">
+                                    <div class="col-md-4 center">
+                                        @Html.TextBox("Step", Model.SliderLimit.Step, new { @class = "form-control slider-value", type = "number" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-4 right">
+                                        @Html.TextBox("Max", Model.SliderLimit.Max, new { @class = "form-control slider-value", type = "number" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="control-label">Giá trị hiện tại: </label>
+                                <label class="currentValue">@Model.SliderLimit.Value</label>
                             </div>
                         </div>
-                        <div class="form-group  quetion-control">
-                            <div class="answers answer-sliders">
-                                <span class="field-validation-valid text-danger question-answers-error"></span>
-                                <div class="slider-content">
-                                    @Html.TextBox("answer", 0, new { @class = "answer-slider", type = "text", data_slider_min = Model.SliderLimit.Min, data_slider_max = Model.SliderLimit.Max, data_slider_step = Model.SliderLimit.Step, data_slider_value = Model.SliderLimit.Value })
-                                </div>
-                            </div>
-                            <div class="answer-sliders slider-limit">
-                                <div class="col-md-12">
-                                    <div class="col-md-4">
-                                        <div class="col-md-4 left">
-                                            @Html.TextBox("Min", Model.SliderLimit.Min, new { @class = "form-control slider-value", type = "number" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="col-md-4 center">
-                                            @Html.TextBox("Step", Model.SliderLimit.Step, new { @class = "form-control slider-value", type = "number" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="col-md-4 right">
-                                            @Html.TextBox("Max", Model.SliderLimit.Max, new { @class = "form-control slider-value", type = "number" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="control-label">Giá trị hiện tại: </label>
-                                    <label class="currentValue">@Model.SliderLimit.Value</label>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

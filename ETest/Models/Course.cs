@@ -50,5 +50,6 @@ namespace ETest.Models
         public virtual Account Teacher { get; set; }
         public virtual IList<Account> Students { get; set; }
         public virtual IList<Test> Tests { get; set; }
+        public virtual IList<Group> Groups { get; set; }
     }
 }

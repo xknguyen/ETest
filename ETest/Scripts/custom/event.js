@@ -249,7 +249,7 @@
     $.fn.createSliderForm = function() {
         var g = $(this).slider();
         if (g != null)
-            g.on('slide', function(ui) {
+            g.on("slideStop", function(ui) {
                 var parent = $(this).closest("div.form-group").first();
                 var currentvalue = $(parent).find("label.currentValue").first();
                 $(currentvalue).html(ui.value);
@@ -364,7 +364,7 @@
             e.preventDefault();
             $("#gapAnswerPopUp").attr("data-type", "update");
             currentGapAnswer = $(this).closest("div.gap-answer").first();
-            $("#gapAnswerPopUp").val($(currentGapAnswer).find("p").first().text());
+            $("#gapAnswerPopUp").val($(currentGapAnswer).find("p").find("span").first().text());
             // gán currentGapQuestion bàng thẻ dic chứa câu hỏi
             currentGapQuestion = $(this).closest("div.quetion-control").first().find("div.answers").first();
 

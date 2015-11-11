@@ -228,6 +228,15 @@ namespace ETest.Models
             Choice = ConvertChoiceToString();
         }
 
+        public bool IsSingleChoice
+        {
+            get
+            {
+                var choiceCorrect = Choices.Where(s => s.IsCorrect).ToList();
+                return choiceCorrect.Count <= 1;
+            }
+        }
+
         public void Update(QuestionDetail detai)
         {
             QuestionType = detai.QuestionType;

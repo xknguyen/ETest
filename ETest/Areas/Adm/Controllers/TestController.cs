@@ -231,7 +231,7 @@ namespace ETest.Areas.Adm.Controllers
         public ActionResult GetGroupForUser()
         {
             var userId = User.Identity.GetUserId();
-            var groups = DbContext.Groups.Where(s => s.TeacherId == userId && !s.ParentGroupId.HasValue).ToList();
+            var groups = DbContext.Groups.Where(s => s.Course.TeacherId == userId && !s.ParentGroupId.HasValue).ToList();
             var data = new List<DataGroupModel>();
             foreach (var g in groups)
             {
@@ -246,7 +246,7 @@ namespace ETest.Areas.Adm.Controllers
         public ActionResult GetQuestion(int? id)
         {
             var userId = User.Identity.GetUserId();
-            var questions = DbContext.Questions.Where(s =>s.GroupId == id && s.Group.TeacherId == userId ).ToList();
+            var questions = DbContext.Questions.Where(s =>s.GroupId == id && s.Group.Course.TeacherId == userId ).ToList();
 
             var data = new List<DataQuestionModel>();
             foreach (var question in questions)

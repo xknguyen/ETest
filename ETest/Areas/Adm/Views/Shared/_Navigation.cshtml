@@ -33,40 +33,6 @@
                 </ul>
             </li>
 
-            <!--Các chức năng liên quan tới nhóm câu hỏi-->
-            <li>
-                <a href="#">
-                    <i class="fa fa-bank"></i>
-                    <span class="nav-label">Nhóm câu hỏi</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        @Html.ActionLink("Xem tất cả", "Index", "Group")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Thêm nhóm mới", "Create", "Group")
-                    </li>
-                </ul>
-            </li>
-
-            <!--Các chức năng liên quan tới câu hỏi-->
-            <li>
-                <a href="#">
-                    <i class="fa fa-question"></i>
-                    <span class="nav-label">Quản lý câu hỏi</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        @Html.ActionLink("Xem tất cả", "Index", "Question")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tạo câu hỏi mới", "Create", "Question")
-                    </li>
-                </ul>
-            </li>
-
             <!--Các chức năng liên quan tới khóa học-->
             <li>
                 <a href="#">
@@ -80,36 +46,6 @@
                     </li>
                     <li>
                         @(Html.Bootstrap().ActionLink("Thêm khóa học mới", "Create", "Course"))
-                    </li>
-                </ul>
-            </li>
-
-            <!--Các chức năng liên quan tới quản lý bài kiểm tra-->
-            <li>
-                <a href="#">
-                    <i class="fa fa-file"></i>
-                    <span class="nav-label">Quản lý bài kiểm tra</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        @Html.ActionLink("Xem tất cả", "Index", "Test")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Thêm bài kiểm tra mới", "Create", "Test")
-                    </li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class="fa fa-book"></i>
-                    <span class="nav-label">Quản lý phiếu trả lời</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        @Html.ActionLink("Xem tất cả", "Index", "AnswerSheet")
                     </li>
                 </ul>
             </li>

@@ -117,6 +117,16 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                           .RouteValues(new {id = item.CourseId})
                                           .AppendIcon("fa fa-users fa-2x")
                                           .Title("Xem danh sách thành viên"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Index", "Group")
+                                          .RouteValues(new { id = item.CourseId })
+                                          .AppendIcon("fa fa-bank fa-2x")
+                                          .Title("Xem danh sách nhóm câu hỏi"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Index", "Test")
+                                          .RouteValues(new { id = item.CourseId })
+                                          .AppendIcon("fa fa-file fa-2x")
+                                          .Title("Xem danh sách bài kiểm tra"))
                                 </td>
                             </tr>
                         }

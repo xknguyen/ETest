@@ -1,0 +1,36 @@
+﻿@model QuestionDetail
+@{
+    var itemRight = Model.AssociateItems.Select(s => s.Associate).ToList();
+
+    // Sắp xếp thứ tự ngẫu nhiên
+}
+
+
+<div class="row associate-box" id="@Model.QuestionDetailId">
+    <div class="col-md-8">
+        @foreach (var left in Model.AssociateItems)
+        {
+            <div class="answer-box">
+                <div class="right-answer associate-answer-border" data-right-id="@left.ChoiceId">
+                    @left.Content
+                </div>
+                <div class="left-answer associate-answer-border ui-widget-content"></div>
+                <div style="clear: both"></div>
+            </div>
+        }
+    </div>
+    <div class="col-md-4 associate-answer-box-virtual">
+        <div class="ui-widget-content associate-answer-box">
+            @foreach (var right in itemRight)
+            {
+                <div class="left-choice associate-answer-border" data-right-id="@right.ChoiceId">
+                    @right.Content
+                </div>
+            }
+            
+        </div>
+    </div>
+</div>
+
+
+<div style="height: 30px;"></div>

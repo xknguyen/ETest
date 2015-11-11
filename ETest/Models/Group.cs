@@ -26,7 +26,7 @@ namespace ETest.Models
         [Display(Name = "Nhóm cha")]
         public long? ParentGroupId { get; set; }
 
-        public string TeacherId { get; set; }
+        public long CourseId { get; set; }
 
         [Display(Name = "Trạng thái")]
         public bool Actived { get; set; }
@@ -38,7 +38,7 @@ namespace ETest.Models
         public byte[] RowVersion { get; set; }
 
         public virtual Group ParentGroup { get; set; }
-        public virtual Account Teacher { get; set; }
+        public virtual Course Course { get; set; }
         public virtual IList<Group> ChildGroups { get; set; }
         public virtual IList<Question> Questions { get; set; }
     }

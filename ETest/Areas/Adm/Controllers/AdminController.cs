@@ -44,6 +44,21 @@ namespace ETest.Areas.Adm.Controllers
                     return RedirectToAction("Index");
             }
         }
+        public virtual ActionResult RedirectId(object id)
+        {
+            var saveAction = Request.Form["save-action"];
+            switch (saveAction)
+            {
+                case "save-new":
+                    return RedirectToAction("Create", new { id });
+
+                case "save-edit":
+                    return RedirectToAction("Edit", new { id });
+
+                default:
+                    return RedirectToAction("Index", new { id });
+            }
+        }
 
         public virtual ActionResult RedirectErrorPage(string url)
         {

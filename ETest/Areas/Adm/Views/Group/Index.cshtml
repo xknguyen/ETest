@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Group>
 @{
-    ViewBag.Title = "Quản lý danh mục";
+    ViewBag.Title = "Quản lý nhóm câu hỏi";
 }
 @section pluginStyles
 {
@@ -24,26 +24,27 @@
             @(Html.Bootstrap()
                   .ActionLink("", "Index", "Question")
                   .Class("ajax-link")
-                  .RouteValues(new { CateId = group.GroupId })
+                  .RouteValues(new { groupId = group.GroupId })
                   .Title("Xem danh sách câu hỏi")
                   .AppendIcon("fa fa-question fa-2x"))
         </div>
         <div class="dd-handle">
             @group.GroupName <br />
-            <small>@Html.Raw(group.Description)
-            </small>
-        </div>
+            <small>
+                @Html.Raw(group.Description)
+        </small>
+    </div>
 
-        @if (group.ChildGroups != null && group.ChildGroups.Any())
-        {
-            <ol class="dd-list">
-                @foreach (var category in group.ChildGroups)
-                {
-                    @ShowGroups(category, level + 1)
-                }
-            </ol>
-        }
-    </li>
+    @if (group.ChildGroups != null && group.ChildGroups.Any())
+    {
+        <ol class="dd-list">
+            @foreach (var category in group.ChildGroups)
+            {
+                @ShowGroups(category, level + 1)
+            }
+        </ol>
+    }
+</li>
 }
 
 <div class="row">
@@ -54,18 +55,19 @@
                 <div class="ibox-tools">
                     @(Html.Bootstrap()
                           .ActionLink("Thêm nhóm mới", "Create")
+                          .RouteValues(new { id = ViewBag.CourseId })
                           .Class("btn btn-primary btn-xs")
                           .PrependIcon("fa fa-plus"))
 
                     @(Html.Bootstrap()
                           .Button().Text("Mở rộng")
-                          .HtmlAttributes(new {data_action = "expand-all"})
+                          .HtmlAttributes(new { data_action = "expand-all" })
                           .Class("btn btn-info btn-xs")
                           .PrependIcon("fa fa-expand"))
 
                     @(Html.Bootstrap()
                           .Button().Text("Thu hẹp")
-                          .HtmlAttributes(new {data_action = "collapse-all"})
+                          .HtmlAttributes(new { data_action = "collapse-all" })
                           .Class("btn btn-info btn-xs")
                           .PrependIcon("fa fa-compress"))
 

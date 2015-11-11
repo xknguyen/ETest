@@ -1,4 +1,4 @@
-﻿using ETest.DAL;
+using ETest.DAL;
 using System.Data.Entity.Migrations;
 namespace ETest.Migrations
 {

@@ -7,10 +7,18 @@
 {
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-slider.min.css" rel="stylesheet" />
+    <link href="~/Content/custom/previewQuestion.css" rel="stylesheet" />
     <style>
         .dropdown-width {
             max-width: 150px;
             float: right;
+        }
+        #preview-question-form {
+            height: 500px;
+            overflow-y: auto;
         }
     </style>
 }
@@ -37,22 +45,22 @@
                     <div class="col-md-6 m-b-sm">
                         @using (Html.BeginForm("Index", "Question", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchQuestion" }))
                         {
-                            <div class="input-group">
-                                @(Html.TextBox("Keyword", null, new
+                        <div class="input-group">
+                            @(Html.TextBox("Keyword", null, new
                             {
                                 placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
                                 @class = "input-sm form-control"
                             }))
 
-                                @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
-                                @Html.Hidden("Status", null, new { id = "supStatus" })
-
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                    @(Html.ActionLink("Bỏ lọc", "Index", null,
+                            @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
+                            @Html.Hidden("GroupId", (int)ViewBag.GroupId, new { id = "groupId" })
+                            @Html.Hidden("Status", null, new { id = "supStatus" })
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                @(Html.ActionLink("Bỏ lọc", "Index", null,
                                           new { @class = "btn btn-sm btn-warning" }))
-                                </span>
-                            </div>
+                            </span>
+                        </div>
                         }
 
                     </div>
@@ -65,7 +73,7 @@
                 <table id="tblQuestions" class="table table-responsive table-bordered table-hover tbldata">
                     <thead>
                         <tr>
-                            <th >Tiêu đề câu hỏi</th>
+                            <th>Tiêu đề câu hỏi</th>
                             <th width="150px" class="hidden-sm hidden-xs">Nhóm câu hỏi</th>
                             <th width="90px">Trạng thái</th>
                             <th width="110px"></th>
@@ -75,46 +83,47 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.Raw(item.QuestionTitle)
-                                </td>
+                    <tr>
+                        <td>
+                            @Html.Raw(item.QuestionTitle)
+                        </td>
 
-                                <td class="hidden-sm hidden-xs">
-                                    @item.Group.GroupName
-                                </td>
+                        <td class="hidden-sm hidden-xs">
+                            @item.Group.GroupName
+                        </td>
 
-                                <td class="td_toggle">
-                                    <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"
-                                            data-toggle-state="true"
-                                            data-url="@Url.Action("UpdateToggle")"
-                                            data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"></button>
-                                </td>
+                        <td class="td_toggle">
+                            <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"
+                                    data-toggle-state="true"
+                                    data-url="@Url.Action("UpdateToggle")"
+                                    data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.QuestionId)"></button>
+                        </td>
 
-                                <td>
-                                    @(Html.Bootstrap()
+                        <td>
+                            @(Html.Bootstrap()
                                           .ActionLink("", "Edit")
                                           .RouteValues(new { id=item.QuestionId })
                                           .Title("Cập nhật khóa học")
                                           .AppendIcon("fa fa-pencil fa-2x"))
-                                    @(Html.Bootstrap()
+                            @(Html.Bootstrap()
                                           .ActionLink("", "Export", "Question")
                                           .Class("ajax-link")
                                           .RouteValues(new { id = item.QuestionId })
                                           .AppendIcon("fa fa-cloud-download fa-2x")
                                           .Title("Xuất câu hỏi thành file"))
-                                    @(Html.Bootstrap()
+                            @(Html.Bootstrap()
                                           .ActionLink("", "Preview", "Question")
                                           .RouteValues(new { id = item.QuestionId })
+                                          .Class("preview-question")
                                           .AppendIcon("fa fa-eye fa-2x")
                                           .Title("Xem trước câu hỏi"))
-                                </td>
-                            </tr>
+                        </td>
+                    </tr>
                         }
                     }
                     else
                     {
-                        <tr><td colspan="4">Không có câu hỏi nào</td></tr>
+                    <tr><td colspan="4">Không có câu hỏi nào</td></tr>
                     }
                 </table>
 
@@ -146,9 +155,35 @@
     </div>
 </div>
 
+
+
+<a data-target="#preview-question-modal" data-toggle="modal" class="hidden" id="showPreviewQuestion"></a>
+<div class="modal inmodal" id="preview-question-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-body">
+                <div id="preview-question-content">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="closePreviewButton" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section pluginScripts
+{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/bootstrap-slider.min.js"></script>
+}
+
 @section scripts
 {
     <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
+<script src="~/Scripts/custom/questionPreview.js"></script>
     <script src="~/Scripts/custom/questionIndex.js"></script>
 }
 

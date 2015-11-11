@@ -1,0 +1,12 @@
+﻿@model QuestionDetail
+@foreach (var choice in Model.Choices)
+{
+    <div class="col-md-12 choice-question">
+        <div class="@(Model.IsSingleChoice ? "radio" : "checkbox") i-checks">
+            <label>
+                @(Model.IsSingleChoice ? Html.RadioButton("choice-answer-box-" + Model.QuestionDetailId, false, new {@class = "form-control"}) : Html.CheckBox("choice-answer-box-" + Model.QuestionDetailId, false, new {@class = "form-control"}))
+                <span class=" choice-content">@choice.Content</span>
+            </label>
+        </div>
+    </div>
+}

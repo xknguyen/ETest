@@ -21,7 +21,6 @@ namespace ETest.Models
         }
         
         
-        public virtual IList<Group> Groups { get; set; }
         public virtual IList<AnswerSheet> AnswerSheets { get; set; }
         public virtual IList<Course> Courses { get; set; }
         public virtual UserProfile Profile { get; set; }

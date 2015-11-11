@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using ETest.Areas.Adm.Models;
 using ETest.Models;
 using Microsoft.AspNet.Identity;
 
@@ -12,18 +13,55 @@ namespace ETest.Areas.Adm.Controllers
 {
     public class GroupController : AdminController
     {
-        // GET: Adm/Group
-        public ActionResult Index()
+
+        public CheckRoleResult CheckCourseRole(long? id)
         {
-            var groups = PopulateGroups();
+            var result = new CheckRoleResult();
+            if (id == null)
+            {
+                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.IsValid = false;
+            }
+            else
+            {
+                Course course = DbContext.Courses.Find(id);
+                if (course == null)
+                {
+                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.IsValid = false;
+                }
+                else
+                {
+                    if (course.TeacherId != User.Identity.GetUserId())
+                    {
+                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.IsValid = false;
+                    }
+                    else
+                    {
+                        result.Course = course;
+                        result.IsValid = true;
+                    }
+                }
+            }
+            return result;
+        }
+
+        // GET: Adm/Group
+        public ActionResult Index(long? id)
+        {
+            var result = CheckCourseRole(id);
+            if (!result.IsValid) return result.ActionResult;
+            var groups = PopulateGroups(result.Course.Groups);
+            ViewBag.CourseId = id;
             return View(groups);
         }
 
-        private List<Group> PopulateGroups()
+        private List<Group> PopulateGroups(IList<Group> groups)
         {
             var userId = User.Identity.GetUserId();
-            var allCates = DbContext.Groups
-                .Where(s=>s.TeacherId == userId)
+            var allCates = groups
+                .Where(s => s.Course.TeacherId == userId)
                 .OrderBy(x => x.ParentGroupId)
                 .ThenBy(x => x.OrderNo)
                 .ToList();
@@ -77,26 +115,31 @@ namespace ETest.Areas.Adm.Controllers
         /// Get: Adm/group/Create
         /// </summary>
         /// <returns></returns>
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
-            var emptyGroup = new Group() {Actived = true};
-            InitFormData(emptyGroup);
+            var result = CheckCourseRole(id);
+            if (!result.IsValid) return result.ActionResult;
+
+            // ReSharper disable once PossibleInvalidOperationException
+            var emptyGroup = new Group() {Actived = true, CourseId = id.Value};
+            InitFormData(emptyGroup, result.Course.Groups.ToList());
             return View(emptyGroup);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(
-            [Bind(Include = "GroupName, Description, ParentGroupId, OrderNo, Actived")] Group group)
+            [Bind(Include = "GroupName, Description, ParentGroupId, OrderNo, CourseId, Actived")] Group group)
         {
+            var result = CheckCourseRole(group.CourseId);
+            if (!result.IsValid) return result.ActionResult;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    group.TeacherId = User.Identity.GetUserId();
                     DbContext.Groups.Add(group);
                     if (DbContext.SaveChanges() > 0)
-                        return Redirect(null);
+                        return RedirectId(group.CourseId);
                     ModelState.AddModelError("", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
                 }
             }
@@ -104,17 +147,18 @@ namespace ETest.Areas.Adm.Controllers
             {
                 ModelState.AddModelError("", ex.Message);
             }
-            InitFormData(group);
+            InitFormData(group, result.Course.Groups.ToList());
             return View(group);
         }
 
-        private void InitFormData(Group group)
+        private void InitFormData(Group group, List<Group> groups)
         {
             //Lấy tất cả các nhóm câu hỏi và gom nhóm chúng
-            var groupedGroups = PopulateGroups();
+            var groupedGroups = PopulateGroups(groups);
             var disableIds = new List<long>();
-            var groups = new List<Group>();
+            groups = new List<Group>();
             ConvertToTreeStructure(groupedGroups, disableIds, 0, groups);
+            ViewBag.Id = group.CourseId;
             //Tạo danh sách chọn làm dữ liệu nguồn cho DropDownList
             ViewBag.ParentGroupId = group.ParentGroupId > 0 ? new SelectList(groups, "GroupId", "GroupName", group.ParentGroupId, disableIds) : new SelectList(groups, "GroupId", "GroupName", (object)null, disableIds);
         }
@@ -141,7 +185,7 @@ namespace ETest.Areas.Adm.Controllers
 
         private void CheckValidated(Group group)
         {
-            
+
             // Kiểm tra Parent không phải là chính nó
             if (group.ParentGroupId == group.GroupId)
                 ModelState.AddModelError("ParentGroupId", "Bạn không thể chọn nhóm câu hỏi làm cha của chính nó");
@@ -181,11 +225,11 @@ namespace ETest.Areas.Adm.Controllers
             {
                 return RedirectErrorPage(Url.Action("Index"));
             }
-            if (group.TeacherId != User.Identity.GetUserId())
+            if (group.Course.TeacherId != User.Identity.GetUserId())
             {
                 return RedirectAccessDeniedPage(Url.Action("Index"));
             }
-            InitFormData(group);
+            InitFormData(group, group.Course.Groups.ToList());
             return View(group);
         }
 
@@ -199,15 +243,12 @@ namespace ETest.Areas.Adm.Controllers
             {
                 return RedirectErrorPage(Url.Action("Index"));
             }
-            if (groupOld.TeacherId != User.Identity.GetUserId())
+            if (groupOld.Course.TeacherId != User.Identity.GetUserId())
             {
                 return RedirectAccessDeniedPage(Url.Action("Index"));
             }
-             
             CheckValidated(group);
-            
-            
-            
+
             if (ModelState.IsValid)
             {
                 try
@@ -216,15 +257,10 @@ namespace ETest.Areas.Adm.Controllers
                         new[]
                         {"GroupId", "GroupName", "Description", "ParentGroupId", "OrderNo", "Actived", "RowVersion"});
                     DbContext.Entry(groupOld).OriginalValues["RowVersion"] = group.RowVersion;
-                    //groupOld.GroupName = group.GroupName;
-                    //groupOld.Description = group.Description;
-                    //groupOld.ParentGroupId = group.ParentGroupId;
-                    //groupOld.OrderNo = group.OrderNo;
-                    //groupOld.Actived = group.Actived;
                     DbContext.Entry(groupOld).State = EntityState.Modified;
                     if (DbContext.SaveChanges() > 0)
                     {
-                        return Redirect(group.GroupId);
+                        return RedirectId(group.CourseId);
                     }
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -257,7 +293,7 @@ namespace ETest.Areas.Adm.Controllers
                     }
                 }
             }
-            InitFormData(group);
+            InitFormData(group, groupOld.Course.Groups.ToList());
             return View(group);
         }
 

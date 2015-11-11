@@ -5,14 +5,48 @@ using ETest.Models;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Data.Entity;
+using ETest.Areas.Adm.Models;
 using PagedList;
 
 namespace ETest.Areas.Adm.Controllers
 {
     public class QuestionController : AdminController
     {
+        public CheckRoleResult CheckGroupRole(long? id)
+        {
+            var result = new CheckRoleResult();
+            if (id == null)
+            {
+                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.IsValid = false;
+            }
+            else
+            {
+                var group = DbContext.Groups.Find(id);
+                if (group == null)
+                {
+                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.IsValid = false;
+                }
+                else
+                {
+                    if (group.Course.TeacherId != User.Identity.GetUserId())
+                    {
+                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.IsValid = false;
+                    }
+                    else
+                    {
+                        result.Group = group;
+                        result.IsValid = true;
+                    }
+                }
+            }
+            return result;
+        }
+
         // GET: Adm/Question
-        public ActionResult Index(string keyword, int? page, int? pageSize, int? status)
+        public ActionResult Index(string keyword, int? page, int? pageSize, int? status, int? groupId)
         {
             var questions = DbContext.Questions.AsQueryable();
 
@@ -78,7 +112,7 @@ namespace ETest.Areas.Adm.Controllers
                     });
                 }
 
-                if (group.TeacherId != User.Identity.GetUserId())
+                if (group.Course.TeacherId != User.Identity.GetUserId())
                 {
                     return Json(new
                     {
@@ -129,7 +163,7 @@ namespace ETest.Areas.Adm.Controllers
             {
                 return RedirectErrorPage(Url.Action("Index"));
             }
-            if (question.Group.TeacherId != User.Identity.GetUserId())
+            if (question.Group.Course.TeacherId != User.Identity.GetUserId())
             {
                 return RedirectAccessDeniedPage(Url.Action("Index"));
             }
@@ -149,7 +183,7 @@ namespace ETest.Areas.Adm.Controllers
 
                 if (questionDb != null)
                 {
-                    if (questionDb.Group.TeacherId != User.Identity.GetUserId())
+                    if (questionDb.Group.Course.TeacherId != User.Identity.GetUserId())
                     {
                         return Json(new
                         {
@@ -189,7 +223,7 @@ namespace ETest.Areas.Adm.Controllers
         private void InitFormData(Question question)
         {
             var userId = User.Identity.GetUserId();
-            var groups = DbContext.Groups.Where(s => s.TeacherId == userId).ToList();
+            var groups = DbContext.Groups.Where(s => s.Course.TeacherId == userId).ToList();
             ViewBag.GroupId = question.GroupId > 0
                 ? new SelectList(groups, "GroupId", "GroupName", question.GroupId)
                 : new SelectList(groups, "GroupId", "GroupName", null);
@@ -223,11 +257,18 @@ namespace ETest.Areas.Adm.Controllers
             return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
         }
 
-
-        public ActionResult ViewQuestion(long? id)
+        [HttpPost]
+        public ActionResult Preview(long? id)
         {
             var question = DbContext.Questions.FirstOrDefault(s => s.QuestionId == id);
             return question != null ? PartialView("_QuestionView", question) : null;
+        }
+
+
+        public ActionResult TestView()
+        {
+            var question = DbContext.Questions.FirstOrDefault();
+            return View(question);
         }
     }
 }

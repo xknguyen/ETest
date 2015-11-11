@@ -56,11 +56,11 @@ namespace ETest.DAL
             //    .HasForeignKey(d => d.TeacherId)
             //    .WillCascadeOnDelete(true);
 
-            // Thiết lập quan hệ giữa tài khoản giáo viên với nhóm câu hỏi
-            modelBuilder.Entity<Account>()
+            // Thiết lập quan hệ giữa khóa học với nhóm câu hỏi
+            modelBuilder.Entity<Course>()
                 .HasMany(o => o.Groups)
-                .WithRequired(d => d.Teacher)
-                .HasForeignKey(d => d.TeacherId)
+                .WithRequired(d => d.Course)
+                .HasForeignKey(d => d.CourseId)
                 .WillCascadeOnDelete(false);
 
             // Thiết lập mối quan hệ giữa nhóm con và nhóm cha

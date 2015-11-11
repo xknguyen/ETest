@@ -27,12 +27,12 @@
                                 <div class="col-md-12 question-answer">
                                     <div class="col-md-11 question-associate">
                                         <div class="col-md-6">
-                                            @Html.Hidden("choiceLeftId", associate.Associate.AssociateId)
-                                            @Html.TextBox("answerLeft", associate.Associate.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
+                                            @Html.Hidden("choiceLeftId", associate.ChoiceId)
+                                            @Html.TextBox("answerLeft", associate.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})
                                         </div>
                                         <div class="col-md-6">
                                             @Html.Hidden("choiceRightId", associate.AssociateId)
-                                            @Html.TextBox("answerRight", associate.Content, new { placeholder = "Nhập nội dung đáp án", @class = "form-control answer" })
+                                            @Html.TextBox("answerRight", associate.Associate.Content, new { placeholder = "Nhập nội dung đáp án", @class = "form-control answer" })
                                         </div>
                                     </div>
                                     <div class="col-md-1 question-form answer-remove">

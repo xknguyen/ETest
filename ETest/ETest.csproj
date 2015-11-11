@@ -203,6 +203,7 @@
     <Compile Include="Areas\Adm\Controllers\QuestionController.cs" />
     <Compile Include="Areas\Adm\Controllers\TestController.cs" />
     <Compile Include="Areas\Adm\Models\AccountViewModel.cs" />
+    <Compile Include="Areas\Adm\Models\CheckRoleResult.cs" />
     <Compile Include="Areas\Adm\Models\DataDetailModel.cs" />
     <Compile Include="Areas\Adm\Models\DataGroupModel.cs" />
     <Compile Include="Areas\Adm\Models\DataQuestionModel.cs" />
@@ -215,69 +216,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509301326309_Initial.cs" />
-    <Compile Include="Migrations\201509301326309_Initial.Designer.cs">
-      <DependentUpon>201509301326309_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510030224477_UpdateUnKnow.cs" />
-    <Compile Include="Migrations\201510030224477_UpdateUnKnow.Designer.cs">
-      <DependentUpon>201510030224477_UpdateUnKnow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510030711226_UpdateDatabase.cs" />
-    <Compile Include="Migrations\201510030711226_UpdateDatabase.Designer.cs">
-      <DependentUpon>201510030711226_UpdateDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510040921070_RenameQuestionTitle.cs" />
-    <Compile Include="Migrations\201510040921070_RenameQuestionTitle.Designer.cs">
-      <DependentUpon>201510040921070_RenameQuestionTitle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510061301189_UpdateQuestionTitleLength.cs" />
-    <Compile Include="Migrations\201510061301189_UpdateQuestionTitleLength.Designer.cs">
-      <DependentUpon>201510061301189_UpdateQuestionTitleLength.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510150328021_UpdateTest.cs" />
-    <Compile Include="Migrations\201510150328021_UpdateTest.Designer.cs">
-      <DependentUpon>201510150328021_UpdateTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510151421148_UpdateTestDecription.cs" />
-    <Compile Include="Migrations\201510151421148_UpdateTestDecription.Designer.cs">
-      <DependentUpon>201510151421148_UpdateTestDecription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510151437140_UpdateTestTitle.cs" />
-    <Compile Include="Migrations\201510151437140_UpdateTestTitle.Designer.cs">
-      <DependentUpon>201510151437140_UpdateTestTitle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510211418034_UpdateTestOrder.cs" />
-    <Compile Include="Migrations\201510211418034_UpdateTestOrder.Designer.cs">
-      <DependentUpon>201510211418034_UpdateTestOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510231426339_UpdateGroupLenght.cs" />
-    <Compile Include="Migrations\201510231426339_UpdateGroupLenght.Designer.cs">
-      <DependentUpon>201510231426339_UpdateGroupLenght.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510231436552_UpdateDetailTitle.cs" />
-    <Compile Include="Migrations\201510231436552_UpdateDetailTitle.Designer.cs">
-      <DependentUpon>201510231436552_UpdateDetailTitle.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510310638359_UpdateTestInfo.cs" />
-    <Compile Include="Migrations\201510310638359_UpdateTestInfo.Designer.cs">
-      <DependentUpon>201510310638359_UpdateTestInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201510311337143_UpdateTestGradeType.cs" />
-    <Compile Include="Migrations\201510311337143_UpdateTestGradeType.Designer.cs">
-      <DependentUpon>201510311337143_UpdateTestGradeType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511040232093_UpdateTestProperti.cs" />
-    <Compile Include="Migrations\201511040232093_UpdateTestProperti.Designer.cs">
-      <DependentUpon>201511040232093_UpdateTestProperti.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511050203181_UpdateTestDetail.cs" />
-    <Compile Include="Migrations\201511050203181_UpdateTestDetail.Designer.cs">
-      <DependentUpon>201511050203181_UpdateTestDetail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201511050351034_QuestionTest.cs" />
-    <Compile Include="Migrations\201511050351034_QuestionTest.Designer.cs">
-      <DependentUpon>201511050351034_QuestionTest.cs</DependentUpon>
+    <Compile Include="Migrations\201511101619238_Initial.cs" />
+    <Compile Include="Migrations\201511101619238_Initial.Designer.cs">
+      <DependentUpon>201511101619238_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -326,6 +267,7 @@
     <Content Include="Content\css\lightbox.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\custom\file.css" />
+    <Content Include="Content\custom\previewQuestion.css" />
     <Content Include="Content\custom\question.css" />
     <Content Include="Content\custom\test.css" />
     <Content Include="Content\font-awesome.css" />
@@ -506,6 +448,7 @@
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\custom\file.js" />
+    <Content Include="Scripts\custom\questionPreview.js" />
     <Content Include="Scripts\dropzone\basic.css" />
     <Content Include="Scripts\dropzone\basic.min.css" />
     <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
@@ -623,6 +566,13 @@
     <Content Include="Areas\Adm\Views\Test\_Hidden.cshtml" />
     <Content Include="Areas\Adm\Views\Test\Edit.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_QuestionView.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\TestView.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_ChoicePreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_OrderPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_AssociatePreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_GapPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_SliderPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_ChoiceMediaPreview.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />
@@ -1689,60 +1639,15 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509301326309_Initial.resx">
-      <DependentUpon>201509301326309_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510030224477_UpdateUnKnow.resx">
-      <DependentUpon>201510030224477_UpdateUnKnow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510030711226_UpdateDatabase.resx">
-      <DependentUpon>201510030711226_UpdateDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510040921070_RenameQuestionTitle.resx">
-      <DependentUpon>201510040921070_RenameQuestionTitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510061301189_UpdateQuestionTitleLength.resx">
-      <DependentUpon>201510061301189_UpdateQuestionTitleLength.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510150328021_UpdateTest.resx">
-      <DependentUpon>201510150328021_UpdateTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510151421148_UpdateTestDecription.resx">
-      <DependentUpon>201510151421148_UpdateTestDecription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510151437140_UpdateTestTitle.resx">
-      <DependentUpon>201510151437140_UpdateTestTitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510211418034_UpdateTestOrder.resx">
-      <DependentUpon>201510211418034_UpdateTestOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510231426339_UpdateGroupLenght.resx">
-      <DependentUpon>201510231426339_UpdateGroupLenght.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510231436552_UpdateDetailTitle.resx">
-      <DependentUpon>201510231436552_UpdateDetailTitle.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510310638359_UpdateTestInfo.resx">
-      <DependentUpon>201510310638359_UpdateTestInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201510311337143_UpdateTestGradeType.resx">
-      <DependentUpon>201510311337143_UpdateTestGradeType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511040232093_UpdateTestProperti.resx">
-      <DependentUpon>201511040232093_UpdateTestProperti.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511050203181_UpdateTestDetail.resx">
-      <DependentUpon>201511050203181_UpdateTestDetail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201511050351034_QuestionTest.resx">
-      <DependentUpon>201511050351034_QuestionTest.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{00b368a7-f698-432a-b875-335cc2e113ff}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201511101619238_Initial.resx">
+      <DependentUpon>201511101619238_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

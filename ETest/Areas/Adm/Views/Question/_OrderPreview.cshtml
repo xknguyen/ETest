@@ -1,0 +1,11 @@
+﻿@model QuestionDetail
+
+
+<ul class="sortable">
+    @foreach (var item in Model.ItemOrders)
+    {
+        <li class="ui-state-default" data-id="@item.ChoiceId">@item.Content</li>
+    }
+</ul>
+
+

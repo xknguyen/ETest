@@ -1,5 +1,5 @@
 ﻿@model Group
-
+@Html.HiddenFor(model=>model.CourseId)
 <div class="form-group">
     @(Html.LabelFor(model => model.GroupName, new { @class = "control-label col-md-2" }))
     <div class="col-md-10">
