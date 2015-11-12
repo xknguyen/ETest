@@ -15,7 +15,7 @@ namespace ETest.Areas.Adm.Controllers
         public ActionResult Index(string keyword, int? page, int? pageSize, int? status)
         {
             var userId = User.Identity.GetUserId();
-            var courses = DbContext.Courses.Where(c=>c.TeacherId == userId).AsQueryable();
+            var courses = DbContext.Courses.Where(c => c.TeacherId == userId).AsQueryable();
             // Tìm nhà cung cấp theo từ khóa (keyword) bằng cách kiểm
             // tra nó có xuất hiện trong tên, mô tả hay địa chỉ của NCC
             if (!string.IsNullOrEmpty(keyword))
@@ -59,7 +59,7 @@ namespace ETest.Areas.Adm.Controllers
         /// <returns></returns>
         public ActionResult Create()
         {
-            var emptyCourse = new Course() { Actived = true , StartTime = DateTime.Now};
+            var emptyCourse = new Course() { Actived = true, StartTime = DateTime.Now };
             return View(emptyCourse);
         }
 
@@ -72,7 +72,7 @@ namespace ETest.Areas.Adm.Controllers
             {
                 if (course.EndTime.HasValue && course.StartTime >= course.EndTime.Value)
                 {
-                    ModelState.AddModelError("EndTime","Thời gian kết thúc phải lớn hơn thời gian bắt đầu");
+                    ModelState.AddModelError("EndTime", "Thời gian kết thúc phải lớn hơn thời gian bắt đầu");
                 }
 
                 if (ModelState.IsValid)
@@ -97,20 +97,20 @@ namespace ETest.Areas.Adm.Controllers
             return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(long? id)
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage(Url.Action("Index", "Course"));
             }
             var course = DbContext.Courses.Find(id);
             if (course == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage(Url.Action("Index", "Course"));
             }
             if (course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
             }
             return View(course);
         }
@@ -126,7 +126,7 @@ namespace ETest.Areas.Adm.Controllers
             }
             else if (courseDb.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
             }
 
             if (course.EndTime.HasValue && course.StartTime >= course.EndTime.Value)
@@ -171,12 +171,13 @@ namespace ETest.Areas.Adm.Controllers
                         {
                             ModelState.AddModelError("EndTime",
                                     "Giá trị hiện tại: " + databaseValues.EndTime.Value.ToString("dd/MM/yyyy"));
-                        } else if (!databaseValues.EndTime.HasValue && clientValues.EndTime.HasValue)
+                        }
+                        else if (!databaseValues.EndTime.HasValue && clientValues.EndTime.HasValue)
                         {
                             ModelState.AddModelError("EndTime",
                                 "Giá trị hiện tại: chưa có");
                         }
-                        else if(clientValues.EndTime.HasValue && databaseValues.EndTime.HasValue && databaseValues.EndTime.Value != clientValues.EndTime.Value)
+                        else if (clientValues.EndTime.HasValue && databaseValues.EndTime.HasValue && databaseValues.EndTime.Value != clientValues.EndTime.Value)
                         {
                             ModelState.AddModelError("EndTime",
                                     "Giá trị hiện tại: " + databaseValues.EndTime.Value.ToString("dd/MM/yyyy"));
@@ -198,6 +199,89 @@ namespace ETest.Areas.Adm.Controllers
                 }
             }
             return View(course);
+        }
+
+
+        public ActionResult Member(long? id)
+        {
+            if (id == null)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+            var course = DbContext.Courses.Find(id);
+            if (course == null)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+            if (course.TeacherId != User.Identity.GetUserId())
+            {
+                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+            }
+            return View(course.Students);
+        }
+
+        [HttpPost]
+        public ActionResult GetList(int? page, string ids)
+        {
+            ids = string.IsNullOrEmpty(ids) ? "" : ids.Trim();
+            var listId = ids.Split(',');
+            var userId = User.Identity.GetUserId();
+            var accounts = DbContext.Accounts.Where(x => x.Profile.Actived && listId.All(user => user != x.UserName) && x.Id != userId);
+            if (!page.HasValue || page.Value < 1) page = 1;
+            ViewBag.CurrentPageSize = 1;
+            var data = accounts.OrderBy(x => x.UserName).Where(x => x.Profile.Actived)
+                                .ToPagedList(page.Value, (int)ViewBag.CurrentPageSize);
+            return PartialView("_UserForm",data);
+        }
+
+        [HttpPost]
+        public ActionResult AddMember()
+        {
+            long? courseId = 0;
+            string usernames = "";
+            var courseDb = DbContext.Courses.Find(courseId);
+            if (courseDb == null)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Khóa học này đã bị xóa!!!"
+                });
+            }
+            if (courseDb.TeacherId != User.Identity.GetUserId())
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Bạn không có quyền sử dụng khóa học này!!!"
+                });
+            }
+            if (string.IsNullOrEmpty(usernames))
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Bạn chưa chọn thành viên nào!!!"
+                });
+            }
+
+            var ids = usernames.Split(',');
+            var users = DbContext.Accounts.Where(s => ids.Any(user => user == s.UserName)).ToList();
+
+            courseDb.Students = users;
+            DbContext.Entry(courseDb).State = EntityState.Modified;
+            if (DbContext.SaveChanges() > 0)
+            {
+                return Json(new
+                {
+                    Success = true
+                });
+            }
+            return Json(new
+            {
+                Success = false,
+                Message = "Bạn không có quyền xóa file này!!!"
+            });
         }
     }
 }

@@ -170,7 +170,6 @@
                     $(row).addClass('selected');
                 }
             }
-
         });
     }
 

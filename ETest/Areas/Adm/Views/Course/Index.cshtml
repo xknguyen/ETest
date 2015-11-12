@@ -82,14 +82,14 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
 
                                 <td class="hidden-sm hidden-xs">
                                     Thời gian: @item.StartTime.ToString("dd/MM/yyyy") - @if (item.EndTime != null)
-                                                                                        {
-                                                                                            @item.EndTime.Value.ToString("dd/MM/yyyy")
-                                                                                        }
-                                                                                        else
-                                                                                        {
-                                                                                            <span>?</span>
-                                                                                        }
-                                    <br/>
+                                    {
+                                        @item.EndTime.Value.ToString("dd/MM/yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span>?</span>
+                                    }
+                                    <br />
                                     @Html.Raw(item.Description)
                                 </td>
 
@@ -103,18 +103,18 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                 <td>
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Edit")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.CourseId })
                                           .Title("Cập nhật khóa học")
                                           .AppendIcon("fa fa-pencil fa-2x"))
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Delete")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.CourseId })
                                           .Title("Xóa khóa học")
                                           .AppendIcon("fa fa-trash-o fa-2x"))
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Member")
                                           .Class("ajax-link")
-                                          .RouteValues(new {id = item.CourseId})
+                                          .RouteValues(new { id = item.CourseId })
                                           .AppendIcon("fa fa-users fa-2x")
                                           .Title("Xem danh sách thành viên"))
                                     @(Html.Bootstrap()
@@ -124,7 +124,7 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                           .Title("Xem danh sách nhóm câu hỏi"))
                                     @(Html.Bootstrap()
                                           .ActionLink("", "Index", "Test")
-                                          .RouteValues(new { id = item.CourseId })
+                                          .RouteValues(new { courseId = item.CourseId })
                                           .AppendIcon("fa fa-file fa-2x")
                                           .Title("Xem danh sách bài kiểm tra"))
                                 </td>

@@ -67,7 +67,7 @@
                     table = $("#questionTable").createDatable(selectedId);
 
                     $("#randomNo").attr("max", table.rows().data().length);
-                    $('#questionTable tbody').on("click", "tr", function() {
+                    $("#questionTable tbody").on("click", "tr", function() {
                         $(this).toggleClass("selected");
                         var data = table.row(this).data();
                         var id = data[2];
@@ -214,7 +214,7 @@
 
         // Kiểm tra sự kiện đang sử dụng
         var url = $("#testForm").attr("action").split("/");
-        var isCreate = url[url.length - 1].indexOf("Create") != -1;
+        var isCreate = url[url.length - 2].indexOf("Create") != -1;
 
         // Trước khi kiểm tra thì xóa các thông báo cũ
         $("#Validation").text("");
@@ -378,9 +378,9 @@
                         // Lấy giá trị để chuyển sang trang thêm mới hay đến trang về danh sách
 
                         if (btnValue == "save-new")
-                            window.location = "/Adm/Test/Create";
+                            window.location = "/Adm/Test/Create/" + $("#CourseId").val();
                         else
-                            window.location = "/Adm/Test";
+                            window.location = "/Adm/Test?courseId=" + $("#CourseId").val();
                     } else {
                         $("#Validation").html(response.Message);
                         $("html, body").animate({ scrollTop: 0 }, "slow");

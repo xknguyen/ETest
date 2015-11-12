@@ -14,10 +14,44 @@ namespace ETest.Areas.Adm.Controllers
 {
     public class TestController : AdminController
     {
-        // GET: Adm/Text
-        public ActionResult Index(string keyword, int? page, int? pageSize, int? status)
+        public CheckRoleResult CheckCourseRole(long? id)
         {
-            var tests = DbContext.Tests.AsQueryable();
+            var result = new CheckRoleResult();
+            if (id == null)
+            {
+                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.IsValid = false;
+            }
+            else
+            {
+                Course course = DbContext.Courses.Find(id);
+                if (course == null)
+                {
+                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.IsValid = false;
+                }
+                else
+                {
+                    if (course.TeacherId != User.Identity.GetUserId())
+                    {
+                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.IsValid = false;
+                    }
+                    else
+                    {
+                        result.Course = course;
+                        result.IsValid = true;
+                    }
+                }
+            }
+            return result;
+        }
+        // GET: Adm/Text
+        public ActionResult Index(string keyword, int? page, int? pageSize, int? status, long? courseId)
+        {
+            var result = CheckCourseRole(courseId);
+            if (!result.IsValid) return result.ActionResult;
+            var tests = result.Course.Tests.AsQueryable();
 
             // Tìm nhà cung cấp theo từ khóa (keyword) bằng cách kiểm
             // tra nó có xuất hiện trong tên, mô tả hay địa chỉ của NCC
@@ -52,6 +86,7 @@ namespace ETest.Areas.Adm.Controllers
             }, "value", "text", status);
             ViewBag.PageSize = new SelectList(new[] { 10, 25, 50, 100 }, pageSize);
             ViewBag.CurrentPageSize = pageSize.Value;
+            ViewBag.CourseId = courseId;
             ViewBag.CurrentStatus = status;
 
             // Sắp tăng các nhà cung cấp theo tên và thực hiện việc phân trang bằng 
@@ -73,8 +108,10 @@ namespace ETest.Areas.Adm.Controllers
             return DbContext.Database.ExecuteSqlCommand(query, value, keys[0]) > 0;
         }
 
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
+            var result = CheckCourseRole(id);
+            if (!result.IsValid) return result.ActionResult;
             var emptytest = new Test()
             {
                 Actived = true,
@@ -83,7 +120,9 @@ namespace ETest.Areas.Adm.Controllers
                 MixedQuestions = true,
                 SubmitNo = 1,
                 GradeType = GradeType.Maximum,
-                TestDetails =  new List<TestDetail>()
+                TestDetails =  new List<TestDetail>(),
+                Course = result.Course,
+                CourseId = result.Course.CourseId
             };
             InitFormData(emptytest);
             return View(emptytest);
@@ -264,10 +303,7 @@ namespace ETest.Areas.Adm.Controllers
         {
             var id = User.Identity.GetUserId();
             var courses = DbContext.Courses.Where(s => s.TeacherId == id).ToList();
-            ViewBag.CourseId = test.CourseId > 0
-                ? new SelectList(courses, "CourseId", "CourseName", test.CourseId)
-                : new SelectList(courses, "CourseId", "CourseName", (object) null);
-
+            ViewBag.Id = test.CourseId;
             var types = new List<SelectListItem>
             {
                 new SelectListItem {Selected = false, Text = "Điểm cao nhất", Value = "0"},

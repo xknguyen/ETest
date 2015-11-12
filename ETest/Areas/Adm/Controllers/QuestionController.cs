@@ -46,9 +46,11 @@ namespace ETest.Areas.Adm.Controllers
         }
 
         // GET: Adm/Question
-        public ActionResult Index(string keyword, int? page, int? pageSize, int? status, int? groupId)
+        public ActionResult Index(string keyword, int? page, int? pageSize, int? status, long? groupId)
         {
-            var questions = DbContext.Questions.AsQueryable();
+            var result = CheckGroupRole(groupId);
+            if (!result.IsValid) return result.ActionResult;
+            var questions = result.Group.Questions.AsQueryable();
 
             // Tìm nhà cung cấp theo từ khóa (keyword) bằng cách kiểm
             // tra nó có xuất hiện trong tên, mô tả hay địa chỉ của NCC
@@ -63,6 +65,7 @@ namespace ETest.Areas.Adm.Controllers
 
             // Lưu lại từ khóa, số mẫu tin/trang để hiển thị trên trang web
             ViewBag.Keyword = keyword;
+            ViewBag.GroupId = result.Group.GroupId;
             ViewBag.SupStatus = new SelectList(new List<Object>()
             {
                 new {text = "Chọn tất cả", value = 0},
@@ -87,9 +90,11 @@ namespace ETest.Areas.Adm.Controllers
             return View(data);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(long? id)
         {
-            var question = new Question {Actived = true, QuestionDetails = new List<QuestionDetail>()};
+            var result = CheckGroupRole(id);
+            if (!result.IsValid) return result.ActionResult;
+            var question = new Question {Actived = true, GroupId = result.Group.GroupId,Group = result.Group, QuestionDetails = new List<QuestionDetail>()};
             InitFormData(question);
             return View(question);
         }
@@ -179,8 +184,6 @@ namespace ETest.Areas.Adm.Controllers
                 var questiontemp = new Question(data);
                 var questionDb = DbContext.Questions.FirstOrDefault(s => s.QuestionId == questiontemp.QuestionId);
 
-
-
                 if (questionDb != null)
                 {
                     if (questionDb.Group.Course.TeacherId != User.Identity.GetUserId())
@@ -222,11 +225,8 @@ namespace ETest.Areas.Adm.Controllers
 
         private void InitFormData(Question question)
         {
-            var userId = User.Identity.GetUserId();
-            var groups = DbContext.Groups.Where(s => s.Course.TeacherId == userId).ToList();
-            ViewBag.GroupId = question.GroupId > 0
-                ? new SelectList(groups, "GroupId", "GroupName", question.GroupId)
-                : new SelectList(groups, "GroupId", "GroupName", null);
+            //ViewBag.GroupName = question.Group.GroupName;
+            ViewBag.Id = question.GroupId;
         }
 
         private void UpdateDetail(IList<QuestionDetail> oldList)

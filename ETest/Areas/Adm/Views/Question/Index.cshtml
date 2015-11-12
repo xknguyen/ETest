@@ -32,9 +32,11 @@
                     @(Html.Bootstrap()
                           .ActionLink("Thêm câu hỏi", "Create")
                           .Class("btn btn-primary btn-xs")
+                          .RouteValues(new {id= ViewBag.GroupId })
                           .PrependIcon("fa fa-plus"))
                     @(Html.Bootstrap()
                           .ActionLink("Nhập câu hỏi", "Import")
+                          .RouteValues(new { id = ViewBag.GroupId })
                           .Class("btn btn-primary btn-xs")
                           .PrependIcon("fa fa-cloud-upload"))
                 </div>
@@ -57,8 +59,8 @@
                             @Html.Hidden("Status", null, new { id = "supStatus" })
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                @(Html.ActionLink("Bỏ lọc", "Index", null,
-                                          new { @class = "btn btn-sm btn-warning" }))
+                                @(Html.ActionLink("Bỏ lọc", "Index", new { groupId = ViewBag.GroupId },
+                                new { @class = "btn btn-sm btn-warning" }))
                             </span>
                         </div>
                         }

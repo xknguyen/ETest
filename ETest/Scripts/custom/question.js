@@ -88,7 +88,7 @@
         
         // Kiểm tra sự kiện đang sử dụng
         var url = $("#questionForm").attr("action").split("/");
-        var isCreate = url[url.length - 1].indexOf("Create") != -1;
+        var isCreate = url[url.length - 2].indexOf("Create") != -1;
         
         // Trước khi kiểm tra thì xóa các thông báo cũ
         $("#Validation").text("");
@@ -162,9 +162,9 @@
                         // Lấy giá trị để chuyển sang trang thêm mới hay đến trang về danh sách
 
                         if (btnValue == "save-new")
-                            window.location = "/Adm/Question/Create";
+                            window.location = "/Adm/Question/Create/" + $("#GroupId").val();
                         else
-                            window.location = "/Adm/Question";
+                            window.location = "/Adm/Question/Index?groupId=" + $("#GroupId").val();
                     } else {
                         $("#Validation").html(response.Message);
                         $("html, body").animate({ scrollTop: 0 }, "slow");

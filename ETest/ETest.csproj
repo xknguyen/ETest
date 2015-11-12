@@ -266,6 +266,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\lightbox.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\custom\course.css" />
     <Content Include="Content\custom\file.css" />
     <Content Include="Content\custom\previewQuestion.css" />
     <Content Include="Content\custom\question.css" />
@@ -447,7 +448,9 @@
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\custom\account.js" />
     <Content Include="Scripts\custom\file.js" />
+    <Content Include="Scripts\custom\member.js" />
     <Content Include="Scripts\custom\questionPreview.js" />
     <Content Include="Scripts\dropzone\basic.css" />
     <Content Include="Scripts\dropzone\basic.min.css" />
@@ -573,6 +576,9 @@
     <Content Include="Areas\Adm\Views\Question\_GapPreview.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_SliderPreview.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_ChoiceMediaPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Course\Member.cshtml" />
+    <Content Include="Areas\Adm\Views\Course\_PopUp.cshtml" />
+    <Content Include="Areas\Adm\Views\Course\_UserForm.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />

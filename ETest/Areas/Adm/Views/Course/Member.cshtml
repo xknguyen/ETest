@@ -1,0 +1,85 @@
+﻿@model IList<Account>
+
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/custom/course.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Danh sách tài khoản</h5>
+                <div class="ibox-tools">
+                    @(Html.Bootstrap()
+                          .ActionLink("Thêm học viên", "")
+                          .Class("btn btn-primary btn-xs ")
+                          .Id("show-users")
+                          .PrependIcon("fa fa-plus"))
+                </div>
+            </div>
+            <div class="ibox-content p-sm">
+                <table id="tblAccounts" class="table table-responsive table-bordered table-hover tbldata">
+                    <thead>
+                        <tr>
+                            <th width="100px">Tên tài khoản</th>
+                            <th width="150px">Họ và tên</th>
+                            <th class="hidden-sm hidden-xs">Thông tin tài khoản</th>
+                            <th width="100px"></th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Profile.FullName)
+                            </td>
+
+                            <td class="hidden-sm hidden-xs">
+                                Mã: @Html.DisplayFor(modelItem => item.Profile.Identity)<br />
+                                Email: @Html.DisplayFor(modelItem => item.Email)<br />
+                                SĐT: @Html.DisplayFor(modelItem => item.PhoneNumber)<br />
+                                Ngày sinh: @if (item.Profile.BirthDate.HasValue)
+                                {
+                                    @item.Profile.BirthDate.Value.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    <span>?</span>
+                                }
+                            </td>
+
+                            <td>
+                                <a title="Xóa người dùng" class="remove-user"> <i class="fa fa-trash-o fa-2x"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("_PopUp")
+@section pluginScripts
+{
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+}
+
+
+@section scripts
+{
+    <script src="~/Scripts/custom/member.js"></script>
+}

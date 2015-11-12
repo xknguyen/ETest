@@ -24,6 +24,7 @@
                     @(Html.Bootstrap()
                           .ActionLink("Thêm bài kiểm tra", "Create")
                           .Class("btn btn-primary btn-xs")
+                          .RouteValues(new {id = ViewBag.CourseId })
                           .PrependIcon("fa fa-plus"))
                 </div>
             </div>
@@ -42,11 +43,11 @@
 
                                 @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
                                 @Html.Hidden("Status", null, new { id = "supStatus" })
-
+                                @Html.Hidden("CourseId", (long)ViewBag.CourseId,new {id = "courseId" })
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                    @(Html.ActionLink("Bỏ lọc", "Index", null,
-                                          new { @class = "btn btn-sm btn-warning" }))
+                                    @(Html.ActionLink("Bỏ lọc", "Index", new { courseId = ViewBag.CourseId },
+                                    new { @class = "btn btn-sm btn-warning" }))
                                 </span>
                             </div>
                         }
