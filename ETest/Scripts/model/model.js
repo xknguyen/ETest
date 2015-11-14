@@ -99,8 +99,9 @@ $(function() {
     }
     $.fn.createChoiceAnswerJson = function() {
         var correct = $(this).find("input[name='isCorrect']").first().prop('checked');
+        var choiceId = $(this).find("input[name='choiceId']").val();
         var content = $(this).find("input[name='answer']").val();
-        return "{\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\"}";
+        return "{\"ChoiceId\":" + JSON.stringify(choiceId) + ",\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\"}";
     }
 
     // Order
@@ -124,7 +125,8 @@ $(function() {
     $.fn.createOrderAnswerJson = function (orderNo) {
         var content = $(this).find("input[name='answer']").first().val();
         var result = parseInt($(this).find("label.result").first().text());
-        return "{\"Content\":" + JSON.stringify(content) + ",\"ChoiceId\":\"" + orderNo + "\",\"Result\":\"" + result + "\"}";
+        var choiceId = $(this).find("input[name='choiceId']").val();
+        return "{\"Content\":" + JSON.stringify(content) + ",\"ChoiceId\":\"" + choiceId + "\",\"Result\":\"" + result + "\",\"OrderNo\":\"" + orderNo + "\"}";
     }
 
     // Associate
@@ -231,7 +233,8 @@ $(function() {
     $.fn.createChoiceMediaAnswerJson = function () {
         var correct = $(this).find("img.selected").length == 1;
         var content = $(this).find("img").first().attr("src");
-        return "{\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\"}";
+        var choiceId = $(this).find("input[name='choiceId']").val();
+        return "{\"Content\":" + JSON.stringify(content) + ",\"IsCorrect\":\"" + correct + "\",\"ChoiceId\":\"" + choiceId + "\"}";
     }
 
 });

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace CheapDeal.Core.Extensions
+namespace Core.Extensions
 {
     public static class ImageExtenions
     {

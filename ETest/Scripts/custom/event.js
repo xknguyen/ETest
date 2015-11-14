@@ -119,6 +119,7 @@
             }
         });
     }
+
     $("#selectMediaButton").on("click", function(e) {
         e.preventDefault();
         var img = $("#fileContent").find("img.selected").first();

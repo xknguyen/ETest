@@ -140,8 +140,8 @@
             var courseId = paths[paths.length - 1];
             var users = usernames.join();
             $.ajax({
-                type: "POST",
-                url: "/Adm/Cousre/GetList",
+                type: "Post",
+                url: "/Adm/Course/AddMember",
                 data: {
                     courseId: courseId,
                     usernames: users
@@ -164,5 +164,31 @@
             alert("Bạn chưa chọn người dùng nào");
         }
 
+    });
+
+    // Xóa member
+    $("#tblAccounts tbody").on("click", "a", function (e) {
+        e.preventDefault();
+        if (confirm("Bạn có chắc chắn xóa không?")) {
+            var pathname = window.location.pathname;
+            var paths = pathname.split("/");
+            var courseId = paths[paths.length - 1];
+            var tr = $(this).closest("tr").first();
+            var userName = $($(tr).find("td")[0]).html().trim();
+            $.ajax({
+                type: "Post",
+                url: "/Adm/Course/RemoveMember",
+                data: {
+                    courseId: courseId,
+                    username: userName
+                }
+            }).done(function (response) {
+                if (response.Success) {
+                    currentUserTable.row(tr).remove().draw();
+                } else {
+                    alert(response.Message);
+                }
+            });
+        } 
     });
 });

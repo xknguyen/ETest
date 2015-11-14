@@ -3,11 +3,11 @@
     @Html.Hidden("tinyCount", Model.QuestionDetails.Count);
 </div>
 <div class="questionTemplate" id="choiceTemplate">
-    @Html.Partial("_ChoiceTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() { ChoiceId = 1 } } })
+    @Html.Partial("_ChoiceTemplate", new QuestionDetail() { Choices = new List<Choice>() { new Choice() } })
 </div>
 
 <div class="questionTemplate" id="orderTemplate">
-    @Html.Partial("_OrderTemplate", new QuestionDetail() { ItemOrders = new List<ItemOrder>() { new ItemOrder() { ChoiceId = 1 }, new ItemOrder() { ChoiceId = 2 } } })
+    @Html.Partial("_OrderTemplate", new QuestionDetail() { ItemOrders = new List<ItemOrder>() { new ItemOrder() , new ItemOrder() } })
 </div>
 <div class="questionTemplate" id="associateTemplate">
     @Html.Partial("_AssociateTemplate", new QuestionDetail() { AssociateItems = new List<AssociateItem>() { new AssociateItem() { Associate = new AssociateItem() } } })
@@ -17,8 +17,8 @@
 </div>
 <div class="questionTemplate" id="gapTemplate">
     @Html.Partial("_GapTemplate", new QuestionDetail()
-    {
-        GapItems = new List<GapItem>()
+{
+    GapItems = new List<GapItem>()
         {
             new GapItem()
             {
@@ -26,34 +26,20 @@
                 ItemContent = "Lựa chọn 1"
             }
         }
-    })
+})
 </div>
 
 <div class="questionTemplate" id="choiceMediaTemplate">
-    @Html.Partial("_ChoiceMediaTemplate", new QuestionDetail() { Choices = new List<Choice>()
-    {
-        new Choice()
-        {
-            ChoiceId = 1,
-            Content = "/Upload/d43dc5f1-975f-44ff-a0d4-91e01043afb3/635817114170129315_21919_1432029720441680_3316895650969172250_n.jpg"
-        },
-        new Choice()
-        {
-            ChoiceId = 2,
-            Content = "/Upload/d43dc5f1-975f-44ff-a0d4-91e01043afb3/635817113034607897_1622227_1411288249182494_2135735383544176806_n.jpg"
-        },
-        new Choice()
-        {
-            ChoiceId = 3,
-            Content = "/Upload/d43dc5f1-975f-44ff-a0d4-91e01043afb3/635817113914843560_1969303_1388578044786848_4410883624564642308_n.jpg"
-        }
-    } })
+    @Html.Partial("_ChoiceMediaTemplate", new QuestionDetail()
+{
+    Choices = new List<Choice>() { new Choice() }
+})
 </div>
 
 <div class="questionTemplate" id="fillTemplate">
     @Html.Partial("_FillTemplate", new QuestionDetail()
-    {
-        GapItems = new List<GapItem>()
+{
+    GapItems = new List<GapItem>()
         {
             new GapItem()
             {
@@ -61,7 +47,7 @@
                 ItemContent = "Lựa chọn 1"
             }
         }
-    })
+})
 </div>
 
 <div>

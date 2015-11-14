@@ -235,10 +235,10 @@ namespace ETest.Areas.Adm.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddMember()
+        public ActionResult AddMember(long? courseId, string usernames)
         {
-            long? courseId = 0;
-            string usernames = "";
+            //long? courseId = 0;
+            //string usernames = "";
             var courseDb = DbContext.Courses.Find(courseId);
             if (courseDb == null)
             {
@@ -280,7 +280,60 @@ namespace ETest.Areas.Adm.Controllers
             return Json(new
             {
                 Success = false,
-                Message = "Bạn không có quyền xóa file này!!!"
+                Message = "Đã có lỗi xảy ra. Vui lòng thử lại sau!!!"
+            });
+        }
+
+        [HttpPost]
+        public ActionResult RemoveMember(long? courseId, string username)
+        {
+            var courseDb = DbContext.Courses.Find(courseId);
+            if (courseDb == null)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Khóa học này đã bị xóa!!!"
+                });
+            }
+            if (courseDb.TeacherId != User.Identity.GetUserId())
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Bạn không có quyền sử dụng khóa học này!!!"
+                });
+            }
+            if (string.IsNullOrEmpty(username))
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Bạn chưa chọn thành viên nào!!!"
+                });
+            }
+
+            var user = courseDb.Students.FirstOrDefault(s => s.UserName == username);
+            if (user == null)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    Message = "Học viên này không tồn tại trong khóa học này!!!"
+                });
+            }
+            courseDb.Students.Remove(user);
+            if (DbContext.SaveChanges() > 0)
+            {
+                return Json(new
+                {
+                    Success = true
+                });
+            }
+            return Json(new
+            {
+                Success = false,
+                Message = "Đã có lỗi xảy ra. Vui lòng thử lại sau!!!"
             });
         }
     }

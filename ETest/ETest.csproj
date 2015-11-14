@@ -269,6 +269,7 @@
     <Content Include="Content\custom\course.css" />
     <Content Include="Content\custom\file.css" />
     <Content Include="Content\custom\previewQuestion.css" />
+    <Content Include="Content\custom\previewTest.css" />
     <Content Include="Content\custom\question.css" />
     <Content Include="Content\custom\test.css" />
     <Content Include="Content\font-awesome.css" />
@@ -579,6 +580,15 @@
     <Content Include="Areas\Adm\Views\Course\Member.cshtml" />
     <Content Include="Areas\Adm\Views\Course\_PopUp.cshtml" />
     <Content Include="Areas\Adm\Views\Course\_UserForm.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\Preview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_TestPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_ChoiceMediaPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_AssociatePreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_ChoicePreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_GapPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_OrderPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_SliderPreview.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_QuestionView.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />
@@ -1367,6 +1377,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\less-1.4.1.min.js" />
+    <Content Include="Scripts\model\answerSheet.js" />
     <Content Include="Scripts\model\model.js" />
     <Content Include="Scripts\model\TestModel.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />

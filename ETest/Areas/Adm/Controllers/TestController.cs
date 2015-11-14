@@ -120,7 +120,7 @@ namespace ETest.Areas.Adm.Controllers
                 MixedQuestions = true,
                 SubmitNo = 1,
                 GradeType = GradeType.Maximum,
-                TestDetails =  new List<TestDetail>(),
+                TestDetails = new List<TestDetail>(),
                 Course = result.Course,
                 CourseId = result.Course.CourseId
             };
@@ -199,7 +199,6 @@ namespace ETest.Areas.Adm.Controllers
             return View(test);
         }
 
-
         [HttpPost, ValidateInput(false)]
         public ActionResult Edit(string data)
         {
@@ -251,9 +250,9 @@ namespace ETest.Areas.Adm.Controllers
                     });
                 }
 
-                
+
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 //
             }
@@ -264,7 +263,6 @@ namespace ETest.Areas.Adm.Controllers
                 Success = false
             });
         }
-
 
         [HttpPost]
         public ActionResult GetGroupForUser()
@@ -278,14 +276,14 @@ namespace ETest.Areas.Adm.Controllers
             }
             return Json(JsonConvert.SerializeObject(data,
                 Formatting.Indented,
-                new JsonSerializerSettings {DefaultValueHandling = DefaultValueHandling.Ignore}));
+                new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }));
 
         }
 
-        public ActionResult GetQuestion(int? id)
+        public ActionResult GetQuestion(long? id)
         {
             var userId = User.Identity.GetUserId();
-            var questions = DbContext.Questions.Where(s =>s.GroupId == id && s.Group.Course.TeacherId == userId ).ToList();
+            var questions = DbContext.Questions.Where(s => s.GroupId == id && s.Group.Course.TeacherId == userId).ToList();
 
             var data = new List<DataQuestionModel>();
             foreach (var question in questions)
@@ -295,9 +293,8 @@ namespace ETest.Areas.Adm.Controllers
             var group = DbContext.Groups.FirstOrDefault(s => s.GroupId == id);
             ViewBag.GroupName = group != null ? group.GroupName : "";
 
-            return PartialView("_QuestionTable",data);
+            return PartialView("_QuestionTable", data);
         }
-
 
         private void InitFormData(Test test)
         {
@@ -310,14 +307,54 @@ namespace ETest.Areas.Adm.Controllers
                 new SelectListItem {Selected = false, Text = "Điểm trung bình", Value = "1"},
                 new SelectListItem {Selected = false, Text = "Điểm thấp nhất", Value = "2"},
             };
-            var type = (int) test.GradeType;
+            var type = (int)test.GradeType;
             ViewBag.GradeType = type >= 0
                 ? new SelectList(types, "Value", "Text", type)
                 : new SelectList(types, "Value", "Text", (object)null);
         }
+
         private void UpdateDetail(IEnumerable<TestDetail> oldList)
         {
             DbContext.TestDetails.RemoveRange(oldList.ToList());
+        }
+
+        public ActionResult Preview(long? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+
+            var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
+            if (test != null)
+            {
+                if (test.Course.TeacherId != User.Identity.GetUserId())
+                {
+                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                }
+                return View(test);
+            }
+            return RedirectErrorPage(Url.Action("Index", "Course"));
+        }
+
+        [HttpPost]
+        public ActionResult GetTestPreview(long? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+
+            var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
+            if (test != null)
+            {
+                if (test.Course.TeacherId != User.Identity.GetUserId())
+                {
+                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                }
+                return PartialView("_TestPreview",test);
+            }
+            return RedirectErrorPage(Url.Action("Index", "Course"));
         }
     }
 }

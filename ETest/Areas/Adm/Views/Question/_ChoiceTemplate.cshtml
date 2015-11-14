@@ -1,6 +1,6 @@
 ﻿@model QuestionDetail
 @{
-    Model.Choices = Model.Choices.OrderBy(s => s.ChoiceId).ToList();
+    Model.Choices = Model.Choices.OrderBy(s => s.OrderNo).ToList();
 }
 <li class="dd-item dd3-item questions" data-type="Choice" data-id="0">
         <div class="pull-right m-r-md m-t-sm">

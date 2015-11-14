@@ -73,25 +73,29 @@
             drop: function (event, ui) {
                 // Kiểm tra nếu đã có thì thay thế, 1 cái chuyển về ô trả lời
                 var text = $(this).find("div");
-                if (text.length > 0) {
-                    $(this).text("");
-                    var gap = $("<div></div>");
-                    $(gap).attr("class", "answer-gap-dragged");
-                    $(gap).text(text);
-                    gap.appendTo(gapAnswerBox);
-                    $(gap).draggable({
+                if ($(text).text() != ui.draggable.text()) {
+                    if (text.length > 0) {
+                        $(this).text("");
+                        var gap = $("<div></div>");
+                        $(gap).attr("class", "answer-gap-dragged");
+                        $(gap).text($(text).text());
+                        gap.prependTo(gapAnswerBox);
+                        $(gap).draggable({
+                            revert: "invalid",
+                            containment: "#" + gapBoxId
+                        });
+                    }
+                    var div = $("<div></div>");
+                    div.text(ui.draggable.text());
+                    div.appendTo(this);
+                    $(div).draggable({
                         revert: "invalid",
                         containment: "#" + gapBoxId
                     });
+                    $(ui.draggable).remove();
+                } else {
+                    ui.draggable.attr("style", "position: relative;");
                 }
-                var div = $("<div></div>");
-                div.text(ui.draggable.text());
-                div.appendTo(this);
-                $(div).draggable({
-                    revert: "invalid",
-                    containment: "#" + gapBoxId
-                });
-                $(ui.draggable).remove();
             }
         });
         $(gapAnswerBox).droppable({
@@ -101,7 +105,7 @@
             drop: function (event, ui) {
                 var div = $("<div></div>");
                 div.text(ui.draggable.text()).addClass("answer-gap-dragged");
-                div.appendTo(this);
+                div.prependTo(this);
                 $(div).draggable({
                     revert: "invalid",
                     containment: "#" + gapBoxId

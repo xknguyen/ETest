@@ -1,6 +1,6 @@
 ﻿@model QuestionDetail
 @{
-    Model.ItemOrders = Model.ItemOrders.OrderBy(s => s.ChoiceId).ToList();
+    Model.ItemOrders = Model.ItemOrders.OrderBy(s => s.OrderNo).ToList();
 }
 <li class="dd-item dd3-item questions" data-type="Order" data-id="0">
     <div class="pull-right m-r-md m-t-sm">
@@ -26,6 +26,7 @@
                             @foreach (var item in Model.ItemOrders)
                             {
                                 <div class="col-md-12 question-answer answer-order">
+                                    @Html.Hidden("choiceId", item.ChoiceId)
                                     <label class="control-label col-md-1 result">@item.Result</label>
                                     <div class="col-md-9 question-form">
                                         @Html.TextBox("answer", item.Content, new {placeholder = "Nhập nội dung đáp án", @class = "form-control answer"})

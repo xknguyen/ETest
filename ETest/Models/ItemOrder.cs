@@ -11,7 +11,8 @@ namespace ETest.Models
     [NotMapped]
     public class ItemOrder
     {
-        public long ChoiceId { get; set; }
+        public string ChoiceId { get; set; }
+        public int OrderNo { get; set; }
         public string Content { get; set; }
         public int Result { get; set; }
 
@@ -21,7 +22,8 @@ namespace ETest.Models
 
         public ItemOrder(JToken choice)
         {
-            ChoiceId = DataUtil.ToLong(choice["ChoiceId"]);
+            ChoiceId = DataUtil.ToString(choice["ChoiceId"]);
+            OrderNo = DataUtil.ToInt(choice["OrderNo"]);
             Content = (string)choice["Content"];
             Result = DataUtil.ToInt(choice["Result"]);
         }

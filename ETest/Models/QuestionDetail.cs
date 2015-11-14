@@ -194,7 +194,7 @@ namespace ETest.Models
                     i = 0;
                     foreach (var choice in detail["Choices"].ToArray())
                     {
-                        Choices.Add(new Choice(choice, i++));
+                        Choices.Add(new Choice(choice, i++, Choices));
                     }
                     break;
                 case QuestionType.Order:

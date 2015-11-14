@@ -256,7 +256,6 @@
             } else {
                 alert("Có câu hỏi con chưa có điểm!");
             }
-            
         }
     });
 

@@ -1,0 +1,221 @@
+﻿@using Core.Extensions
+@model Test
+
+@{
+    ViewBag.Title = "Xem trước bài kiểm tra";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-slider.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="~/Content/custom/previewTest.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins" id="testContainer">
+            <div class="ibox-title">
+                <h5>Thông tin bài kiểm tra</h5>
+            </div>
+            <div class="ibox-content p-sm">
+                <div id="test-info" class="form-horizontal">
+                    @Html.HiddenFor(s => s.TestId)
+                    <div class="form-group">
+                        @(Html.LabelFor(model => model.TestTitle, new { @class = "control-label col-md-2" }))
+                        <div class="col-md-10">
+                            @Html.Raw(Model.TestTitle)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @(Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"}))
+                        <div class="col-md-10">
+                            @Html.Raw(Model.Description)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @(Html.LabelFor(model => model.CourseId, "Khóa học", new {@class = "control-label col-md-2"}))
+                        <div class="col-md-10">
+                            @Html.DisplayFor(model => model.Course.CourseName)
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TestStart, new {@class = "col-md-2 control-label"})
+                        <div class="col-md-10">
+                            @Html.DisplayFor(m => m.TestStart, "{0:dd/MM/yyyy HH:mm}")
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TestEnd, new {@class = "col-md-2 control-label"})
+                        <div class="col-md-10">
+                            @Html.DisplayFor(m => m.TestEnd, "{0:dd/MM/yyyy HH:mm}")
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.TestTime, new {@class = "col-md-2 control-label"})
+                        <div class="col-md-10">
+                            @Html.DisplayFor(m => m.TestTime)
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        @(Html.LabelFor(model => model.SubmitNo, new {@class = "control-label col-md-2"}))
+                        <div class="col-md-10">
+                            @Html.DisplayFor(m => m.SubmitNo)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @(Html.LabelFor(model => model.GradeType, "Tính điểm", new {@class = "control-label col-md-2"}))
+                        <div class="col-md-10">
+                            @Html.Display(Model.GradeType.GetEnumDescription())
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-md-4 btn-center">
+                            <a class="btn btn-primary btn-lg btn-block" id="startTest">Bắt đầu làm bài</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section pluginScripts
+{
+    <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    <script src="~/Scripts/bootstrap-slider.min.js"></script>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/model/answerSheet.js"></script>
+    <script src="~/Scripts/custom/questionPreview.js"></script>
+    <script>
+        $(function () {
+            $.fn.getLastNumber = function () {
+                var li = $(this).find("li").last();
+                var a = $(li).find("a").first();
+                var number = parseInt($(a).text().trim());
+                return isNaN(number) ? 0 : number;
+            }
+
+            $("#navbar-button").click();
+
+            $.fn.getQuestionDetail = function () {
+                var questionDetail = new QuestionDetail();
+                questionDetail.id = $(this).attr("data-id");
+                questionDetail.type = $(this).attr("data-type");
+                switch (questionDetail.type) {
+                    case "Choice":
+                        break;
+
+                }
+
+
+                return questionDetail;
+            }
+
+            $.fn.getTestDetail = function () {
+                var testDetail = new TestDetail();
+                testDetail.id = $(this).attr("data-id");
+                testDetail.questionDetail = [];
+                $(this).find("question-details").each(function () {
+                    testDetail.questionDetail.push($(this).getQuestionDetail());
+                });
+                return testDetail;
+            }
+
+            $.fn.getAnswerSheet = function () {
+                var answerSheet = new AnswerSheet();
+                answerSheet.id = $("#TestId").val();
+                answerSheet.testDetails = [];
+                $(".question-field").each(function () {
+                    answerSheet.testDetails.push($(this).getTestDetail());
+                });
+                return answerSheet;
+            }
+
+
+            $("#startTest").on("click", function (e) {
+                e.preventDefault();
+                $("#testContainer").html("");
+                var pathname = window.location.pathname;
+                var paths = pathname.split("/");
+                var testId = paths[paths.length - 1];
+                var url = "/Adm/Test/GetTestPreview";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        id: testId
+                    }
+                }).done(function (response) {
+                    $("#testContainer").html(response);
+                    $("#test-questions").createPreview();
+                    $("#backward").attr('disabled', 'disabled');
+                    if ($("#questionNoBox").getLastNumber() == 1) {
+                        $("#forward").attr("disabled", 'disabled');
+                    }
+                    $("#questionNoBox").on("click", "a", function () {
+                        var number = parseInt($(this).text().trim());
+                        $("#backward").removeAttr('disabled');
+                        $("#forward").removeAttr('disabled');
+                        if (number == 1) {
+                            $("#backward").attr('disabled', 'disabled');
+                        }
+                        var lastNumber = $("#questionNoBox").getLastNumber();
+                        if (lastNumber == number) {
+                            $("#forward").attr('disabled', 'disabled');
+                        }
+                    });
+                    $(".bfbutton").on("click", function () {
+                        var disabled = $(this).attr("disabled");
+                        if (disabled == null) {
+                            var id = $(this).attr("id");
+                            var as = $("#questionNoBox").find("a");
+                            var currentA = $("#questionNoBox").find("li.active").first().find("a").first();
+                            var currentNumber = parseInt($(currentA).text().trim()) - 1;
+
+                            if (id == "backward") {
+                                $(as[currentNumber - 1]).click();
+                            } else {
+                                $(as[currentNumber + 1]).click();
+                            }
+                            $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
+                        }
+                    });
+
+                    // Đếm ngược
+                    var second = parseInt($("#TestTime").val().trim());
+                    var timecounter = setInterval(function () {
+                        if (second == 0) {
+                            clearInterval(timecounter);
+                            // Nộp bài
+                        } else {
+                            var min = parseInt(second / 60, 10);
+                            var sec = parseInt(second % 60, 10);
+
+                            min = min.toString().length == 1 ? "0" + min : min.toString();
+                            sec = sec.toString().length == 1 ? "0" + sec : sec.toString();
+                            second--;
+                            $("#testTimeShow").text(min + ":" + sec);
+                        }
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+}

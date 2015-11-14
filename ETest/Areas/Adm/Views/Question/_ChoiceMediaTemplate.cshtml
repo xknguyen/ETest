@@ -1,6 +1,6 @@
 ﻿@model QuestionDetail
 @{
-    Model.Choices = Model.Choices.OrderBy(s => s.ChoiceId).ToList();
+    Model.Choices = Model.Choices.OrderBy(s => s.OrderNo).ToList();
 }
 <li class="dd-item dd3-item questions" data-type="ChoiceMedia" data-id="0">
     <div class="pull-right m-r-md m-t-sm">
@@ -25,6 +25,7 @@
                             @foreach (var choice in Model.Choices)
                             {
                                 <div class="file-box question-answer choice-media-box">
+                                    @Html.Hidden("choiceId", choice.ChoiceId)
                                     <div class="file ">
                                         <div class="pull-right m-r-md">
                                             <a href="#" class="remove-answer-choice-media"><i class="fa fa-close"></i></a>

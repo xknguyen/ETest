@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using CheapDeal.Core.Extensions;
 using ETest.Areas.Adm.Models;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
