@@ -2,10 +2,10 @@
 @foreach (var choice in Model.Choices)
 {
     <div class="col-md-4 choice-question">
-        <div class="@(Model.IsSingleChoice ? "radio" : "checkbox") i-checks">
+        <div class="@(Model.IsSingleChoice ? "radio" : "checkbox") i-checks" data-id="@choice.ChoiceId">
             <label>
                 @(Model.IsSingleChoice ? Html.RadioButton("choice-answer-box-" + Model.QuestionDetailId, false, new { @class = "form-control" }) : Html.CheckBox("choice-answer-box-" + Model.QuestionDetailId, false, new { @class = "form-control" }))
-                <img class=" choice-content" src="@choice.Content"/>
+                <img class=" choice-content" src="@choice.Content" />
             </label>
         </div>
     </div>

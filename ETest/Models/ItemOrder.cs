@@ -20,12 +20,25 @@ namespace ETest.Models
         {
         }
 
-        public ItemOrder(JToken choice)
+        public ItemOrder(JToken choice, List<ItemOrder> list)
         {
             ChoiceId = DataUtil.ToString(choice["ChoiceId"]);
+            ChoiceId = string.IsNullOrEmpty(ChoiceId) ? GetNewId(list) : ChoiceId;
             OrderNo = DataUtil.ToInt(choice["OrderNo"]);
             Content = (string)choice["Content"];
             Result = DataUtil.ToInt(choice["Result"]);
+        }
+        private string GetNewId(List<ItemOrder> list)
+        {
+            string result;
+            for (;;)
+            {
+                result = Guid.NewGuid().ToString();
+                var search = list.FirstOrDefault(s => s.ChoiceId == result);
+                if (search == null)
+                    break;
+            }
+            return result;
         }
     }
 }

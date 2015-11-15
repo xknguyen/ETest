@@ -220,6 +220,10 @@
     <Compile Include="Migrations\201511101619238_Initial.Designer.cs">
       <DependentUpon>201511101619238_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511150323227_UpdateAnswerSheet.cs" />
+    <Compile Include="Migrations\201511150323227_UpdateAnswerSheet.Designer.cs">
+      <DependentUpon>201511150323227_UpdateAnswerSheet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1664,6 +1668,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201511101619238_Initial.resx">
       <DependentUpon>201511101619238_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511150323227_UpdateAnswerSheet.resx">
+      <DependentUpon>201511150323227_UpdateAnswerSheet.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

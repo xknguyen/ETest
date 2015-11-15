@@ -42,7 +42,6 @@ namespace ETest.Models
         public virtual IList<TestDetail> TestDetails { get; set; }
         public virtual Group Group { get; set; }
         
-        public virtual IList<Answer> Answers { get; set; }
         public virtual IList<QuestionDetail> QuestionDetails { get; set; }
 
         

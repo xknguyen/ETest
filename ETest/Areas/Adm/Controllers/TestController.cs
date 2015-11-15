@@ -356,5 +356,14 @@ namespace ETest.Areas.Adm.Controllers
             }
             return RedirectErrorPage(Url.Action("Index", "Course"));
         }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult GradeTest(string data)
+        {
+            var answerSheet = new AnswerSheet(data);
+
+
+            return View();
+        }
     }
 }

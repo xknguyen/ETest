@@ -12,3 +12,13 @@ function QuestionDetail(id, type, answer) {
     this.type = type;
     this.answer = answer;
 }
+
+function AssociateAnswer(rightId,leftId) {
+    this.rightId = rightId;
+    this.leftId = leftId;
+}
+
+function GapAnswer(index, answer) {
+    this.index = index;
+    this.answer = answer;
+}

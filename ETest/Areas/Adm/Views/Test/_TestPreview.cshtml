@@ -1,6 +1,6 @@
 ﻿@using System.Text.RegularExpressions
 @model Test
-
+@Html.Hidden("TestId", Model.TestId)
 @Html.Hidden("TestTime",Model.TestTime*60)
 <div class="ibox-title">
     <h5>Thời gian làm bài còn: <span id="testTimeShow">@Model.TestTime:00</span></h5>
@@ -28,7 +28,7 @@
                         </div>
                         @foreach (var detail in Model.TestDetails[i - 1].Question.QuestionDetails)
                         {
-                            <div class="col-md-12 question-details" data-type="@detail.QuestionType" data-id="@detail.QuestionDetailId">
+                            <div class="col-md-12 question-details" data-type="@detail.QuestionType" data-id="@detail.QuestionDetailId" data-name="choice-answer-box-@detail.QuestionDetailId">
                                 @switch (detail.QuestionType)
                                 {
                                     case QuestionType.Choice:

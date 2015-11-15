@@ -34,7 +34,7 @@ namespace ETest.Models
             ChoiceId = DataUtil.ToString(choice["LeftId"]);
             ChoiceId = string.IsNullOrEmpty(ChoiceId) ? GetNewId(list) : ChoiceId;
             AssociateId = DataUtil.ToString(choice["RightId"]);
-            AssociateId = string.IsNullOrEmpty(AssociateId) ? GetNewId(list) : ChoiceId;
+            AssociateId = string.IsNullOrEmpty(AssociateId) ? GetNewId(list) : AssociateId;
 
             Content = DataUtil.ToString(choice["LeftContent"]);
             var rightContent = DataUtil.ToString(choice["RightContent"]);

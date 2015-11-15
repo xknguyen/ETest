@@ -8,7 +8,6 @@ namespace ETest.DAL
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AnswerSheet> AnswerSheets { get; set; }
-        public DbSet<Answer> Answers { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -71,11 +70,11 @@ namespace ETest.DAL
                 .WillCascadeOnDelete(false);
 
             // Thiết lập quan hệ giữa câu hỏi với câu trả lời
-            modelBuilder.Entity<Question>()
-                .HasMany(o => o.Answers)
-                .WithRequired(d => d.Question)
-                .HasForeignKey(d => d.QuestionId)
-                .WillCascadeOnDelete(true);
+            //modelBuilder.Entity<Question>()
+            //    .HasMany(o => o.Answers)
+            //    .WithRequired(d => d.Question)
+            //    .HasForeignKey(d => d.QuestionId)
+            //    .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa câu hỏi với chi tiết bài kiểm tra
             modelBuilder.Entity<Question>()
@@ -106,11 +105,11 @@ namespace ETest.DAL
                 .WillCascadeOnDelete(true);
 
             // Thiết lập quan hê giữa câu trả lời với phiếu trả lời
-            modelBuilder.Entity<AnswerSheet>()
-                .HasMany(o => o.Answers)
-                .WithRequired(d => d.AnswerSheet)
-                .HasForeignKey(d => d.AnswerSheetId)
-                .WillCascadeOnDelete(true);
+            //modelBuilder.Entity<AnswerSheet>()
+            //    .HasMany(o => o.Answers)
+            //    .WithRequired(d => d.AnswerSheet)
+            //    .HasForeignKey(d => d.AnswerSheetId)
+            //    .WillCascadeOnDelete(true);
 
             // Thiết lập quan hệ giữa câu hỏi với chi tiết câu hỏi
             modelBuilder.Entity<Question>()

@@ -114,17 +114,81 @@
 
             $("#navbar-button").click();
 
+            $.fn.getChoice = function (name) {
+                var answers = [];
+                $(this).find("input[name='" + name + "']:checked").each(function () {
+                    var parent = $(this).closest("div.i-checks");
+                    answers.push($(parent).attr("data-id"));
+                });
+                return answers;
+            }
+
+            $.fn.getOrder = function () {
+                var answers = [];
+                $(this).find("ul.sortable").first().find("li").each(function () {
+                    answers.push($(this).attr("data-id"));
+                });
+                return answers;
+            }
+
+            $.fn.getAssociate = function () {
+                var answers = [];
+                $(this).find("div.answer-box").each(function () {
+                    var leftId = $($(this).find("div.right-answer").first()).attr("data-right-id");
+                    var rightId = $($(this).find("div.left-answer-dragged").first()).attr("data-right-id");;
+                    answers.push(new AssociateAnswer(rightId,leftId));
+                });
+                return answers;
+            }
+
+            $.fn.getGap = function () {
+                var answers = [];
+                $(this).find("span.gap-field-drogged").each(function (index) {
+                    var text = $(this).find("div.ui-draggable").first();
+                    answers.push(new GapAnswer(index,$(text).text().trim()));
+                });
+                return answers;
+            }
+
+            $.fn.getFill = function () {
+                var answers = [];
+                $(this).find("input[name='gapField']").each(function (index) {
+                    answers.push(new GapAnswer(index, $(this).val().trim()));
+                });
+                return answers;
+            }
+
+            $.fn.getSlider = function () {
+                var answers = $($(this).find("label.currentValue").first()).text();
+                return answers;
+            }
+
             $.fn.getQuestionDetail = function () {
                 var questionDetail = new QuestionDetail();
                 questionDetail.id = $(this).attr("data-id");
                 questionDetail.type = $(this).attr("data-type");
+                var name = $(this).attr("data-name");
                 switch (questionDetail.type) {
+                    case "ChoiceMedia":
                     case "Choice":
+                        questionDetail.answer = $(this).getChoice(name);
                         break;
-
+                    case "Order":
+                        questionDetail.answer = $(this).getOrder();
+                        break;
+                    case "Associate":
+                        questionDetail.answer = $(this).getAssociate();
+                        break;
+                    case "Gap":
+                        questionDetail.answer = $(this).getGap();
+                        break;
+                    case "Slider":
+                        questionDetail.answer = $(this).getSlider();
+                        break;
+                    case "Fill":
+                        questionDetail.answer = $(this).getFill();
+                        break;
                 }
-
-
                 return questionDetail;
             }
 
@@ -132,7 +196,7 @@
                 var testDetail = new TestDetail();
                 testDetail.id = $(this).attr("data-id");
                 testDetail.questionDetail = [];
-                $(this).find("question-details").each(function () {
+                $(this).find(".question-details").each(function () {
                     testDetail.questionDetail.push($(this).getQuestionDetail());
                 });
                 return testDetail;
@@ -197,7 +261,11 @@
                             $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
                         }
                     });
-
+                    $("#submit").on("click", function (e) {
+                        e.preventDefault();
+                        var s = $("#questionConBox").getAnswerSheet();
+                        $("#questionConBox").html(JSON.stringify(s));
+                    });
                     // Đếm ngược
                     var second = parseInt($("#TestTime").val().trim());
                     var timecounter = setInterval(function () {

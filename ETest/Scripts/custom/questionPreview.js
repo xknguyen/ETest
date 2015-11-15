@@ -149,7 +149,7 @@
 
         //Slider
         var sliderPreview = $(this).find(".slider-preview");
-        $(sliderPreview).createSliderBox();
+        $(sliderPreview).each(function () { $(this).createSliderBox(); });
 
         // Order
         var sorable = $(this).find(".sortable");
@@ -166,5 +166,5 @@
         $(sorable).disableSelection();
     }
 
-    
+
 });

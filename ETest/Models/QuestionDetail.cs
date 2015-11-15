@@ -201,7 +201,7 @@ namespace ETest.Models
                     ItemOrders = new List<ItemOrder>();
                     foreach (var choice in detail["Choices"].ToArray())
                     {
-                        ItemOrders.Add(new ItemOrder(choice));
+                        ItemOrders.Add(new ItemOrder(choice, ItemOrders));
                     }
                     break;
                 case QuestionType.Associate:
