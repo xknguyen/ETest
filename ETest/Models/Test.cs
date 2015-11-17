@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web.Mvc;
 using Core.Utilities;
@@ -82,6 +83,9 @@ namespace ETest.Models
         [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Cách tính điểm")]
         public GradeType GradeType  { get; set; }
+        [NotMapped]
+        public int SubmitNoUser { get; set; }
+        
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
@@ -116,6 +120,19 @@ namespace ETest.Models
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             TestDetails = testDetails;
+        }
+
+
+        public void SetAnswer(AnswerSheet answerSheet)
+        {
+            foreach (var answer in answerSheet.Answers)
+            {
+                var question = TestDetails.First(s => s.QuestionId == answer.QuestionId).Question;
+                foreach (var detail in question.QuestionDetails)
+                {
+                    var answerDetail = answer.AnswerDetails.Find(s => s.QuestionDetailId == detail.QuestionDetailId);
+                }
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Core.Utilities;
@@ -32,7 +34,8 @@ namespace ETest.Models
 
         public virtual Question Question { get; set; }
 
-        [NotMapped] private List<Choice> _choices;
+        [NotMapped]
+        private List<Choice> _choices;
 
         [NotMapped]
         public List<Choice> Choices
@@ -56,7 +59,8 @@ namespace ETest.Models
             set { _choices = value; }
         }
 
-        [NotMapped] private List<ItemOrder> _itemOrders;
+        [NotMapped]
+        private List<ItemOrder> _itemOrders;
 
         [NotMapped]
         public List<ItemOrder> ItemOrders
@@ -81,7 +85,8 @@ namespace ETest.Models
             set { _itemOrders = value; }
         }
 
-        [NotMapped] private SliderLimit _sliderLimit;
+        [NotMapped]
+        private SliderLimit _sliderLimit;
 
         [NotMapped]
         public SliderLimit SliderLimit
@@ -105,7 +110,8 @@ namespace ETest.Models
             set { _sliderLimit = value; }
         }
 
-        [NotMapped] private List<AssociateItem> _associateItems;
+        [NotMapped]
+        private List<AssociateItem> _associateItems;
 
         [NotMapped]
         public List<AssociateItem> AssociateItems
@@ -129,7 +135,8 @@ namespace ETest.Models
             set { _associateItems = value; }
         }
 
-        [NotMapped] private List<GapItem> _gapItems;
+        [NotMapped]
+        private List<GapItem> _gapItems;
 
         [NotMapped]
         public List<GapItem> GapItems
@@ -181,9 +188,9 @@ namespace ETest.Models
 
         public QuestionDetail(JToken detail)
         {
-            QuestionType = (QuestionType) DataUtil.ToInt(detail["QuestionType"]);
+            QuestionType = (QuestionType)DataUtil.ToInt(detail["QuestionType"]);
             QuestionDetailId = DataUtil.ToLong(detail["QuestionDetailId"]);
-            QuestionTitle = (string) detail["QuestionTitle"];
+            QuestionTitle = (string)detail["QuestionTitle"];
             OrderNo = DataUtil.ToInt(detail["OrderNo"]);
             int i;
             switch (QuestionType)
@@ -244,5 +251,80 @@ namespace ETest.Models
             QuestionTitle = detai.QuestionTitle;
             OrderNo = detai.OrderNo;
         }
+
+        public bool CheckCorrect(AnswerDetail detail)
+        {
+            switch (QuestionType)
+            {
+                case QuestionType.ChoiceMedia:
+                case QuestionType.Choice:
+                    var correctId = Choices.Where(s => s.IsCorrect).ToList();
+                    if (detail.Choices == null || detail.Choices.Count == 0)
+                    {
+                        return false;
+                    }
+                    foreach (var id in detail.Choices)
+                    {
+                        if (correctId.All(s => s.ChoiceId != id))
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case QuestionType.Order:
+                    var itemOrders = ItemOrders.OrderBy(s => s.Result).ToList();
+                    for (var i = 0; i < ItemOrders.Count; i++)
+                    {
+                        if (itemOrders[i].ChoiceId != detail.Choices[i])
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case QuestionType.Associate:
+                    foreach (var items in AssociateItems)
+                    {
+                        var answerItem = detail.AssociateItems.Find(s => s.ChoiceId == items.ChoiceId);
+                        if (answerItem.AssociateId != items.AssociateId)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case QuestionType.Fill:
+                case QuestionType.Gap:
+                    detail.GapItems = GapItems.OrderBy(s => s.ItemId).ToList();
+                    var resultGaps = new List<string>();
+                    var inputMatch = Regex.Match(QuestionTitle, @"<input name=""gapField"" type=""text"" value=""(?<inputId>[\d]+)"" />");
+                    while (inputMatch.Success)
+                    {
+                        var id = DataUtil.ToInt(inputMatch.Groups["inputId"].Value);
+                        var gapFill = GapItems.Find(s => s.ItemId == id);
+                        if (gapFill != null)
+                            resultGaps.Add(gapFill.ItemContent.Trim());
+                        inputMatch = inputMatch.NextMatch();
+                    }
+                    for (var i = 0; i < resultGaps.Count; i++)
+                    {
+                        if (resultGaps[i] != detail.GapItems[i].ItemContent)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+                case QuestionType.Slider:
+                    if (detail.Choices == null || detail.Choices.Count != 1 || string.IsNullOrEmpty(detail.Choices[0]))
+                    {
+                        return false;
+                    }
+                    var value = DataUtil.ToFloat(detail.Choices[0]);
+                    // ReSharper disable once CompareOfFloatsByEqualityOperator
+                    if (value != SliderLimit.Value)
+                        return false;
+                    break;
+            }
+            return true;
+        }
+
     }
 }

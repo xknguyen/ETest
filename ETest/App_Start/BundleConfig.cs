@@ -61,12 +61,10 @@ namespace ETest
                 "~/Content/custom/question.css"
                 ));
             bundles.Add(new StyleBundle("~/bundles/shopstyle").Include(
-                
+               //"~/Content/css/bootstrap.css",
                "~/Content/css/style.css",
                "~/Content/fonts/font-awesome/css/font-awesome.min.css",
-               "~/Content/css/animate.css",
-               "~/Content/css/bootstrap.css"
-               
+               "~/Content/css/animate.css"
                ));
             bundles.Add(new ScriptBundle("~/bundles/shopjs").Include(
                "~/Scripts/jquery-{version}.js",

@@ -1,0 +1,85 @@
+﻿@using System.Text.RegularExpressions
+@model AnswerSheet
+@Html.Hidden("TestId", Model.TestId)
+@Html.Hidden("MixedQuestions", Model.Test.MixedQuestions)
+@Html.Hidden("TestTime",Model.Test.TestTime * 60)
+@Html.Hidden("SubmitTime", (int)ViewBag.SubmitTime)
+<div class="ibox-title">
+    <h5>Thời gian làm bài còn: <span id="testTimeShow">@Model.Test.TestTime:00</span></h5>
+</div>
+<div class="ibox-content p-sm">
+    <div id="test-questions" class="form-horizontal">
+        <div class="col-md-12" id="questionNoBox">
+            <ul class="nav nav-tabs">
+                @for (int i = 1; i <= Model.Test.TestDetails.Count; i++)
+                {
+                    <li class="@(i == 1 ? "active " : "")tab-li">
+                        @* ReSharper disable once Html.IdNotResolved *@
+                        <a data-toggle="tab" href="#question-@(i)" aria-expanded="true">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-12" id="questionConBox">
+            <div class="tab-content">
+                @for (int i = 1; i <= Model.Test.TestDetails.Count; i++)
+                {
+                    var answer = Model.Answers.Find(s => s.QuestionId == Model.Test.TestDetails[i - 1].QuestionId);
+                    <div id="@("question-" + i)" class="tab-pane fade question-field@(i == 1 ? " in active" : "")" data-id="@Model.Test.TestDetails[i - 1].QuestionId">
+                        <div class="col-md-12 question-title">
+                            <div class="col-md-1">Câu hỏi: </div>
+                            <div class="col-md-11">@Html.Raw(Model.Test.TestDetails[i - 1].Question.QuestionTitle)</div>
+                        </div>
+                        @foreach (var de in Model.Test.TestDetails[i - 1].Question.QuestionDetails)
+                        {
+                            var detail = answer.AnswerDetails.Find(s => s.QuestionDetailId == de.QuestionDetailId);
+                            detail.QuestionDetail = de;
+                            <div class="col-md-12 question-details" data-type="@detail.QuestionType" data-id="@detail.QuestionDetailId" data-name="choice-answer-box-@detail.QuestionDetailId">
+                                @switch (de.QuestionType)
+                                {
+                                    case QuestionType.Choice:
+                                        <div class="question-detail-title">@Html.Raw(de.QuestionTitle)</div>
+                                        @Html.Partial("_ChoicePreviewCon", detail)
+                                        break;
+                                    case QuestionType.Order:
+                                        <div class="question-detail-title">@Html.Raw(de.QuestionTitle)</div>
+                                        @Html.Partial("_OrderPreviewCon", detail)
+                                        break;
+                                    case QuestionType.Associate:
+                                        <div class="question-detail-title">@Html.Raw(de.QuestionTitle)</div>
+                                        @Html.Partial("_AssociatePreviewCon", detail)
+                                        break;
+                                    case QuestionType.Gap:
+                                        @Html.Partial("_GapPreviewCon", detail)
+                                        break;
+                                    case QuestionType.Slider:
+                                        <div class="question-detail-title">@Html.Raw(de.QuestionTitle)</div>
+                                        @Html.Partial("_SliderPreviewCon", detail)
+                                        break;
+                                    case QuestionType.ChoiceMedia:
+                                        <div class="question-detail-title">@Html.Raw(de.QuestionTitle)</div>
+                                        @Html.Partial("_ChoiceMediaPreviewCon", detail)
+                                        break;
+                                    case QuestionType.Fill:
+                                        var titleFill = Regex.Replace(de.QuestionTitle, @"<input name=""gapField"" type=""text"" value=""([\d]+)"" />", "<input name=\"gapField\" type =\"text\" />");
+                                        <div class="question-detail-title">@Html.Raw(titleFill)</div>
+                                        break;
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-12" id="button-box">
+            <div id="buttons">
+                <a class="btn btn-primary bfbutton" id="backward"><i class="fa fa-step-backward"></i> Câu trước</a>
+                <a class="btn btn-danger" id="submit"><i class="fa fa-stop"></i> Nộp bài</a>
+                <a class="btn btn-primary bfbutton" id="forward"><i class="fa fa-step-forward"></i> Câu sau</a>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>

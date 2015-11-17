@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Web.Script.Serialization;
 using Core.Utilities;
 using ETest.Areas.Adm.Models;
 using Newtonsoft.Json;
@@ -25,8 +26,27 @@ namespace ETest.Models
 
         public int OrderNo { get; set; }
 
+        private List<TestDetailData> _details;
         [NotMapped]
-        public List<TestDetailData> Details { get; set; }
+        public List<TestDetailData> Details {
+            get
+            {
+                if (_details == null)
+                {
+                    if (string.IsNullOrEmpty(QuestionDetails))
+                    {
+                        _details = new List<TestDetailData>();
+                    }
+                    else
+                    {
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        _details = jss.Deserialize<List<TestDetailData>>(QuestionDetails);
+                    }
+                }
+                return _details;
+            }
+            set { _details = value; }
+        }
 
         public string QuestionDetails { get; set; }
 
@@ -53,5 +73,22 @@ namespace ETest.Models
         {
             
         }
+
+        public float GradeTest(Answer answer)
+        {
+            var score = 0f;
+            foreach (var detail in answer.AnswerDetails)
+            {
+                var questionDetail =
+                    Question.QuestionDetails.FirstOrDefault(s => s.QuestionDetailId == detail.QuestionDetailId);
+                if (questionDetail != null && questionDetail.CheckCorrect(detail))
+                {
+                    var detailScore = Details.FirstOrDefault(s => s.QuestionDetailId == detail.QuestionDetailId);
+                    if (detailScore != null) score += detailScore.Score;
+                }
+            }
+            return score;
+        }
+
     }
 }

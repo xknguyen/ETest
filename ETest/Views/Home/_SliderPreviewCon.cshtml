@@ -1,0 +1,25 @@
+﻿@using Core.Utilities
+@model AnswerDetail
+    @{
+        double value = 0;
+        if (Model.Choices == null || Model.Choices.Count == 0)
+        {
+            value = Model.QuestionDetail.SliderLimit.Min;
+        }
+        else
+        {
+            value = DataUtil.ToDouble(Model.Choices[0]);
+        }
+
+    }
+<div class="slider-preview">
+    <div class="answers answer-sliders">
+        <div class="slider-content">
+            @Html.TextBox("answer", 0, new { @class = "answer-slider", type = "text", data_slider_min = Model.QuestionDetail.SliderLimit.Min, data_slider_max = Model.QuestionDetail.SliderLimit.Max, data_slider_step = Model.QuestionDetail.SliderLimit.Step, data_slider_value = value })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <label class="control-label">Giá trị hiện tại: </label>
+        <label class="currentValue">@value</label>
+    </div>
+</div>

@@ -10,7 +10,7 @@
     <link href="~/Content/AdmGrid.css" rel="stylesheet" />
     <style>
         .ibox-title h5 {
-                font-weight: bold;
+            font-weight: bold;
         }
     </style>
 }
@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title" >
+            <div class="ibox-title">
                 <h5>Danh sách bài kiểm tra đang hiện hành</h5>
                 <div class="ibox-tools">
 
@@ -28,20 +28,20 @@
                 <!-- Phần hiển thị Form tìm kiếm -->
                 <div class="row">
                     <div class="col-md-12 m-b-sm">
-                        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new {@class = "form-horizontal", role = "search", id = "searchTest"}))
+                        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchTest" }))
                         {
                             <div class="input-group">
                                 @(Html.TextBox("Keyword", null, new
-                                  {
-                                      placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
-                                      @class = "input-sm form-control"
-                                  }))
+                            {
+                                placeholder = "Nhập từ khóa hoặc nội dung cần tìm",
+                                @class = "input-sm form-control"
+                            }))
 
-                                @Html.Hidden("PageSize", (int) ViewBag.CurrentPageSize, new {id = "pageSize"})
+                                @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                    @(Html.ActionLink("Bỏ lọc", "Index", new {courseId = ViewBag.CourseId},
-                                          new {@class = "btn btn-sm btn-warning"}))
+                                    @(Html.ActionLink("Bỏ lọc", "Index", new { courseId = ViewBag.CourseId },
+                                          new { @class = "btn btn-sm btn-warning" }))
                                 </span>
                             </div>
                         }
@@ -51,12 +51,12 @@
                 <!-- Phần hiển thị danh sách -->
                 <table id="tblTests" class="table table-responsive table-bordered table-hover tbldata">
                     <thead>
-                    <tr>
-                        <th>Tiêu đề</th>
-                        <th class="hidden-sm hidden-xs">Thông tin</th>
-                        <th class="hidden-sm hidden-xs">Khóa học</th>
-                        <th width="110px"></th>
-                    </tr>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th class="hidden-sm hidden-xs">Thông tin</th>
+                            <th class="hidden-sm hidden-xs">Khóa học</th>
+                            <th width="110px"></th>
+                        </tr>
                     </thead>
                     @if (Model.Count != 0)
                     {
@@ -68,19 +68,27 @@
                                 </td>
 
                                 <td class="hidden-sm hidden-xs">
-                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br/>
+                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br />
                                     Thời gian làm bài: @item.TestTime phút<br />
-                                    Số câu: @item.TestDetails.Count
+                                    Số câu: @item.TestDetails.Count<br />
+                                    Đã hoàn thành: @(item.SubmitNoUser)/@(item.SubmitNo)
                                 </td>
                                 <td class="hidden-sm hidden-xs">
                                     @item.Course.CourseName
                                 </td>
                                 <td>
-                                    @(Html.Bootstrap()
-                                          .ActionLink("", "Test", "Home")
-                                          .RouteValues(new {id = item.TestId})
-                                          .AppendIcon("fa fa-edit fa-2x")
-                                          .Title("Làm bài thi"))
+                                    @if (item.SubmitNoUser < item.SubmitNo)
+                                    {
+                                        @(Html.Bootstrap()
+                                              .ActionLink("", "Test", "Home")
+                                              .RouteValues(new {id = item.TestId})
+                                              .AppendIcon("fa fa-edit fa-2x")
+                                              .Title("Làm bài thi"))
+                                    }
+                                    else
+                                    {
+                                        <span>Đã hoàn thành khóa học</span>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -96,7 +104,7 @@
                     <div class="col-md-6 m-b-sm text-center">
                         Hiển thị
                         @(Html.DropDownList("PageSize", null,
-                              new {@class = "input-sm", id = "pageSelect"}))
+                              new { @class = "input-sm", id = "pageSelect" }))
                         mẫu tin
                     </div>
                     <div class="col-md-6 text-center">
@@ -121,5 +129,5 @@
 
 @section scripts
 {
-<script src="~/Scripts/custom/testIndex.js"></script>
+    <script src="~/Scripts/custom/testIndex.js"></script>
 }

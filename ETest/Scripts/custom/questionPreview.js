@@ -1,4 +1,6 @@
 ﻿$(function () {
+
+    
     //Associate
     $.fn.createAssociateBox = function () {
         var leftChoice = $(this).find(".left-choice");

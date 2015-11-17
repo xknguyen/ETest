@@ -1,0 +1,14 @@
+﻿@model AnswerDetail
+@{
+    var newItems = Model.Choices.Select(choice => Model.QuestionDetail.ItemOrders.Find(s => s.ChoiceId == choice)).ToList();
+}
+
+<ul class="sortable">
+    @foreach (var item in newItems)
+    {
+        <li class="ui-state-default" data-id="@item.ChoiceId">@item.Content</li>
+    }
+</ul>
+
+
+

@@ -1,0 +1,45 @@
+﻿@using System.Text.RegularExpressions
+@model Question
+<div class="row" id="preview-question-form" style="background: white;padding: 20px">
+    <div class="col-md-12 question-title">
+        <div class="col-md-1">Câu: </div>
+        <div class="col-md-11">@Html.Raw(Model.QuestionTitle)</div>
+    </div>
+
+    @foreach (var detail in Model.QuestionDetails)
+    {
+        <div class="col-md-12 question-details">
+            @switch (detail.QuestionType)
+                {
+                    case QuestionType.Choice:
+                    <div class="question-detail-title">@Html.Raw(detail.QuestionTitle)</div>
+                        @Html.Partial("_ChoicePreview", detail)
+                    break;
+                case QuestionType.Order:
+                    <div class="question-detail-title">@Html.Raw(detail.QuestionTitle)</div>
+                        @Html.Partial("_OrderPreview", detail)
+                    break;
+                case QuestionType.Associate:
+                    <div class="question-detail-title">@Html.Raw(detail.QuestionTitle)</div>
+                        @Html.Partial("_AssociatePreview", detail)
+                    break;
+                case QuestionType.Gap:
+                    @Html.Partial("_GapPreview", detail)
+                    break;
+                case QuestionType.Slider:
+                    <div class="question-detail-title">@Html.Raw(detail.QuestionTitle)</div>
+                        @Html.Partial("_SliderPreview", detail)
+                    break;
+                case QuestionType.ChoiceMedia:
+                    <div class="question-detail-title">@Html.Raw(detail.QuestionTitle)</div>
+                        @Html.Partial("_ChoiceMediaPreview", detail)
+                    break;
+                case QuestionType.Fill:
+                    var titleFill = Regex.Replace(detail.QuestionTitle, @"<input name=""gapField"" type=""text"" value=""([\d]+)"" />", "<input name=\"gapField\" type =\"text\" />");
+                    <div class="question-detail-title">@Html.Raw(titleFill)</div>
+                    break;
+            }
+        </div>
+    }
+
+</div>

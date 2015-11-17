@@ -1,0 +1,16 @@
+﻿@using System.Text.RegularExpressions
+@model QuestionDetail
+@{
+    var titleFill = Regex.Replace(Model.QuestionTitle, @"<input name=""gapField"" type=""text"" value=""([\d]+)"" />", "<span class=\"gap-field-drogged ui-widget-content\"></span>");
+}
+<div class="gap-box" id="@Model.QuestionDetailId">
+    <div class="question-detail-title">@Html.Raw(titleFill)</div>
+    <div class="gap-answer-box ui-widget-content">
+        @foreach (var gap in @Model.GapItems)
+        {
+            <div class="answer-gap-dragged">
+                @gap.ItemContent
+            </div>
+        }<div style="clear: both"></div>
+    </div>
+</div>

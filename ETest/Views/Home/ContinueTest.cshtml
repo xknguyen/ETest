@@ -1,5 +1,4 @@
-﻿@using Core.Extensions
-@model Test
+﻿@model AnswerSheet
 
 @{
     ViewBag.Title = "Xem trước bài kiểm tra";
@@ -13,80 +12,16 @@
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="~/Content/custom/previewTest.css" rel="stylesheet" />
+    <style>
+        .container {
+            width: 95%;
+        }
+    </style>
 }
 <div class="row">
     <div class="col-md-12">
         <div class="ibox float-e-margins" id="testContainer">
-            <div class="ibox-title">
-                <h5>Thông tin bài kiểm tra</h5>
-            </div>
-            <div class="ibox-content p-sm">
-                <div id="test-info" class="form-horizontal">
-                    @Html.HiddenFor(s => s.TestId)
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.TestTitle, new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.Raw(Model.TestTitle)
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.Raw(Model.Description)
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.CourseId, "Khóa học", new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.DisplayFor(model => model.Course.CourseName)
-                        </div>
-                    </div>
-
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.TestStart, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.DisplayFor(m => m.TestStart, "{0:dd/MM/yyyy HH:mm}")
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.TestEnd, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.DisplayFor(m => m.TestEnd, "{0:dd/MM/yyyy HH:mm}")
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.TestTime, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-10">
-                            @Html.DisplayFor(m => m.TestTime)
-                        </div>
-                    </div>
-
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.SubmitNo, new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.DisplayFor(m => m.SubmitNo)
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.GradeType, "Tính điểm", new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.Display(Model.GradeType.GetEnumDescription())
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div class="col-md-4 btn-center">
-                            <a class="btn btn-primary btn-lg btn-block" id="startTest">Bắt đầu làm bài</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("_TestPreviewCon",Model)
         </div>
     </div>
 </div>
@@ -235,7 +170,18 @@
 
                 //return array;
             }
-
+            function submitTest() {
+                var s = $("#questionConBox").getAnswerSheet();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/GradeTest",
+                    data: {
+                        data: JSON.stringify(s)
+                    }
+                }).done(function (res) {
+                    $("#testContainer").html(res);
+                });
+            }
             $.fn.shuffleQuestionDetail = function () {
                 $(this).find("div.question-details").each(function () {
                     var type = $(this).attr("data-type");
@@ -295,7 +241,7 @@
                 var pathname = window.location.pathname;
                 var paths = pathname.split("/");
                 var testId = paths[paths.length - 1];
-                var url = "/Adm/Test/GetTestPreview";
+                var url = "/Home/GetTestPreview";
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -338,30 +284,31 @@
                             $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
                         }
                     });
+
                     $("#submit").on("click", function (evt) {
                         evt.preventDefault();
-                        var s = $("#questionConBox").getAnswerSheet();
-                        $.ajax({
-                            type: "POST",
-                            url: "/Adm/Test/GradeTest",
-                            data: {
-                                data: JSON.stringify(s)
-                            }
-                        }).done(function (res) {
-                            if (res.Success) {
-                                alert("Bạn được " + res.Message + "/100 điểm.");
-                            } else {
-                                alert(res.Message);
-                            }
-                        });
+                        if (confirm("Bạn có chắc chắn nộp bài không?"))
+                            submitTest();
                     });
+
                     // Đếm ngược
                     var second = parseInt($("#TestTime").val().trim());
+                    var submitTime = parseInt($("#SubmitTime").val().trim());;
                     var timecounter = setInterval(function () {
                         if (second == 0) {
                             clearInterval(timecounter);
                             $("#submit").click();
                         } else {
+                            if (second != parseInt($("#TestTime").val().trim()) && second % submitTime == 0) {
+                                var s = $("#questionConBox").getAnswerSheet();
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Home/AutoSubmit",
+                                    data: {
+                                        data: JSON.stringify(s)
+                                    }
+                                });
+                            }
                             var min = parseInt(second / 60, 10);
                             var sec = parseInt(second % 60, 10);
 

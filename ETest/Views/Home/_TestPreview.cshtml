@@ -2,7 +2,7 @@
 @model Test
 @Html.Hidden("TestId", Model.TestId)
 @Html.Hidden("MixedQuestions", Model.MixedQuestions)
-@Html.Hidden("TestTime",Model.TestTime*60)
+@Html.Hidden("TestTime",Model.TestTime * 60)
 <div class="ibox-title">
     <h5>Thời gian làm bài còn: <span id="testTimeShow">@Model.TestTime:00</span></h5>
 </div>
@@ -12,9 +12,12 @@
             <ul class="nav nav-tabs">
                 @for (int i = 1; i <= Model.TestDetails.Count; i++)
                 {
-                    <li class="@(i == 1 ? "active " : "")tab-li"><a data-toggle="tab" href="#@("question-" + i)" aria-expanded="true">
-                        @i
-                    </a></li>
+                    <li class="@(i == 1 ? "active " : "")tab-li">
+                        @* ReSharper disable once Html.IdNotResolved *@
+                        <a data-toggle="tab" href="#question-@(i)" aria-expanded="true">
+                            @i
+                        </a>
+                    </li>
                 }
             </ul>
         </div>

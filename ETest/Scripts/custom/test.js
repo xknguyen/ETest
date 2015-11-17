@@ -76,7 +76,7 @@
                             selectedId.push(id);
                         } else {
                             selected = jQuery.grep(selected, function(value) {
-                                return value[1] != id;
+                                return value[2] != id;
                             });
                             selectedId = jQuery.grep(selectedId, function(value) {
                                 return value != id;

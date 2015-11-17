@@ -360,10 +360,28 @@ namespace ETest.Areas.Adm.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult GradeTest(string data)
         {
-            var answerSheet = new AnswerSheet(data);
+            var answerSheet = new AnswerSheet(data) {TestTakerId = User.Identity.GetUserId()};
+            var score = 0f;
+            var test = DbContext.Tests.FirstOrDefault(s => s.TestId == answerSheet.TestId);
+            if (test == null)
+            {
+                return Json(new
+                {
+                    Message = "Đã có lỗi xảy ra! Vui lòng thử lại sau.",
+                    Success = false
+                });
+            }
+            foreach (var answer in answerSheet.Answers)
+            {
+                var testDetail = test.TestDetails.FirstOrDefault(s => s.QuestionId == answer.QuestionId);
+                if (testDetail != null) score += testDetail.GradeTest(answer);
+            }
 
-
-            return View();
+            return Json(new
+            {
+                Message = score,
+                Success = true
+            });
         }
     }
 }

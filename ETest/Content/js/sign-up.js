@@ -33,7 +33,7 @@ $(function () {
     $('#Phone').popover();
 });
 $(function () {
-    $('#User').popover();
+    $('#OldPassword').popover();
 });
 $(function () {
     $('#Password').popover();

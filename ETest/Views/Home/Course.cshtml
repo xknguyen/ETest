@@ -1,17 +1,17 @@
-﻿@model PagedList.IPagedList<Course>
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Course>
 
 @{
-    ViewBag.Title = "Quản lý khóa học";
+    ViewBag.Title = "Danh sách khóa học";
 }
 
 @section pluginStyles
 {
-    <link href="~/Content/PagedList.css" rel="stylesheet"/>
-    <link href="~/Content/AdmGrid.css" rel="stylesheet"/>
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
     <style>
-        .dropdown-width {
-            max-width: 150px;
-            float: right;
+        .ibox-title h5 {
+                font-weight: bold;
         }
     </style>
 }
@@ -22,19 +22,15 @@
             <div class="ibox-title">
                 <h5>Danh sách khóa học</h5>
                 <div class="ibox-tools">
-                    @(Html.Bootstrap()
-                          .ActionLink("Thêm khóa học", "Create")
-                          .Class("btn btn-primary btn-xs")
-                          .PrependIcon("fa fa-plus"))
                 </div>
             </div>
 
             <div class="ibox-content p-sm">
                 <!-- Phần hiển thị Form tìm kiếm -->
                 <div class="row">
-                    <div class="col-md-6 m-b-sm">
+                    <div class="col-md-12 m-b-sm">
 
-                        @using (Html.BeginForm("Index", "Course", FormMethod.Get,
+                        @using (Html.BeginForm("Course", "Home", FormMethod.Get,
 new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                         {
                             <div class="input-group">
@@ -44,8 +40,7 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                 @class = "input-sm form-control"
                             }))
 
-                                @Html.Hidden("PageSize", null, new { id = "pageSize" })
-                                @Html.Hidden("Status", null, new { id = "supStatus" })
+                                @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
 
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
@@ -56,10 +51,6 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                         }
 
                     </div>
-                    <div class="col-md-6 m-b-sm">
-                        @(Html.DropDownList("supStatus", null,
-                          new { @class = "input-sm dropdown-width", id = "statusSelect" }))
-                    </div>
                 </div>
                 <!-- Phần hiển thị danh sách nhà phát hành -->
                 <table id="tblCourses" class="table table-responsive table-bordered table-hover tbldata">
@@ -67,7 +58,6 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                         <tr>
                             <th style="width: 200px" class="hidden-sm hidden-xs">Tên khóa học</th>
                             <th class="hidden-sm hidden-xs">Mô tả khóa học</th>
-                            <th width="90px">Trạng thái</th>
                             <th width="40px"></th>
                         </tr>
                     </thead>
@@ -93,47 +83,19 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                     @Html.Raw(item.Description)
                                 </td>
 
-                                <td class="td_toggle">
-                                    <button type="button" class="toggle @(item.Actived.ToString().ToLower())" id="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"
-                                            data-toggle-state="true"
-                                            data-url="@Url.Action("UpdateToggle")"
-                                            data-args="Actived_@(item.Actived.ToString().ToLower())_@(item.CourseId)"></button>
-                                </td>
-
                                 <td>
                                     @(Html.Bootstrap()
-                                          .ActionLink("", "Edit")
-                                          .RouteValues(new { id = item.CourseId })
-                                          .Title("Cập nhật khóa học")
-                                          .AppendIcon("fa fa-pencil fa-2x"))
-                                    @(Html.Bootstrap()
-                                          .ActionLink("", "Delete")
-                                          .RouteValues(new { id = item.CourseId })
-                                          .Title("Xóa khóa học")
-                                          .AppendIcon("fa fa-trash-o fa-2x"))
-                                    @(Html.Bootstrap()
-                                          .ActionLink("", "Member")
-                                          .Class("ajax-link")
-                                          .RouteValues(new { id = item.CourseId })
-                                          .AppendIcon("fa fa-users fa-2x")
-                                          .Title("Xem danh sách thành viên"))
-                                    @(Html.Bootstrap()
-                                          .ActionLink("", "Index", "Group")
-                                          .RouteValues(new { id = item.CourseId })
-                                          .AppendIcon("fa fa-bank fa-2x")
-                                          .Title("Xem danh sách nhóm câu hỏi"))
-                                    @(Html.Bootstrap()
-                                          .ActionLink("", "Index", "Test")
+                                          .ActionLink("", "Tests", "Home")
                                           .RouteValues(new { courseId = item.CourseId })
                                           .AppendIcon("fa fa-file fa-2x")
-                                          .Title("Xem danh sách bài kiểm tra"))
+                                          .Title("Xem chi tiết khóa học"))
                                 </td>
                             </tr>
                         }
                     }
                     else
                     {
-                        <tr><td colspan="4">Không có khóa học nào</td></tr>
+                        <tr><td colspan="3">Không có khóa học nào</td></tr>
                     }
                 </table>
 
@@ -169,7 +131,8 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
 
 @section scripts
 {
-    <script type="text/javascript" src="~/Scripts/custom/active.js"></script>
     <script type="text/javascript" src="~/Scripts/custom/course.js"></script>
 }
+
+
 

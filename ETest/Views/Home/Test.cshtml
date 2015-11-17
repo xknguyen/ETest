@@ -7,12 +7,17 @@
 
 @section pluginStyles
 {
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <link href="~/Content/AdmGrid.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-slider.min.css" rel="stylesheet" />
-    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
-    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="~/Content/custom/previewTest.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet"/>
+    <link href="~/Content/AdmGrid.css" rel="stylesheet"/>
+    <link href="~/Content/bootstrap-slider.min.css" rel="stylesheet"/>
+    <link href="~/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet"/>
+    <link href="~/Content/custom/previewTest.css" rel="stylesheet"/>
+    <style>
+        .container {
+            width: 95%;
+        }
+    </style>
 }
 <div class="row">
     <div class="col-md-12">
@@ -64,21 +69,20 @@
                             @Html.DisplayFor(m => m.TestTime)
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        @Html.Label("Số câu", new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Model.TestDetails.Count
+                        </div>
+                    </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        @(Html.LabelFor(model => model.SubmitNo, new { @class = "control-label col-md-2" }))
+                        @Html.Label("Lần làm bài", new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
-                            @Html.DisplayFor(m => m.SubmitNo)
+                            @(Model.SubmitNoUser + 1)/@(Model.SubmitNo)
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        @(Html.LabelFor(model => model.GradeType, "Tính điểm", new { @class = "control-label col-md-2" }))
-                        <div class="col-md-10">
-                            @Html.Display(Model.GradeType.GetEnumDescription())
-                        </div>
-                    </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-md-4 btn-center">
@@ -235,7 +239,18 @@
 
                 //return array;
             }
-
+            function submitTest() {
+                var s = $("#questionConBox").getAnswerSheet();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/GradeTest",
+                    data: {
+                        data: JSON.stringify(s)
+                    }
+                }).done(function (res) {
+                    $("#testContainer").html(res);
+                });
+            }
             $.fn.shuffleQuestionDetail = function () {
                 $(this).find("div.question-details").each(function () {
                     var type = $(this).attr("data-type");
@@ -295,7 +310,7 @@
                 var pathname = window.location.pathname;
                 var paths = pathname.split("/");
                 var testId = paths[paths.length - 1];
-                var url = "/Adm/Test/GetTestPreview";
+                var url = "/Home/GetTestPreview";
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -338,30 +353,31 @@
                             $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
                         }
                     });
+
                     $("#submit").on("click", function (evt) {
                         evt.preventDefault();
-                        var s = $("#questionConBox").getAnswerSheet();
-                        $.ajax({
-                            type: "POST",
-                            url: "/Adm/Test/GradeTest",
-                            data: {
-                                data: JSON.stringify(s)
-                            }
-                        }).done(function (res) {
-                            if (res.Success) {
-                                alert("Bạn được " + res.Message + "/100 điểm.");
-                            } else {
-                                alert(res.Message);
-                            }
-                        });
+                        if (confirm("Bạn có chắc chắn nộp bài không?"))
+                            submitTest();
                     });
+
                     // Đếm ngược
                     var second = parseInt($("#TestTime").val().trim());
+                    var submitTime = second /600;
                     var timecounter = setInterval(function () {
                         if (second == 0) {
                             clearInterval(timecounter);
                             $("#submit").click();
                         } else {
+                            if (second != parseInt($("#TestTime").val().trim()) && second % submitTime == 0) {
+                                var s = $("#questionConBox").getAnswerSheet();
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/Home/AutoSubmit",
+                                    data: {
+                                        data: JSON.stringify(s)
+                                    }
+                                });
+                            }
                             var min = parseInt(second / 60, 10);
                             var sec = parseInt(second % 60, 10);
 

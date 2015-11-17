@@ -11,6 +11,7 @@ namespace ETest.Areas.Adm.Models
     {
         public Group Group { get; set; }
         public Course Course { get; set; }
+        public Account Account { get; set; }
         public ActionResult ActionResult { get; set; }
         public bool IsValid { get; set; }
 

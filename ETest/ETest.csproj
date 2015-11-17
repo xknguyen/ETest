@@ -209,6 +209,8 @@
     <Compile Include="Areas\Adm\Models\DataQuestionModel.cs" />
     <Compile Include="Areas\Adm\Models\FolderModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\AccountSeeder.cs" />
@@ -224,10 +226,15 @@
     <Compile Include="Migrations\201511150323227_UpdateAnswerSheet.Designer.cs">
       <DependentUpon>201511150323227_UpdateAnswerSheet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201511171506062_UpdateAnswerSheet1.cs" />
+    <Compile Include="Migrations\201511171506062_UpdateAnswerSheet1.Designer.cs">
+      <DependentUpon>201511171506062_UpdateAnswerSheet1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
+    <Compile Include="Models\AnswerDetail.cs" />
     <Compile Include="Models\AnswerSheet.cs" />
     <Compile Include="Models\AssociateItem.cs" />
     <Compile Include="Models\Choice.cs" />
@@ -280,6 +287,8 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\front-end\SourceSanPro.css" />
+    <Content Include="Content\front-end\Ubunto.css" />
     <Content Include="Content\ico\favicon.ico" />
     <Content Include="Content\img\breadcumb.png" />
     <Content Include="Content\img\browsers.png" />
@@ -466,6 +475,8 @@
     <Content Include="Scripts\dropzone\dropzone.min.css" />
     <Content Include="Scripts\dropzone\dropzone.min.js" />
     <Content Include="Scripts\errors.json" />
+    <Content Include="Scripts\front-end\html5shiv.js" />
+    <Content Include="Scripts\front-end\respond.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <Content Include="Areas\Adm\Views\Account\Create.cshtml" />
     <Content Include="Areas\Adm\Views\Account\Edit.cshtml" />
@@ -1375,6 +1386,7 @@
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.nestable.js" />
+    <Content Include="Scripts\jquery.shuffle.js" />
     <Content Include="Scripts\jquery.validate.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -1630,12 +1642,6 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
@@ -1650,10 +1656,35 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="TwitterBootstrapMvcLicense.lic" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Navigation.cshtml" />
+    <Content Include="Views\Home\Course.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Error\AccessDeniedPage.cshtml" />
+    <Content Include="Views\Error\ErrorPage.cshtml" />
+    <Content Include="Views\Home\Tests.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Home\_AssociatePreview.cshtml" />
+    <Content Include="Views\Home\_ChoiceMediaPreview.cshtml" />
+    <Content Include="Views\Home\_ChoicePreview.cshtml" />
+    <Content Include="Views\Home\_GapPreview.cshtml" />
+    <Content Include="Views\Home\_OrderPreview.cshtml" />
+    <Content Include="Views\Home\_QuestionView.cshtml" />
+    <Content Include="Views\Home\_SliderPreview.cshtml" />
+    <Content Include="Views\Home\_TestPreview.cshtml" />
+    <Content Include="Views\Home\_TestDone.cshtml" />
+    <Content Include="Views\Home\ContinueTest.cshtml" />
+    <Content Include="Views\Home\_TestPreviewCon.cshtml" />
+    <Content Include="Views\Home\_ChoicePreviewCon.cshtml" />
+    <Content Include="Views\Home\_OrderPreviewCon.cshtml" />
+    <Content Include="Views\Home\_SliderPreviewCon.cshtml" />
+    <Content Include="Views\Home\_ChoiceMediaPreviewCon.cshtml" />
+    <Content Include="Views\Home\_AssociatePreviewCon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\fonts\font-awesome\tao\" />
     <Folder Include="Upload\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1671,6 +1702,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511150323227_UpdateAnswerSheet.resx">
       <DependentUpon>201511150323227_UpdateAnswerSheet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511171506062_UpdateAnswerSheet1.resx">
+      <DependentUpon>201511171506062_UpdateAnswerSheet1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
