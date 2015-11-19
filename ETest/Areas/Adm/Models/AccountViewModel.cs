@@ -8,7 +8,7 @@ namespace ETest.Areas.Adm.Models
     public class AccountViewModel
     {
         [Required(ErrorMessage = "{0} không được để trống")]
-        [StringLength(100, ErrorMessage = "{0} từ {1} đến {2} kí tự.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} từ {2} đến {1} kí tự.", MinimumLength = 6)]
         [Display(Name = "Tên người dùng")]
         public string UserName { get; set; }
 

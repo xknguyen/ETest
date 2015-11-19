@@ -70,7 +70,13 @@ namespace ETest.Areas.Adm.Controllers
 
         public ActionResult Create()
         {
-            var account = new CreateAccountModel() { Actived = true };
+            var account = new CreateAccountModel()
+            {
+                Actived = true,
+                Role = "Student",
+                BirthDate = new DateTime(1993, 1, 1),
+                Password = "123456"
+            };
             InitFormData(account);
             ViewBag.IsEdit = false;
             return View(account);
@@ -105,14 +111,14 @@ namespace ETest.Areas.Adm.Controllers
                 {
                     Account newAccount = new Account()
                     {
-                        UserName = account.UserName,
-                        PhoneNumber = account.PhoneNumber,
-                        Email = account.UserName,
+                        UserName = account.UserName.Trim(),
+                        PhoneNumber = string.IsNullOrEmpty(account.PhoneNumber)? account.PhoneNumber:account.PhoneNumber.Trim(),
+                        Email = account.Email.Trim(),
                         Profile = new UserProfile()
                         {
-                            Identity = account.Identity,
-                            LastName = account.LastName,
-                            FirstName = account.FirstName,
+                            Identity = account.Identity.Trim(),
+                            LastName = account.LastName.Trim(),
+                            FirstName = account.FirstName.Trim(),
                             Notes = account.Notes,
                             BirthDate = account.BirthDate,
                             Actived = account.Actived
@@ -221,7 +227,7 @@ namespace ETest.Areas.Adm.Controllers
                     ModelState.AddModelError("Email", "Email đã được sử dụng.");
                 }
             }
-            if (editAccount.Email != editModel.Email)
+            if (editAccount.Profile.Identity != editModel.Identity)
             {
                 accountDb = DbContext.Accounts.FirstOrDefault(s => s.Profile.Identity == editModel.Identity);
                 if (accountDb != null)

@@ -44,17 +44,17 @@
     </div>
 </div>
 
-<div class="input-append datetime">
-    <div class="form-group">
-        @Html.LabelFor(m => m.BirthDate, new {@class = "col-md-2 control-label"})
-        <div class="col-md-8">
-            @Html.TextBoxFor(m => m.BirthDate, "{0:dd/MM/yyyy}", new {@class = "form-control"})
-            @(Html.ValidationMessageFor(model => model.BirthDate, "", new {@class = "text-danger"}))
+<div class="form-group">
+    @Html.LabelFor(m => m.BirthDate, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        <div class='input-group date'>
+            @Html.TextBoxFor(m => m.BirthDate, "{0:dd/MM/yyyy}", new { @class = "form-control datetime" })
+            @* ReSharper disable once Html.IdNotResolved *@
+            <label class="input-group-addon" for="BirthDate">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </label>
         </div>
-        <span class="add-on" style="float: left">
-            <i data-time-icon="icon-time" data-date-icon="icon-calendar" class="fa fa-calendar fa-2x">
-            </i>
-        </span>
+        @(Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" }))
     </div>
 </div>
 

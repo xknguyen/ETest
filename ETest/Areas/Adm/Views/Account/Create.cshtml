@@ -6,6 +6,8 @@
 
 @section pluginStyles
 {
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="~/Content/bootstrap-datetimepicker.min.css">
     <link href="~/Content/plugins/iCheck/custom.css" rel="stylesheet" />
 }
 
@@ -32,17 +34,26 @@
 
 @section pluginScripts
 {
+    <script src="/Scripts/moment.js"></script>
     <script src="~/Scripts/plugins/iCheck/icheck.min.js"></script>
     <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/custom/createOrEdit.js"></script>
 }
 
 @section scripts
 {
     @Scripts.Render("~/bundles/admjqueryval")
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="~/Content/bootstrap-datetimepicker.min.css">
-    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/Scripts/custom/createOrEdit.js"></script>
-    <script src="~/Scripts/custom/datetime.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $(".datetime").datetimepicker({
+                format: "DD/MM/YYYY",
+                showTodayButton: true
+            });
+            jQuery.validator.methods["date"] = function (value, element) { return true; }
+        });
+    </script>
 }
