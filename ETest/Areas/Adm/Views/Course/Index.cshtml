@@ -127,6 +127,11 @@ new { @class = "form-horizontal", role = "search", id = "searchCourse" }))
                                           .RouteValues(new { courseId = item.CourseId })
                                           .AppendIcon("fa fa-file fa-2x")
                                           .Title("Xem danh sách bài kiểm tra"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Statistic", "Course")
+                                          .RouteValues(new { id = item.CourseId })
+                                          .AppendIcon("fa fa-bar-chart fa-2x")
+                                          .Title("Xem trước bài kiểm tra"))
                                 </td>
                             </tr>
                         }

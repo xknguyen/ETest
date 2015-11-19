@@ -102,13 +102,18 @@
                                           .RouteValues(new { id = item.TestId })
                                           .AppendIcon("fa fa-eye fa-2x")
                                           .Title("Xem trước bài kiểm tra"))
+                                    @(Html.Bootstrap()
+                                          .ActionLink("", "Statistic", "Test")
+                                          .RouteValues(new { id = item.TestId })
+                                          .AppendIcon("fa fa-bar-chart fa-2x")
+                                          .Title("Xem trước bài kiểm tra"))
                                 </td>
                             </tr>
                         }
                     }
                     else
                     {
-                        <tr><td colspan="4">Không có bài kiểm tra nào</td></tr>
+                        <tr><td colspan="4" class="">Không có bài kiểm tra nào</td></tr>
                     }
                 </table>
 

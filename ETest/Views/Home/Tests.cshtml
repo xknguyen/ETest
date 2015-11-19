@@ -68,10 +68,24 @@
                                 </td>
 
                                 <td class="hidden-sm hidden-xs">
-                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br />
-                                    Thời gian làm bài: @item.TestTime phút<br />
-                                    Số câu: @item.TestDetails.Count<br />
-                                    Đã hoàn thành: @(item.SubmitNoUser)/@(item.SubmitNo)
+                                    @{
+                                        var str = "";
+                                        if(item.Scores!=null && item.Scores.Count > 0)
+                                        {
+                                            str = item.Scores[0] + "";
+                                            for (var i = 1 ; i<item.Scores.Count; i++)
+                                            {
+                                                str += ", " + item.Scores[i];
+                                            }
+                                            str = "(" + str + ")";
+                                        }
+
+                                    }
+                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br/>
+                                    Thời gian làm bài: @item.TestTime phút<br/>
+                                    Số câu: @item.TestDetails.Count<br/>
+                                    Đã hoàn thành: @(item.SubmitNoUser)/@(item.SubmitNo)<br/>
+                                    Điểm đạt được: @(item.UserScores) @str
                                 </td>
                                 <td class="hidden-sm hidden-xs">
                                     @item.Course.CourseName

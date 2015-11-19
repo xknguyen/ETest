@@ -336,5 +336,48 @@ namespace ETest.Areas.Adm.Controllers
                 Message = "Đã có lỗi xảy ra. Vui lòng thử lại sau!!!"
             });
         }
+
+        public ActionResult Statistic(long? id)
+        {
+            if (id == null)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+            var course = DbContext.Courses.Find(id);
+            if (course == null)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+            if (course.TeacherId != User.Identity.GetUserId())
+            {
+                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+            }
+            var students = course.Students;
+            foreach (var student in students)
+            {
+                var tests = new List<Test>();
+                foreach (var answer in student.AnswerSheets.Where(s=>s.Test.CourseId == course.CourseId))
+                {
+                    var tempTest = tests.FirstOrDefault(s => s.TestId == answer.Test.TestId);
+                    if (tempTest != null)
+                    {
+                        tempTest.Scores.Add(answer.Score);
+                    }
+                    else
+                    {
+                        var temp = new Test()
+                        {
+                            TestId = answer.Test.TestId,
+                            GradeType = answer.Test.GradeType,
+                        };
+                        temp.Scores.Add(answer.Score);
+                        tests.Add(temp);
+                    }
+                }
+                student.Tests = tests;
+            }
+            ViewBag.Course = course;
+            return View(students);
+        }
     }
 }

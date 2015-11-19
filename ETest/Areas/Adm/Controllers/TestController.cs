@@ -383,5 +383,31 @@ namespace ETest.Areas.Adm.Controllers
                 Success = true
             });
         }
+
+        public ActionResult Statistic(long? id)
+        {
+            if (!id.HasValue)
+            {
+                return RedirectErrorPage(Url.Action("Index", "Course"));
+            }
+
+            var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
+            if (test != null)
+            {
+                if (test.Course.TeacherId != User.Identity.GetUserId())
+                {
+                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                }
+                var students = test.Course.Students;
+
+                foreach (var student in students)
+                {
+                    student.AnswerSheets = student.AnswerSheets.Where(s => s.TestId == test.TestId).ToList();
+                }
+                ViewBag.Test = test;
+                return View(students);
+            }
+            return RedirectErrorPage(Url.Action("Index", "Course"));
+        }
     }
 }

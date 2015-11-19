@@ -8,7 +8,7 @@
              alt="Họ và tên" />
     </span>
     <a data-toggle="dropdown" class="dropdown-toggle"
-       href="/Account/Profile">
+       href="">
         <span class="clear">
             <span class="block m-t-xs">
                 <strong>@(ViewBag.Account.Profile.FullName)</strong>
@@ -27,7 +27,7 @@
              <a href="">Xem Profile</a>
         </li>
         <li>
-            <a href="/Account/ChangePassword">Đổi mật khẩu</a>
+            <a href="@Url.Action("ChangePassword","Manage")">Đổi mật khẩu</a>
         </li>
         <li class="divider"></li>
         <li>

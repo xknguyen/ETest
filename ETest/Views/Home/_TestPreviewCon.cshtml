@@ -63,8 +63,8 @@
                                         @Html.Partial("_ChoiceMediaPreviewCon", detail)
                                         break;
                                     case QuestionType.Fill:
-                                        var titleFill = Regex.Replace(de.QuestionTitle, @"<input name=""gapField"" type=""text"" value=""([\d]+)"" />", "<input name=\"gapField\" type =\"text\" />");
-                                        <div class="question-detail-title">@Html.Raw(titleFill)</div>
+                                        
+                                        @Html.Partial("_FillPreviewCon", detail)
                                         break;
                                 }
                             </div>

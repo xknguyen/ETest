@@ -1,0 +1,116 @@
+﻿@model List<Account>
+@{
+    var test = (Test) ViewBag.Test;
+}
+@{
+    ViewBag.Title = "Thống kế bài kiểm tra";
+}
+
+@section pluginStyles
+{
+    <link href="~/Content/PagedList.css" rel="stylesheet"/>
+    <link href="~/Content/AdmGrid.css" rel="stylesheet"/>
+    <link href="~/Content/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="~/Content/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet"/>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Danh sách học viên</h5>
+                <div class="ibox-tools">
+                    
+                </div>
+            </div>
+            <div class="ibox-content p-sm">
+                <table id="tblAccounts" class="table table-responsive table-bordered table-hover tbldata">
+                    <thead>
+                    <tr>
+                        <th>MSSV</th>
+                        <th>Họ và tên</th>
+                        @for (var i = 1; i <= test.SubmitNo; i++)
+                        {
+                            <th>Bài @i</th>
+                        }
+                        <th>Tổng điểm</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            test.Scores.Clear();
+                            foreach (var answer in item.AnswerSheets)
+                            {
+                                test.Scores.Add(answer.Score);
+                            }
+                            <tr>
+                                <td>
+                                    @item.Profile.Identity
+                                </td>
+                                <td>
+                                    @item.Profile.FullName (@item.UserName)
+                                </td>
+                                @for (var i = 0; i < test.SubmitNo; i++)
+                                {
+                                    if (i < test.Scores.Count)
+                                    {
+                                        <td>@test.Scores[i]</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                }
+                                <td>
+                                    @test.UserScores
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section pluginScripts
+{
+    <script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/plugins/dataTables/dataTables.tableTools.min.js"></script>
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('#tblAccounts').DataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "language": {
+                    "lengthMenu": "Số dòng hiển thị _MENU_",
+                    "zeroRecords": "Không có câu hỏi nào",
+                    "info": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                    "infoEmpty": "Đang xem 0 đến 0 trong tổng số 0 mục",
+                    "search": "Tìm: ",
+                    "infoFiltered": " ",
+                    "paginate": {
+                        "first": "Đầu",
+                        "previous": "Trước",
+                        "next": "Tiếp",
+                        "last": "Cuối"
+                    }
+                },
+                tableTools: {
+                    "sSwfPath": "/Scripts/plugins/dataTables/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [
+                        "copy",
+                        "xls",
+                        "print"
+                    ]
+                }
+            });
+        });
+    </script>
+}
+

@@ -27,5 +27,10 @@ namespace ETest.Models
                 AnswerDetails.Add(new AnswerDetail(question));
             }
         }
+
+        public Answer()
+        {
+            
+        }
     }
 }

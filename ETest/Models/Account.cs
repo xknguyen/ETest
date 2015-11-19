@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ETest.Models
 {
@@ -24,6 +25,9 @@ namespace ETest.Models
         public virtual IList<AnswerSheet> AnswerSheets { get; set; }
         public virtual IList<Course> Courses { get; set; }
         public virtual UserProfile Profile { get; set; }
+
+        [NotMapped]
+        public List<Test> Tests { get; set; }
     }
 
 }

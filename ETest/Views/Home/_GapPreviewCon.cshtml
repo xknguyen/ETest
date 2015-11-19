@@ -1,0 +1,35 @@
+﻿@using System.Text.RegularExpressions
+@model AnswerDetail
+@{
+    var titleFill = Regex.Replace(Model.QuestionDetail.QuestionTitle, @"<input name=""gapField"" type=""text"" value=""([\d]+)"" />", "<span class=\"gap-field-drogged ui-widget-content\"></span>");
+    var answerItems = new List<GapItem>();
+    foreach (var item in Model.GapItems)
+    {
+        var answerItem = Model.QuestionDetail.GapItems.FirstOrDefault(s => s.ItemContent.Trim() == item.ItemContent.Trim());
+        if (answerItem != null)
+        {
+            answerItems.Add(item);
+            Model.QuestionDetail.GapItems.Remove(answerItem);
+        }
+    }
+}
+<div class="gap-box" id="@Model.QuestionDetailId">
+    <div class="question-detail-title">@Html.Raw(titleFill)</div>
+    <div class="hidden old-anwser-gap">
+        @foreach (var gap in answerItems)
+        {
+            <div data-index="@gap.ItemId">
+                @gap.ItemContent
+            </div>
+        }
+    </div>
+    <div class="gap-answer-box ui-widget-content">
+        @foreach (var gap in @Model.QuestionDetail.GapItems)
+        {
+            <div class="answer-gap-dragged">
+                @gap.ItemContent
+            </div>
+        }
+        <div style="clear: both"></div>
+    </div>
+</div>

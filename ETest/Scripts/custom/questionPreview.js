@@ -6,7 +6,14 @@
         var leftChoice = $(this).find(".left-choice");
         var leftAnswer = $(this).find(".left-answer");
         var leftChoiceBox = $(this).find(".associate-answer-box");
+        var leftAnswerDragged = $(this).find(".left-answer-dragged");
         var associateBoxId = $(this).attr("id");
+
+        $(leftAnswerDragged).draggable({
+            revert: "invalid",
+            containment: "#" + associateBoxId
+        });
+
         $(leftChoice).draggable({
             revert: "invalid",
             containment: "#" + associateBoxId
@@ -56,15 +63,42 @@
     }
 
     //GAP
+    $.fn.createFillBox = function() {
+        var oldAnswer = $(this).find(".fill-old-answer").first();
+        if (oldAnswer != null) {
+            var input = $(this).find("input[name='gapField']");
+            $(oldAnswer).find("div").each(function () {
+                var index = parseInt($(this).attr("data-index"));
+                $(input[index]).attr("value",$(this).text().trim());
+                $(this).remove();
+            });
+        }
+    }
     $.fn.createGapBox = function () {
         var gapField = $(this).find(".gap-field-drogged");
         var gapAnswer = $(this).find(".answer-gap-dragged");
         var gapAnswerBox = $(this).find(".gap-answer-box");
-
         var gapBoxId = $(this).attr("id");
+
+        var oldAnswer = $(this).find(".old-anwser-gap").first();
+        if (oldAnswer != null) {
+            $(oldAnswer).find("div").each(function() {
+                var index = parseInt($(this).attr("data-index"));
+                var div = $("<div></div>").text($(this).text().trim());
+                $(div).draggable({
+                    revert: "invalid",
+                    containment: "#" + gapBoxId,
+                    scroll: false
+                });
+                $(gapField[index]).html(div);
+                
+            });
+        }
+
         $(gapAnswer).draggable({
             revert: "invalid",
-            containment: "#" + gapBoxId
+            containment: "#" + gapBoxId,
+            scroll: false
         });
 
         $(gapField).droppable(
@@ -84,7 +118,8 @@
                         gap.prependTo(gapAnswerBox);
                         $(gap).draggable({
                             revert: "invalid",
-                            containment: "#" + gapBoxId
+                            containment: "#" + gapBoxId,
+                            scroll: false
                         });
                     }
                     var div = $("<div></div>");
@@ -92,7 +127,8 @@
                     div.appendTo(this);
                     $(div).draggable({
                         revert: "invalid",
-                        containment: "#" + gapBoxId
+                        containment: "#" + gapBoxId,
+                        scroll: false
                     });
                     $(ui.draggable).remove();
                 } else {
@@ -110,7 +146,8 @@
                 div.prependTo(this);
                 $(div).draggable({
                     revert: "invalid",
-                    containment: "#" + gapBoxId
+                    containment: "#" + gapBoxId,
+                    scroll: false
                 });
                 $(ui.draggable).remove();
             }
@@ -147,6 +184,10 @@
         var gapBox = $(this).find(".gap-box");
         $(gapBox).each(function () {
             $(this).createGapBox();
+        });
+        var fillBox = $(this).find(".fill-box");
+        $(fillBox).each(function () {
+            $(this).createFillBox();
         });
 
         //Slider

@@ -1,20 +1,17 @@
 ﻿@model AnswerDetail
-    @{
-        foreach (var choice in Model.Choices)
-        {
-            Model.QuestionDetail.Choices.Find(s => s.ChoiceId == choice).IsCorrect = true;
-        }
-    }
+
 <div class="choice-question-content">
     @foreach (var choice in Model.QuestionDetail.Choices)
     {
+        var answer = Model.Choices.FirstOrDefault(s => s == choice.ChoiceId);
+        var value = answer != null;
         var name = "choice-answer-box-" + Model.QuestionDetailId;
         <div class="col-md-12 choice-question">
             <div class="@(Model.QuestionDetail.IsSingleChoice ? "radio" : "checkbox") i-checks" data-id="@choice.ChoiceId">
                 <label>
                     @(Model.QuestionDetail.IsSingleChoice ?
-                          Html.RadioButton(name, choice.IsCorrect, new {@class = "form-control"}) :
-                          Html.CheckBox("choice-answer-box-" + Model.QuestionDetailId, choice.IsCorrect, new {@class = "form-control"}))
+                          Html.RadioButton(name, choice.ChoiceId, value, new {@class = "form-control"}) :
+                          Html.CheckBox("choice-answer-box-" + Model.QuestionDetailId, value, new {@class = "form-control"}))
                     <span class="choice-content">@choice.Content</span>
                 </label>
             </div>

@@ -163,7 +163,7 @@ namespace ETest.Controllers
                         return View(test);
                     }
                     ViewBag.SubmitTime = test.TestTime / 10;
-                    test.TestTime = (int)minute - test.TestTime;
+                    test.TestTime = test.TestTime - (int)minute;
                     return View("ContinueTest", lastAnswerSheet);
                 }
             }
@@ -223,7 +223,7 @@ namespace ETest.Controllers
 
             if (test != null)
             {
-                if (account.Courses.First(s => s.CourseId == test.CourseId).Tests.All(s => s.TestId != test.TestId) || !(test.TestStart <= DateTime.Now && DateTime.Now <= test.TestEnd))
+                if (account.Courses.First(s => s.CourseId == test.CourseId && s.Actived).Tests.All(s => s.TestId != test.TestId) || !(test.TestStart <= DateTime.Now && DateTime.Now <= test.TestEnd))
                 {
                     return RedirectAccessDeniedPage(Url.Action("Index", "Home"));
                 }
@@ -255,11 +255,14 @@ namespace ETest.Controllers
                             DbContext.AnswerSheets.Add(answerSheet);
                             DbContext.SaveChanges();
                         }
-                        answerSheet.SubmitTime = lastAnswerSheet.SubmitTime;
-                        answerSheet.IsDone = true;
-                        lastAnswerSheet.Update(answerSheet);
-                        DbContext.Entry(lastAnswerSheet).State = EntityState.Modified;
-                        DbContext.SaveChanges();
+                        else
+                        {
+                            answerSheet.SubmitTime = lastAnswerSheet.SubmitTime;
+                            answerSheet.IsDone = true;
+                            lastAnswerSheet.Update(answerSheet);
+                            DbContext.Entry(lastAnswerSheet).State = EntityState.Modified;
+                            DbContext.SaveChanges();
+                        }
                     }
                 }
             }
@@ -324,7 +327,12 @@ namespace ETest.Controllers
             foreach (var answersheet in answerSheets)
             {
                 var test = tests.Find(s => s.TestId == answersheet.TestId);
-                if(test!=null) test.SubmitNoUser++;
+
+                if (test != null)
+                {
+                    test.SubmitNoUser++;
+                    test.Scores.Add(answersheet.Score);
+                }
             }
             return tests;
         }

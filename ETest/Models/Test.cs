@@ -83,6 +83,32 @@ namespace ETest.Models
         [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Cách tính điểm")]
         public GradeType GradeType  { get; set; }
+
+        [NotMapped]
+        public List<float> Scores { get; set; }
+        public float UserScores {
+            get
+            {
+                var realScore = 0f;
+                if (Scores != null && Scores.Count > 0)
+                {
+                    switch (GradeType)
+                    {
+                        case GradeType.Maximum:
+                            realScore = Scores.Max();
+                            break;
+                        case GradeType.Medium:
+                            realScore = Scores.Average();
+                            break;
+                        case GradeType.Minimum:
+                            realScore = Scores.Min();
+                            break;
+                    }
+                }
+                return realScore;
+            }
+        }
+
         [NotMapped]
         public int SubmitNoUser { get; set; }
         
@@ -96,7 +122,7 @@ namespace ETest.Models
 
         public Test()
         {
-
+            Scores = new List<float>();
         }
 
         public Test(string data)

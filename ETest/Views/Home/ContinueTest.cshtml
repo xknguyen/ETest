@@ -16,6 +16,9 @@
         .container {
             width: 95%;
         }
+        .slider .tooltip.top {
+            margin-top: -49px;
+        }
     </style>
 }
 <div class="row">
@@ -152,23 +155,6 @@
             function shuffle(array) {
                 for (var j, x, i = array.length; i; j = parseInt(Math.random() * i), x = array[--i], array[i] = array[j], array[j] = x);
                 return array;
-                //var counter = array.length, temp, index;
-
-                //// While there are elements in the array
-                //while (counter > 0) {
-                //    // Pick a random index
-                //    index = Math.floor(Math.random() * counter);
-
-                //    // Decrease counter by 1
-                //    counter--;
-
-                //    // And swap the last element with it
-                //    temp = array[counter];
-                //    array[counter] = array[index];
-                //    array[index] = temp;
-                //}
-
-                //return array;
             }
             function submitTest() {
                 var s = $("#questionConBox").getAnswerSheet();
@@ -192,11 +178,11 @@
                             var choices = $(choiceParent).find("div.choice-question");
                             $(choiceParent).html(shuffle(choices));
                             break;
-                        case "Order":
-                            var ul = $(this).find("ul.sortable").first();
-                            var li = $(ul).find("li.ui-state-default");
-                            $(ul).html(shuffle(li));
-                            break;
+                        //case "Order":
+                        //    var ul = $(this).find("ul.sortable").first();
+                        //    var li = $(ul).find("li.ui-state-default");
+                        //    $(ul).html(shuffle(li));
+                        //    break;
                         case "Associate":
                             var answerBoxParent = $(this).find("div.answer-box-parent");
                             var answerBox = $(answerBoxParent).find(".answer-box");
@@ -235,91 +221,79 @@
                     $(questions[0]).attr("class", "tab-pane fade question-field in active");
                 }
             }
-            $("#startTest").on("click", function (e) {
-                e.preventDefault();
-                $("#testContainer").html("");
-                var pathname = window.location.pathname;
-                var paths = pathname.split("/");
-                var testId = paths[paths.length - 1];
-                var url = "/Home/GetTestPreview";
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: {
-                        id: testId
-                    }
-                }).done(function (response) {
-                    $("#testContainer").html(response);
-                    $("#test-questions").shuffleQuestion();
-                    $("#test-questions").createPreview();
+            
+
+            // sự kiện cho bài kiểm tra
+            // Xáo câu hỏi
+            $("#test-questions").shuffleQuestion();
+            // Tạo câu hỏi
+            $("#test-questions").createPreview();
+            $("#backward").attr('disabled', 'disabled');
+            if ($("#questionNoBox").getLastNumber() == 1) {
+                $("#forward").attr("disabled", 'disabled');
+            }
+            $("#questionNoBox").on("click", "a", function () {
+                var number = parseInt($(this).text().trim());
+                $("#backward").removeAttr('disabled');
+                $("#forward").removeAttr('disabled');
+                if (number == 1) {
                     $("#backward").attr('disabled', 'disabled');
-                    if ($("#questionNoBox").getLastNumber() == 1) {
-                        $("#forward").attr("disabled", 'disabled');
-                    }
-                    $("#questionNoBox").on("click", "a", function () {
-                        var number = parseInt($(this).text().trim());
-                        $("#backward").removeAttr('disabled');
-                        $("#forward").removeAttr('disabled');
-                        if (number == 1) {
-                            $("#backward").attr('disabled', 'disabled');
-                        }
-                        var lastNumber = $("#questionNoBox").getLastNumber();
-                        if (lastNumber == number) {
-                            $("#forward").attr('disabled', 'disabled');
-                        }
-                    });
-                    $(".bfbutton").on("click", function () {
-                        var disabled = $(this).attr("disabled");
-                        if (disabled == null) {
-                            var id = $(this).attr("id");
-                            var as = $("#questionNoBox").find("a");
-                            var currentA = $("#questionNoBox").find("li.active").first().find("a").first();
-                            var currentNumber = parseInt($(currentA).text().trim()) - 1;
-
-                            if (id == "backward") {
-                                $(as[currentNumber - 1]).click();
-                            } else {
-                                $(as[currentNumber + 1]).click();
-                            }
-                            $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
-                        }
-                    });
-
-                    $("#submit").on("click", function (evt) {
-                        evt.preventDefault();
-                        if (confirm("Bạn có chắc chắn nộp bài không?"))
-                            submitTest();
-                    });
-
-                    // Đếm ngược
-                    var second = parseInt($("#TestTime").val().trim());
-                    var submitTime = parseInt($("#SubmitTime").val().trim());;
-                    var timecounter = setInterval(function () {
-                        if (second == 0) {
-                            clearInterval(timecounter);
-                            $("#submit").click();
-                        } else {
-                            if (second != parseInt($("#TestTime").val().trim()) && second % submitTime == 0) {
-                                var s = $("#questionConBox").getAnswerSheet();
-                                $.ajax({
-                                    type: "POST",
-                                    url: "/Home/AutoSubmit",
-                                    data: {
-                                        data: JSON.stringify(s)
-                                    }
-                                });
-                            }
-                            var min = parseInt(second / 60, 10);
-                            var sec = parseInt(second % 60, 10);
-
-                            min = min.toString().length == 1 ? "0" + min : min.toString();
-                            sec = sec.toString().length == 1 ? "0" + sec : sec.toString();
-                            second--;
-                            $("#testTimeShow").text(min + ":" + sec);
-                        }
-                    }, 1000);
-                });
+                }
+                var lastNumber = $("#questionNoBox").getLastNumber();
+                if (lastNumber == number) {
+                    $("#forward").attr('disabled', 'disabled');
+                }
             });
+            $(".bfbutton").on("click", function () {
+                var disabled = $(this).attr("disabled");
+                if (disabled == null) {
+                    var id = $(this).attr("id");
+                    var as = $("#questionNoBox").find("a");
+                    var currentA = $("#questionNoBox").find("li.active").first().find("a").first();
+                    var currentNumber = parseInt($(currentA).text().trim()) - 1;
+
+                    if (id == "backward") {
+                        $(as[currentNumber - 1]).click();
+                    } else {
+                        $(as[currentNumber + 1]).click();
+                    }
+                    $("html, body").animate({ scrollTop: parseInt($("#questionConBox").offset().top - 50) }, "fast");
+                }
+            });
+
+            $("#submit").on("click", function (evt) {
+                evt.preventDefault();
+                if (confirm("Bạn có chắc chắn nộp bài không?"))
+                    submitTest();
+            });
+
+            // Đếm ngược
+            var second = parseInt($("#TestTime").val().trim());
+            var submitTime = parseInt($("#SubmitTime").val().trim());;
+            var timecounter = setInterval(function () {
+                if (second == 0) {
+                    clearInterval(timecounter);
+                    submitTest();
+                } else {
+                    if (second != parseInt($("#TestTime").val().trim()) && second % submitTime == 0) {
+                        var s = $("#questionConBox").getAnswerSheet();
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/AutoSubmit",
+                            data: {
+                                data: JSON.stringify(s)
+                            }
+                        });
+                    }
+                    var min = parseInt(second / 60, 10);
+                    var sec = parseInt(second % 60, 10);
+
+                    min = min.toString().length == 1 ? "0" + min : min.toString();
+                    sec = sec.toString().length == 1 ? "0" + sec : sec.toString();
+                    second--;
+                    $("#testTimeShow").text(min + ":" + sec);
+                }
+            }, 1000);
         });
     </script>
 }
