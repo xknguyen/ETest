@@ -38,8 +38,14 @@
                     <a href="@Url.Action("Index","Home")">Trang chủ</a>
                 </li>
                 <li class="hidden-sm">
-                    <a href="@Url.Action("Course","Home")">Khóa học</a>
+                    <a href="@Url.Action("Course", "Home")">Khóa học</a>
                 </li>
+                @if (ViewBag.Roles.Contains("Admin") || ViewBag.Roles.Contains("Teacher"))
+                {
+                    <li class="hidden-sm">
+                        <a href="@Url.Action("Index", "Course",new {area = "Adm"})">Trang quản lý</a>
+                    </li>
+                }
             </ul>
         </div><!--/.nav-collapse -->
     </div>

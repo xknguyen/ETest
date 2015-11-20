@@ -15,10 +15,13 @@
 }
 
 #AddUserContent {
+    padding: 0; 
 }
 
-#AddUserContent {
+#AddUserContent >.row {
+    margin: 0;
 }
 
-#AddUserContent {
+#AddUserContent .ibox{
+    margin: 0;
 }

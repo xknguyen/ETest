@@ -21,13 +21,10 @@
 
     <ul class="dropdown-menu animated fadeInRight m-t-xs">
         <li>
-            <a href="/">Trang chủ</a>
+            <a href="@Url.Action("Index", "Home", new {area=  ""})">Trang chủ</a>
         </li>
         <li>
-             <a href="">Xem Profile</a>
-        </li>
-        <li>
-            <a href="@Url.Action("ChangePassword","Manage")">Đổi mật khẩu</a>
+            <a href="@Url.Action("ChangePassword","Manage", new {area=  ""})">Đổi mật khẩu</a>
         </li>
         <li class="divider"></li>
         <li>

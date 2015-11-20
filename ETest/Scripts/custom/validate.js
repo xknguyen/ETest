@@ -250,7 +250,7 @@
         var min = parseFloat($(this).find("input[name='Min']").first().val());
         var max = parseFloat($(this).find("input[name='Max']").first().val());
         var step = parseFloat($(this).find("input[name='Step']").first().val());
-        var value = parseFloat($(this).find("label.currentValue").first().val());
+        var value = parseFloat($(this).find("label.currentValue").first().text());
 
         min = isNaN(min) ? 0 : min;
         max = isNaN(max) ? 0 : max;

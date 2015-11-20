@@ -5,7 +5,7 @@
                 @Html.Partial("_ProfilePartial")
             </li>
             <li>
-                <a href="@Url.Action("Index", "Dashboard")">
+                <a href="@Url.Action("Index", "Home", new {area=  ""})">
                     <i class="fa fa-th-large"></i>
                     <span class="nav-label">Trang chủ</span>
                 </a>
@@ -50,7 +50,7 @@
                 </ul>
             </li>
 
-            <li>
+            @*<li>
                 <a href="#">
                     <i class="fa fa-gear"></i>
                     <span class="nav-label">Tùy chỉnh</span>
@@ -61,7 +61,7 @@
                         @Html.ActionLink("Thiết lập trang", "Index", "Settings")
                     </li>
                 </ul>
-            </li>
+            </li>*@
         </ul>
     </div>
 </nav>

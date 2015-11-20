@@ -171,7 +171,7 @@ namespace ETest.Areas.Adm.Controllers
             {
                 UserName = account.UserName,
                 PhoneNumber = account.PhoneNumber,
-                Email = account.UserName,
+                Email = account.Email,
                 Identity = account.Profile.Identity,
                 LastName = account.Profile.LastName,
                 FirstName = account.Profile.FirstName,
@@ -179,7 +179,7 @@ namespace ETest.Areas.Adm.Controllers
                 BirthDate = account.Profile.BirthDate,
                 Actived = account.Profile.Actived
             };
-            var roles = Roles.GetRolesForUser(account.UserName);
+            var roles =  userManager.GetRoles(account.Id);
             if (roles.Contains("Admin"))
             {
                 accountModel.Role = "Admin";

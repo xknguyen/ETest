@@ -35,31 +35,31 @@
     </div>
 </div>
 
-<div class="input-append datetime">
-    <div class="form-group">
-        @Html.LabelFor(m => m.StartTime, new {@class = "col-md-2 control-label"})
-        <div class="col-md-8">
-            @Html.TextBoxFor(m => m.StartTime, "{0:dd/MM/yyyy}", new {@class = "form-control"})
-            @(Html.ValidationMessageFor(model => model.StartTime, "", new {@class = "text-danger"}))
+<div class="form-group">
+    @Html.LabelFor(m => m.StartTime, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        <div class='input-group date'>
+            @Html.TextBoxFor(m => m.StartTime, "{0:dd/MM/yyyy}", new { @class = "form-control datetime" })
+            @* ReSharper disable once Html.IdNotResolved *@
+            <label class="input-group-addon" for="BirthDate">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </label>
         </div>
-        <span class="add-on" style="float: left">
-            <i data-time-icon="icon-time" data-date-icon="icon-calendar" class="fa fa-calendar fa-2x">
-            </i>
-        </span>
+        @(Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" }))
     </div>
 </div>
 
-<div class="input-append datetime">
-    <div class="form-group">
-        @Html.LabelFor(m => m.EndTime, new { @class = "col-md-2 control-label" })
-        <div class="col-md-8">
-            @Html.TextBoxFor(m => m.EndTime, "{0:dd/MM/yyyy}", new { @class = "form-control" })
-            @(Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" }))
+<div class="form-group">
+    @Html.LabelFor(m => m.EndTime, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        <div class='input-group date'>
+            @Html.TextBoxFor(m => m.EndTime, "{0:dd/MM/yyyy}", new { @class = "form-control datetime" })
+            @* ReSharper disable once Html.IdNotResolved *@
+            <label class="input-group-addon" for="BirthDate">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </label>
         </div>
-        <span class="add-on" style="float: left">
-            <i data-time-icon="icon-time" data-date-icon="icon-calendar" class="fa fa-calendar fa-2x">
-            </i>
-        </span>
+        @(Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" }))
     </div>
 </div>
 

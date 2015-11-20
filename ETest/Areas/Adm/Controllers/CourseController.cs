@@ -227,8 +227,8 @@ namespace ETest.Areas.Adm.Controllers
             var listId = ids.Split(',');
             var userId = User.Identity.GetUserId();
             var accounts = DbContext.Accounts.Where(x => x.Profile.Actived && listId.All(user => user != x.UserName) && x.Id != userId);
-            if (!page.HasValue || page.Value < 1) page = 1;
-            ViewBag.CurrentPageSize = 1;
+            if (!page.HasValue) page = 1;
+            ViewBag.CurrentPageSize = 10;
             var data = accounts.OrderBy(x => x.UserName).Where(x => x.Profile.Actived)
                                 .ToPagedList(page.Value, (int)ViewBag.CurrentPageSize);
             return PartialView("_UserForm",data);

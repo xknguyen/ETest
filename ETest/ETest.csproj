@@ -606,6 +606,7 @@
     <Content Include="Areas\Adm\Views\Test\_QuestionView.cshtml" />
     <Content Include="Areas\Adm\Views\Test\Statistic.cshtml" />
     <Content Include="Areas\Adm\Views\Course\Statistic.cshtml" />
+    <Content Include="Areas\Adm\Views\Question\_Toolbar.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />
