@@ -16,13 +16,13 @@ namespace ETest.Areas.Adm
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Adm_default",
+                "adm_default",
                 "Adm/{controller}/{action}/{id}",
                 defaults: new
                 {
-                    controller = "Dashboard",
+                    controller = "Course",
                     action = "Index",
-                    id = UrlParameter.Optional
+                    id = UrlParameter.Optional 
                 },
                 namespaces: new[] { "ETest.Areas.Adm.Controllers" }
                 );

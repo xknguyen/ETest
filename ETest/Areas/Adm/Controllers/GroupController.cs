@@ -19,7 +19,7 @@ namespace ETest.Areas.Adm.Controllers
             var result = new CheckRoleResult();
             if (id == null)
             {
-                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.ActionResult = RedirectErrorPage();
                 result.IsValid = false;
             }
             else
@@ -27,14 +27,14 @@ namespace ETest.Areas.Adm.Controllers
                 Course course = DbContext.Courses.Find(id);
                 if (course == null)
                 {
-                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.ActionResult = RedirectErrorPage();
                     result.IsValid = false;
                 }
                 else
                 {
                     if (course.TeacherId != User.Identity.GetUserId())
                     {
-                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.ActionResult = RedirectAccessDeniedPage();
                         result.IsValid = false;
                     }
                     else
@@ -218,16 +218,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             Group group = DbContext.Groups.Find(id);
             if (group == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             if (group.Course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage();
             }
             InitFormData(group, group.Course.Groups.ToList());
             return View(group);
@@ -241,11 +241,11 @@ namespace ETest.Areas.Adm.Controllers
             var groupOld = DbContext.Groups.Find(group.GroupId);
             if (groupOld == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             if (groupOld.Course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage();
             }
             CheckValidated(group);
 

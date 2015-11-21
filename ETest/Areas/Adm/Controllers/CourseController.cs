@@ -101,16 +101,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             var course = DbContext.Courses.Find(id);
             if (course == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             if (course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                return RedirectAccessDeniedPage();
             }
             return View(course);
         }
@@ -126,7 +126,7 @@ namespace ETest.Areas.Adm.Controllers
             }
             else if (courseDb.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                return RedirectAccessDeniedPage();
             }
 
             if (course.EndTime.HasValue && course.StartTime >= course.EndTime.Value)
@@ -206,16 +206,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             var course = DbContext.Courses.Find(id);
             if (course == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             if (course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                return RedirectAccessDeniedPage();
             }
             return View(course.Students);
         }
@@ -341,16 +341,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             var course = DbContext.Courses.Find(id);
             if (course == null)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
             if (course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                return RedirectAccessDeniedPage();
             }
             var students = course.Students;
             foreach (var student in students)

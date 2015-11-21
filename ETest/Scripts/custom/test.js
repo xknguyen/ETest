@@ -26,11 +26,15 @@
         $("#randomNo").attr("max", 0);
         $("#randomNo").attr("min", 0);
         selected = [];
-        //Lấy danh sách group
-        $.ajax({
-            type: "POST",
-            url: "/Adm/Test/GetGroupForUser"
-        }).done(function(response) {
+        var courseId =
+            //Lấy danh sách group
+            $.ajax({
+                type: "POST",
+                url: "/Adm/Test/GetGroupForUser",
+                data: {
+                    id: $("#CourseId").val()
+                }
+            }).done(function(response) {
             $("#treeviewGroups").createTreeView(response);
             $("#QuestionNo").text(0);
 

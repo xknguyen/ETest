@@ -5,34 +5,37 @@
                 @Html.Partial("_ProfilePartial")
             </li>
             <li>
-                <a href="@Url.Action("Index", "Home", new {area=  ""})">
+                <a href="@Url.Action("Index", "Home", new {area = ""})">
                     <i class="fa fa-th-large"></i>
                     <span class="nav-label">Trang chủ</span>
                 </a>
             </li>
+            @if (ViewBag.Roles.Contains("Admin"))
+            {
+                <li>
+                    <a href="#">
+                        <i class="fa fa-users"></i>
+                        <span class="nav-label">Quản lý người dùng</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            @Html.ActionLink("Xem tất cả", "Index", "Account")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Danh sách giáo viên", "Index", "Account")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Danh sách học sinh", "Index", "Account")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Tạo tài khoản mới", "Create", "Account")
+                        </li>
+                    </ul>
+                </li>
+            }
             <!--Các chức năng liên quan tới người dùng-->
-            <li>
-                <a href="#">
-                    <i class="fa fa-users"></i>
-                    <span class="nav-label">Quản lý người dùng</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        @Html.ActionLink("Xem tất cả", "Index", "Account")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Danh sách giáo viên", "Index", "Account")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Danh sách học sinh", "Index", "Account")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Tạo tài khoản mới", "Create", "Account")
-                    </li>
-                </ul>
-            </li>
-
+            
             <!--Các chức năng liên quan tới khóa học-->
             <li>
                 <a href="#">

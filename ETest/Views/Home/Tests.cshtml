@@ -28,7 +28,7 @@
                 <!-- Phần hiển thị Form tìm kiếm -->
                 <div class="row">
                     <div class="col-md-12 m-b-sm">
-                        @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchTest" }))
+                        @using (Html.BeginForm("Tests", "Home", FormMethod.Get, new { @class = "form-horizontal", role = "search", id = "searchTest" }))
                         {
                             <div class="input-group">
                                 @(Html.TextBox("Keyword", null, new
@@ -40,7 +40,7 @@
                                 @Html.Hidden("PageSize", (int)ViewBag.CurrentPageSize, new { id = "pageSize" })
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                    @(Html.ActionLink("Bỏ lọc", "Index", new { courseId = ViewBag.CourseId },
+                                    @(Html.ActionLink("Bỏ lọc", "Tests", new { courseId = ViewBag.CourseId },
                                           new { @class = "btn btn-sm btn-warning" }))
                                 </span>
                             </div>
@@ -70,10 +70,10 @@
                                 <td class="hidden-sm hidden-xs">
                                     @{
                                         var str = "";
-                                        if(item.Scores!=null && item.Scores.Count > 0)
+                                        if (item.Scores != null && item.Scores.Count > 0)
                                         {
                                             str = item.Scores[0] + "";
-                                            for (var i = 1 ; i<item.Scores.Count; i++)
+                                            for (var i = 1; i < item.Scores.Count; i++)
                                             {
                                                 str += ", " + item.Scores[i];
                                             }
@@ -81,10 +81,10 @@
                                         }
 
                                     }
-                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br/>
-                                    Thời gian làm bài: @item.TestTime phút<br/>
-                                    Số câu: @item.TestDetails.Count<br/>
-                                    Đã hoàn thành: @(item.SubmitNoUser)/@(item.SubmitNo)<br/>
+                                    Thời gian nộp bài: @item.TestStart.ToString("dd/MM/yyyy HH:mm") - @item.TestEnd.ToString("dd/MM/yyyy HH:mm")<br />
+                                    Thời gian làm bài: @item.TestTime phút<br />
+                                    Số câu: @item.TestDetails.Count<br />
+                                    Đã hoàn thành: @(item.SubmitNoUser)/@(item.SubmitNo)<br />
                                     Điểm đạt được: @(item.UserScores) @str
                                 </td>
                                 <td class="hidden-sm hidden-xs">
@@ -95,7 +95,7 @@
                                     {
                                         @(Html.Bootstrap()
                                               .ActionLink("", "Test", "Home")
-                                              .RouteValues(new {id = item.TestId})
+                                              .RouteValues(new { id = item.TestId })
                                               .AppendIcon("fa fa-edit fa-2x")
                                               .Title("Làm bài thi"))
                                     }
@@ -105,12 +105,12 @@
                                     }
                                 </td>
                             </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr><td colspan="4">Không có bài kiểm tra nào</td></tr>
-                    }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr><td colspan="4">Không có bài kiểm tra nào</td></tr>
+                                        }
                 </table>
 
                 <!-- Phần hiển thị thanh phân trang -->

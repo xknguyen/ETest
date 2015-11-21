@@ -196,7 +196,6 @@
     <Compile Include="Areas\Adm\Controllers\AccountController.cs" />
     <Compile Include="Areas\Adm\Controllers\AdminController.cs" />
     <Compile Include="Areas\Adm\Controllers\CourseController.cs" />
-    <Compile Include="Areas\Adm\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Adm\Controllers\ErrorController.cs" />
     <Compile Include="Areas\Adm\Controllers\FileController.cs" />
     <Compile Include="Areas\Adm\Controllers\GroupController.cs" />
@@ -229,6 +228,10 @@
     <Compile Include="Migrations\201511171506062_UpdateAnswerSheet1.cs" />
     <Compile Include="Migrations\201511171506062_UpdateAnswerSheet1.Designer.cs">
       <DependentUpon>201511171506062_UpdateAnswerSheet1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511201447264_UpdateTestDes.cs" />
+    <Compile Include="Migrations\201511201447264_UpdateTestDes.Designer.cs">
+      <DependentUpon>201511201447264_UpdateTestDes.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -450,7 +453,6 @@
     </Content>
     <Content Include="Areas\Adm\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Adm\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Adm\Views\Dashboard\Index.cshtml" />
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-cookies.min.js.map" />
@@ -607,6 +609,7 @@
     <Content Include="Areas\Adm\Views\Test\Statistic.cshtml" />
     <Content Include="Areas\Adm\Views\Course\Statistic.cshtml" />
     <Content Include="Areas\Adm\Views\Question\_Toolbar.cshtml" />
+    <Content Include="Areas\Adm\Views\Test\_Toolbar.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\cheapdeal.js" />
     <Content Include="Scripts\custom\active.js" />
@@ -1710,6 +1713,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201511171506062_UpdateAnswerSheet1.resx">
       <DependentUpon>201511171506062_UpdateAnswerSheet1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511201447264_UpdateTestDes.resx">
+      <DependentUpon>201511201447264_UpdateTestDes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

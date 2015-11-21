@@ -60,14 +60,14 @@ namespace ETest.Areas.Adm.Controllers
             }
         }
 
-        public virtual ActionResult RedirectErrorPage(string url)
+        public virtual ActionResult RedirectErrorPage()
         {
-            return RedirectToAction("ErrorPage", "Error", new {url});
+            return RedirectToAction("ErrorPage", "Error", new {url = Url.Action("Index", "Course")});
         }
 
-        public virtual ActionResult RedirectAccessDeniedPage(string url)
+        public virtual ActionResult RedirectAccessDeniedPage()
         {
-            return RedirectToAction("AccessDeniedPage", "Error", new { url });
+            return RedirectToAction("AccessDeniedPage", "Error", new { url = Url.Action("Index", "Course") });
         }
 
         /// <summary>
@@ -141,6 +141,7 @@ namespace ETest.Areas.Adm.Controllers
             var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
             var id = User.Identity.GetUserId();
             var account = userManager.FindById(id);
+            ViewBag.Roles = userManager.GetRoles(id);
             ViewBag.Account = account;
         }
 

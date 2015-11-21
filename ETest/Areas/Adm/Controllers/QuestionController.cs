@@ -17,7 +17,7 @@ namespace ETest.Areas.Adm.Controllers
             var result = new CheckRoleResult();
             if (id == null)
             {
-                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.ActionResult = RedirectErrorPage();
                 result.IsValid = false;
             }
             else
@@ -25,14 +25,14 @@ namespace ETest.Areas.Adm.Controllers
                 var group = DbContext.Groups.Find(id);
                 if (group == null)
                 {
-                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.ActionResult = RedirectErrorPage();
                     result.IsValid = false;
                 }
                 else
                 {
                     if (group.Course.TeacherId != User.Identity.GetUserId())
                     {
-                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.ActionResult = RedirectAccessDeniedPage();
                         result.IsValid = false;
                     }
                     else
@@ -161,16 +161,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             var question = DbContext.Questions.FirstOrDefault(s => s.QuestionId == id.Value);
             if (question == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             if (question.Group.Course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage();
             }
             InitFormData(question);
             return View(question);

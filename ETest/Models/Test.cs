@@ -39,7 +39,6 @@ namespace ETest.Models
         [DataType(DataType.MultilineText)]
         public string TestTitle { get; set; }
 
-        [Required(ErrorMessage = "{0} không được để trống")]
         [Display(Name = "Mô tả")]
         [AllowHtml]
         [DataType(DataType.MultilineText)]

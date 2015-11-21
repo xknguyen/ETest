@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using ETest.Areas.Adm.Models;
 using ETest.Models;
 using Microsoft.AspNet.Identity;
@@ -158,14 +157,14 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (string.IsNullOrEmpty(username))
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             var userManager = new UserManager<Account>(new UserStore<Account>(DbContext));
             Account account = userManager.FindByName(username);
 
             if (account == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             EditAccountModel accountModel = new EditAccountModel()
             {
@@ -205,7 +204,7 @@ namespace ETest.Areas.Adm.Controllers
 
             if (editAccount == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
 
             // Kiểm tra tên tài khoản đã tồn tại hay chưa

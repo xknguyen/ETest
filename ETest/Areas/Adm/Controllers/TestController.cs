@@ -19,7 +19,7 @@ namespace ETest.Areas.Adm.Controllers
             var result = new CheckRoleResult();
             if (id == null)
             {
-                result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                result.ActionResult = RedirectErrorPage();
                 result.IsValid = false;
             }
             else
@@ -27,14 +27,14 @@ namespace ETest.Areas.Adm.Controllers
                 Course course = DbContext.Courses.Find(id);
                 if (course == null)
                 {
-                    result.ActionResult = RedirectErrorPage(Url.Action("Index", "Dashboard"));
+                    result.ActionResult = RedirectErrorPage();
                     result.IsValid = false;
                 }
                 else
                 {
                     if (course.TeacherId != User.Identity.GetUserId())
                     {
-                        result.ActionResult = RedirectAccessDeniedPage(Url.Action("Index", "Dashboard"));
+                        result.ActionResult = RedirectAccessDeniedPage();
                         result.IsValid = false;
                     }
                     else
@@ -167,7 +167,7 @@ namespace ETest.Areas.Adm.Controllers
                     });
                 }
             }
-            catch
+            catch(Exception)
             {
                 //
             }
@@ -184,16 +184,16 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (id == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
             if (test == null)
             {
-                return RedirectErrorPage(Url.Action("Index"));
+                return RedirectErrorPage();
             }
             if (test.Course.TeacherId != User.Identity.GetUserId())
             {
-                return RedirectAccessDeniedPage(Url.Action("Index"));
+                return RedirectAccessDeniedPage();
             }
             InitFormData(test);
             return View(test);
@@ -265,10 +265,11 @@ namespace ETest.Areas.Adm.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetGroupForUser()
+        public ActionResult GetGroupForUser(long? id)
         {
+            id = id ?? 0;
             var userId = User.Identity.GetUserId();
-            var groups = DbContext.Groups.Where(s => s.Course.TeacherId == userId && !s.ParentGroupId.HasValue).ToList();
+            var groups = DbContext.Groups.Where(s => s.Course.TeacherId == userId && !s.ParentGroupId.HasValue && s.CourseId == id ).ToList();
             var data = new List<DataGroupModel>();
             foreach (var g in groups)
             {
@@ -322,7 +323,7 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
 
             var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
@@ -330,11 +331,11 @@ namespace ETest.Areas.Adm.Controllers
             {
                 if (test.Course.TeacherId != User.Identity.GetUserId())
                 {
-                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                    return RedirectAccessDeniedPage();
                 }
                 return View(test);
             }
-            return RedirectErrorPage(Url.Action("Index", "Course"));
+            return RedirectErrorPage();
         }
 
         [HttpPost]
@@ -342,7 +343,7 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
 
             var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
@@ -350,11 +351,11 @@ namespace ETest.Areas.Adm.Controllers
             {
                 if (test.Course.TeacherId != User.Identity.GetUserId())
                 {
-                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                    return RedirectAccessDeniedPage();
                 }
                 return PartialView("_TestPreview",test);
             }
-            return RedirectErrorPage(Url.Action("Index", "Course"));
+            return RedirectErrorPage();
         }
 
         [HttpPost, ValidateInput(false)]
@@ -388,7 +389,7 @@ namespace ETest.Areas.Adm.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectErrorPage(Url.Action("Index", "Course"));
+                return RedirectErrorPage();
             }
 
             var test = DbContext.Tests.FirstOrDefault(s => s.TestId == id.Value);
@@ -396,7 +397,7 @@ namespace ETest.Areas.Adm.Controllers
             {
                 if (test.Course.TeacherId != User.Identity.GetUserId())
                 {
-                    return RedirectAccessDeniedPage(Url.Action("Index", "Course"));
+                    return RedirectAccessDeniedPage();
                 }
                 var students = test.Course.Students;
 
@@ -407,7 +408,7 @@ namespace ETest.Areas.Adm.Controllers
                 ViewBag.Test = test;
                 return View(students);
             }
-            return RedirectErrorPage(Url.Action("Index", "Course"));
+            return RedirectErrorPage();
         }
     }
 }
