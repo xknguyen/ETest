@@ -18,11 +18,11 @@ $(document).ready(function () {
         }, 50);
     });
 
-    // Close ibox function
-    $('.close-link').click( function() {
-        var content = $(this).closest('div.ibox');
-        content.remove();
-    });
+        // Close ibox function
+        $('.close-link').click( function() {
+            var content = $(this).closest('div.ibox');
+            content.remove();
+        });
 
     // Small todo handler
     $('.check-link').click( function(){
@@ -34,25 +34,25 @@ $(document).ready(function () {
     });
 
     // Append config box / Only for demo purpose
-    $.get("skin-config.html", function (data) {
-        $('body').append(data);
-    });
+    //$.get("skin-config.html", function (data) {
+    //    $('body').append(data);
+    //});
 
     // minimalize menu
-    $('.navbar-minimalize').click(function () {
+    $('.navbar-minimalize').click(function() {
         $("body").toggleClass("mini-navbar");
         SmoothlyMenu();
-    })
+    });
 
     // tooltips
     $('.tooltip-demo').tooltip({
         selector: "[data-toggle=tooltip]",
         container: "body"
-    })
+    });
 
     // Move modal to body
     // Fix Bootstrap backdrop issu with animation.css
-    $('.modal').appendTo("body")
+    $('.modal').appendTo("body");
 
     // Full height of sidebar
     function fix_height() {
@@ -73,10 +73,10 @@ $(document).ready(function () {
             //    })
 
     $(window).bind("load resize click scroll", function() {
-        if(!$("body").hasClass('body-small')) {
+        if (!$("body").hasClass('body-small')) {
             fix_height();
         }
-    })
+    });
 
     $("[data-toggle=popover]")
         .popover();
@@ -102,12 +102,12 @@ function animationHover(element, animation){
 $(function() {
     $(window).bind("load resize", function() {
         if ($(this).width() < 769) {
-            $('body').addClass('body-small')
+            $('body').addClass('body-small');
         } else {
-            $('body').removeClass('body-small')
+            $('body').removeClass('body-small');
         }
-    })
-})
+    });
+});
 
 function SmoothlyMenu() {
     if (!$('body').hasClass('mini-navbar') || $('body').hasClass('body-small')) {
@@ -141,7 +141,7 @@ function WinMove() {
             connectWith: connect,
             tolerance: 'pointer',
             forcePlaceholderSize: true,
-            opacity: 0.8,
+            opacity: 0.8
         })
         .disableSelection();
 };

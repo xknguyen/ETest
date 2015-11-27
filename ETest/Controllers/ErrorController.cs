@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ETest.Areas.Adm.Controllers
+namespace ETest.Controllers
 {
-    public class ErrorController : AdminController
+    public class ErrorController : BaseController
     {
         public ActionResult ErrorPage(string url)
         {

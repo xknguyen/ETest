@@ -32,6 +32,7 @@ namespace ETest.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("doi-mat-khau.html")]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
 

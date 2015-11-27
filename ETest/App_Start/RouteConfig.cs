@@ -35,6 +35,7 @@ namespace ETest
             new { controller = "Home", action = "Test", id = UrlParameter.Optional }
             );
 
+
             // Dành cho ChangePassword
             routes.MapRoute(
             "ChangePassword",

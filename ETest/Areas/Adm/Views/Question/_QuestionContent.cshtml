@@ -3,50 +3,52 @@
     Model.QuestionDetails = Model.QuestionDetails.OrderBy(s => s.OrderNo).ToList();
 }
 <div class="form-group">
-    <div class="col-md-2 " style="background: white">
-        <div class="col-md-3"></div>
-        <div id="typeQuestion" class="dd col-md-9 questions">
+    <div class="col-md-1" style="background: white">
+        <div id="typeQuestion" class="dd questions">
             <ol class="dd-list">
                 <li class="dd-item new-question" data-type="Choice">
                     <div class="dd-handle">
-                        Choice
-                    </div>
-                </li>
-                <li class="dd-item  new-question" data-type="Order">
-                    <div class="dd-handle">
-                        Order
-                    </div>
-                </li>
-                <li class="dd-item  new-question" data-type="Associate">
-                    <div class="dd-handle">
-                        Associate
-                    </div>
-                </li>
-                <li class="dd-item new-question" data-type="Gap">
-                    <div class="dd-handle">
-                        Gap
-                    </div>
-                </li>
-                <li class="dd-item new-question" data-type="Slider">
-                    <div class="dd-handle">
-                        Slider
+                        <img src="~/Images/Choice.png" class="img-responsive img-type-question" title="Câu hỏi lựa chọn" alt="Câu hỏi lựa chọn"/>
                     </div>
                 </li>
                 <li class="dd-item new-question" data-type="ChoiceMedia">
                     <div class="dd-handle">
-                        Choice Media
+                        <img src="~/Images/ChoiceMedia.png" class="img-responsive img-type-question" title="Câu hỏi lựa chọn hình ảnh" alt="Câu hỏi lựa chọn hình ảnh" />
+
+                    </div>
+                </li>
+                <li class="dd-item  new-question" data-type="Order">
+                    <div class="dd-handle">
+                        <img src="~/Images/Order.png" class="img-responsive img-type-question" title="Câu hỏi sắp xếp" alt="Câu hỏi sắp xếp" />
+                    </div>
+                </li>
+                <li class="dd-item  new-question" data-type="Associate">
+                    <div class="dd-handle">
+                        <img src="~/Images/Associate.png" class="img-responsive img-type-question" title="Câu hỏi ghép đôi" alt="Câu hỏi ghép đôi" />
+                    </div>
+                </li>
+                <li class="dd-item new-question" data-type="Gap">
+                    <div class="dd-handle">
+                        <img src="~/Images/Gap.png" class="img-responsive img-type-question" title="Câu hỏi điền vào chỗ trống" alt="Câu hỏi điền vào chỗ trống"/>
                     </div>
                 </li>
                 <li class="dd-item new-question" data-type="Fill">
                     <div class="dd-handle">
-                        Fill
+                        <img src="~/Images/Fill.png" class="img-responsive img-type-question" title="Câu hỏi điền khuyết" alt="Câu hỏi điền khuyết" />
                     </div>
                 </li>
+                <li class="dd-item new-question" data-type="Slider">
+                    <div class="dd-handle">
+                        <img src="~/Images/Slider.png" class="img-responsive img-type-question" title="Câu hỏi thanh trượt" alt="Câu hỏi thanh trượt" />
+                    </div>
+                </li>
+                
+                
             </ol>
         </div>
     </div>
 
-    <div class="col-md-10" style="background: white">
+    <div class="col-md-11" style="background: white">
         <div id="contentQuestion" class="dd questions">
 
             @if (Model.QuestionDetails == null || Model.QuestionDetails.Count == 0)

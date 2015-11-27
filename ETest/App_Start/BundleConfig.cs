@@ -85,8 +85,8 @@ namespace ETest
                         "~/Scripts/jquery.validate.bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/admcustomjs").Include(
-                        "~/Scripts/cheapdeal.js",
-                        "~/Scripts/plugins/pace/pace.min.js"));
+                "~/Scripts/cheapdeal.js"));//,
+                        //"~/Scripts/plugins/pace/pace.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/admbootstrap").Include(
                       "~/Content/bootstrap.min.css",

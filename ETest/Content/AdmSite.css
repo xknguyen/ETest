@@ -2116,7 +2116,7 @@ table.dataTable thead .sorting:after {
 }
 .dd-empty {
   border: 1px dashed #bbb;
-  min-height: 515px;
+  min-height: 450px;
   background-color: #e5e5e5;
   /*background-image: -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), -webkit-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);*/
   /*background-image: -moz-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff), -moz-linear-gradient(45deg, #ffffff 25%, transparent 25%, transparent 75%, #ffffff 75%, #ffffff);*/
